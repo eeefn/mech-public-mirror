@@ -5,33 +5,75 @@
 #include <time.h>
 #include <fstream>
 #include <iostream>
-#include<string>
+#include <string>
+#include "./Player.h"
 
+/*
+weekend notes:
+--> see if we can do the controls in a better way
+--> i think the editor mode should be a public class that keeps the state of the editing
+--> note- fill does not take into account current tile positioning rn
+*/
+short selectColor = 0;
+int debugCount = 0;
 int tilesPerWindowWidth;
 int tilesPerWindowHeight;
 int gameIsRunning = FALSE;
+SDL_Rect tileSelect[TILE_WIDTH_IN_TILE_MAP][TILE_WIDTH_IN_TILE_MAP];
 int lastFrameTime = 0;
-static int xOffset = 0;
-static int yOffset = 0;
+static int xOffset, yOffset = 0;
+static int editYOffset, editXOffset = 0;
 const Uint8* keyPtr;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
-SDL_Rect selectT1;
-SDL_Rect selectT2;
-SDL_Rect selectT3;
-SDL_Rect selectT4;
 SDL_Rect tile[45][80]; //dependent on window size. This should be retroffitted at some point. 
-int tileMap[MAX_LVL_HEIGHT][MAX_LVL_WIDTH];
+SDL_Rect selWindow;
+//int tileMap[MAX_LVL_HEIGHT][MAX_LVL_WIDTH];
+short tileMap2[MAX_LVL_HEIGHT][MAX_LVL_WIDTH];
 SDL_Texture* tile_texture;
+SDL_Texture* spriteTexture;
+SDL_Rect player1;
+int gameMode = 0;
 using std::cout;
+int selOffY, selOffX = 0;
+int gravity = 10;
+//extern Player player;
 
-struct ball {
-	float x;
-	float y;
-	float width;
-	float height;
-}ball;
+void readMap2(std::string mapIn) {
+	std::ifstream map(mapIn, std::ios::in | std::ios::binary);
+	for (unsigned int i = 0; i < MAX_LVL_HEIGHT; i++) {
+		for (unsigned int j = 0; j < MAX_LVL_WIDTH; j++){
+			map.read((char*)&tileMap2[i][j], sizeof(short));
+		}
+	}
+}
 
+void editMapFill() {
+	cout << "map fill" << '\n';
+	cout << "selWindow stats" << '\n';
+	cout << "y: " << selWindow.y / TILE_DIM << '\n';
+	cout << "x: " << selWindow.x / TILE_DIM << '\n';
+	cout << "w: " << selWindow.w / TILE_DIM << '\n';
+	cout << "h: " << selWindow.h / TILE_DIM << '\n';
+	for (int i = selWindow.y / TILE_DIM; i < (selWindow.h / TILE_DIM) + (selWindow.y / TILE_DIM) ; i++) {
+		for (int j = selWindow.x / TILE_DIM; j < (selWindow.w / TILE_DIM) + (selWindow.x / TILE_DIM) ; j++) {
+			cout << "i is: " << i << ". j is: " << j << '\n';
+			tileMap2[i][j] = selectColor;
+		}
+	}
+}
+
+void saveMap(std::string mapIn) {
+	std::ofstream file(mapIn, std::ios::trunc | std::ios::out | std::ios::binary);
+	for (unsigned int i = 0; i < MAX_LVL_HEIGHT; i++) {
+		for (unsigned int j = 0; j < MAX_LVL_WIDTH; j++) {
+			file.write((char*)&tileMap2[i][j], sizeof(short));
+		}
+	}
+}
+
+//TODO: make this function accept txt
+/*
 void readMap() {
 	std::ifstream file;
 	file.open("lvl.txt",std::ifstream::in);
@@ -57,6 +99,7 @@ void readMap() {
 		cout << '\n';
 	}
 }
+*/
 
 int initializeWindow() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -91,73 +134,218 @@ void setup() {
 	SDL_GetCurrentDisplayMode(0,&dm);
 	int width = dm.w;
 	int height = dm.h;
-	tilesPerWindowWidth = (dm.w + TILE_DIM - 1) / TILE_DIM;
-	tilesPerWindowHeight = (dm.h + TILE_DIM - 1) / TILE_DIM;
+	tilesPerWindowWidth = (dm.w + 16 - 1) / 16;
+	tilesPerWindowHeight = (dm.h + 16 - 1) / 16;
 
-	cout << "width= " << tilesPerWindowWidth << '\n';
-	cout << "height= " << tilesPerWindowHeight << '\n';
+
 	keyPtr = SDL_GetKeyboardState(NULL);
-	ball.x = 40;
-	ball.y = 40;
-	ball.width = 15;
-	ball.height = 15;
-	SDL_Surface* tileMapSurface = SDL_LoadBMP("tile3.bmp");
+	//create surface  for tilemap and give it to the renderer
+	SDL_Surface* tileMapSurface = SDL_LoadBMP("tile4.bmp");
 	if (!tileMapSurface) {
 		fprintf(stderr, "could not find image");
 		return;
 	}
 	tile_texture = SDL_CreateTextureFromSurface(renderer, tileMapSurface);
 	SDL_FreeSurface(tileMapSurface);
+	SDL_Surface* spriteSheetSurface = SDL_LoadBMP("mushBoy.bmp");
+	if (!spriteSheetSurface) {
+		fprintf(stderr, "could not find image");
+		return;
+	}
+	spriteTexture = SDL_CreateTextureFromSurface(renderer, spriteSheetSurface);
+	SDL_FreeSurface(spriteSheetSurface);
+	//instantiate the player
+	Player* player = new Player();
+	//this is probably important
 	srand(time(NULL));
-	readMap();
+	//populate the tiles from map data
+
+	readMap2("lvl1Test.bin");
+	//this section creates an array of of rectangles. Indexed to cover the screen 
 	for (int i = 0; i < tilesPerWindowHeight; i++) {
 		for (int j = 0; j < tilesPerWindowWidth; j++) {
-			tile[i][j].x = j * 16; //swapped as i is height
-			tile[i][j].y = i * 16; 
-			tile[i][j].w = 16;
-			tile[i][j].h = 16;
+			tile[i][j].x = j * TILE_DIM; //swapped as i is height
+			tile[i][j].y = i * TILE_DIM; 
+			tile[i][j].w = TILE_DIM;
+			tile[i][j].h = TILE_DIM;
 		}
 	}
-	selectT1.x = 0;
-	selectT1.y = 0;
-	selectT1.w = 16;
-	selectT1.h = 16;
-
-	selectT2.x = 16;
-	selectT2.y = 0;
-	selectT2.w = 16;
-	selectT2.h = 16;
-
-	selectT3.x = 32;
-	selectT3.y = 0;
-	selectT3.w = 16;
-	selectT3.h = 16;
-
-	selectT4.x = 48;
-	selectT4.y = 0;
-	selectT4.w = 16;
-	selectT4.h = 16;
+	for (unsigned int i = 0; i < TILE_WIDTH_IN_TILE_MAP; i++) {
+		for (unsigned int j = 0; j < TILE_WIDTH_IN_TILE_MAP; j++) {
+			//cout << "tile i: " << i << "j: " << j << '\n';
+			tileSelect[i][j].x = TEX_DIM * j;
+			tileSelect[i][j].y = TEX_DIM * i;
+			//cout << "x assigned to " << tileSelect[i][j].x << '\n';
+			//cout << "y assigned to " << tileSelect[i][j].y << '\n';
+			tileSelect[i][j].w = TEX_DIM;
+			tileSelect[i][j].h = TEX_DIM;
+		}
+	}
+	player1.x = 0;
+	player1.y = 0;
+	player1.w = 32*2;
+	player1.h = 48*2;
 }
 
 void processInput() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
+	if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
+		//editor mode
+		if (gameMode == 1) {
+
+		}//play mode
+		else {
+			switch (event.key.keysym.sym) {
+			case SDLK_w: player.velY -= player.playerSpeed; break;
+			case SDLK_s: player.velY += player.playerSpeed; break;
+			case SDLK_a: player.velX -= player.playerSpeed; break;
+			case SDLK_d: player.velX += player.playerSpeed; break;
+			case SDLK_ESCAPE: gameIsRunning = FALSE; break;
+			}
+		}
+	}
+	if (event.type == SDL_KEYUP && event.key.repeat == 0) {
+		switch(event.key.keysym.sym) {
+			case SDLK_w: player.velY += player.playerSpeed; break;
+			case SDLK_s: player.velY -= player.playerSpeed; break;
+			case SDLK_a: player.velX += player.playerSpeed; break;
+			case SDLK_d: player.velX -= player.playerSpeed; break;
+		}
+	}
+	else if(event.type == SDL_QUIT){
+		gameIsRunning = FALSE;
+	}
+	/*
 	switch (event.type)
 	{
 	case SDL_QUIT:
 		gameIsRunning = FALSE;
 		break;
 	case SDL_KEYDOWN:
-		if (event.key.keysym.sym == SDLK_ESCAPE) {
-			gameIsRunning = FALSE;
+		if (gameMode == 1) {
+			if (event.key.keysym.sym == SDLK_ESCAPE) {
+				gameIsRunning = FALSE;
+			}
+			if (event.key.keysym.sym == SDLK_e) {
+				if (gameMode == 0) {
+					gameMode = 1;
+				}
+				else {
+					gameMode = 0;
+				}
+			}
+			//controls for changing selection size
+			if (event.key.keysym.sym == SDLK_d) {
+				selWindow.w += TILE_DIM;
+			}
+			if (event.key.keysym.sym == SDLK_a) {
+				selWindow.w -= TILE_DIM;
+				if (selWindow.w < TILE_DIM) {
+					selWindow.w = TILE_DIM;
+				}
+			}
+			if (event.key.keysym.sym == SDLK_s) {
+				selWindow.h += TILE_DIM;
+			}
+			if (event.key.keysym.sym == SDLK_w) {
+				selWindow.h -= TILE_DIM;
+				if (selWindow.h < TILE_DIM) {
+					selWindow.h = TILE_DIM;
+				}
+			}
+			if (event.key.keysym.sym == SDLK_RIGHT) {
+				selWindow.x += TILE_DIM;
+			}
+			if (event.key.keysym.sym == SDLK_LEFT) {
+				selWindow.x -= TILE_DIM;
+			}
+			if (event.key.keysym.sym == SDLK_DOWN) {
+				selWindow.y += TILE_DIM;
+				if (selWindow.y >= WINDOW_HEIGHT) {
+					if (yOffset < MAX_LVL_HEIGHT) {
+						yOffset++;
+					}
+					selWindow.y -= TILE_DIM;
+				}
+				
+			}
+			if (event.key.keysym.sym == SDLK_UP) {
+				selWindow.y -= TILE_DIM;
+				//corner cases, first check for upward screen boundary
+				if (selWindow.y <= 0) {
+					//then check for map boundary
+					if (yOffset > 0) {
+						yOffset--;
+					}
+					selWindow.y = 0;
+				}
+			}
+			if (event.key.keysym.sym == SDLK_f) {
+				editMapFill();
+			}
+			if (event.key.keysym.sym == SDLK_0) {
+				selectColor = 0;
+			}
+			if (event.key.keysym.sym == SDLK_1) {
+				selectColor = 1;
+			}
+			if (event.key.keysym.sym == SDLK_2) {
+				selectColor = 2;
+			}
+			if (event.key.keysym.sym == SDLK_3) {
+				selectColor = 3;
+			}
+			if (event.key.keysym.sym == SDLK_3) {
+				selectColor = 3;
+			}
+			if (event.key.keysym.sym == SDLK_4) {
+				selectColor = 4;
+			}
+			if (event.key.keysym.sym == SDLK_5) {
+				selectColor = 5;
+			}
+			if (event.key.keysym.sym == SDLK_z) {
+				saveMap("lvl1Test.bin");
+			}
 		}
+		else {
+			if (event.key.keysym.sym == SDLK_ESCAPE) {
+				gameIsRunning = FALSE;
+			}
+			if (event.key.keysym.sym == SDLK_a) {
+				player.velX -= 1000.f;
+			}
+			if (event.key.keysym.sym == SDLK_d) {
+				player.accX += 5.f;
+			}
+			if (event.key.keysym.sym == SDLK_s) {
+				player1.y += 5;
+			}
+			if (event.key.keysym.sym == SDLK_w) {
+				player1.y -= 5;
+			}
+			if (event.key.keysym.sym == SDLK_e) {
+				if (gameMode == 0) {
+					gameMode = 1;
+					selWindow.h = TILE_DIM;
+					selWindow.w = TILE_DIM;
+					selWindow.x = selOffX;
+					selWindow.y = selOffY;
+				}
+				else {
+					gameMode = 0;
+				}
+			}
+		}*/
+		/*
 		if (event.key.keysym.sym == SDLK_RIGHT) {
 			xOffset++;
 			if (xOffset > MAX_LVL_WIDTH-1) {
 				xOffset = MAX_LVL_WIDTH - 1;
 			}
 		}
-		if (event.key.keysym.sym == SDLK_LEFT) {
+		if ((event.key.keysym.sym == SDLK_LEFT) && (gameMode == 1)) {
 			xOffset--;
 			if (xOffset < 0) {
 				xOffset = 0;
@@ -175,11 +363,12 @@ void processInput() {
 			if (yOffset > MAX_LVL_HEIGHT - 1) {
 				yOffset = MAX_LVL_HEIGHT - 1;
 			}
-		}
-		break;
-	default:
-		break;
-	}
+		}*/
+		
+		//break;
+	//default:
+		//break;
+	//}
 }
 
 void update() {
@@ -190,39 +379,57 @@ void update() {
 	}
 	
 	float deltaTime = (SDL_GetTicks() - lastFrameTime) / 1000.0f;
+
 	lastFrameTime = SDL_GetTicks();
-	//ball.x += 50 * deltaTime;
-	//ball.y += 20 * deltaTime;
+	//update player physics
+	player.updatePlayer(deltaTime);
+	//maybe collision detection here
+	int collisionY = (player.posY + 48 * 2) / TILE_DIM;
+	int collisionX = (player.posX + 48 * 2) / TILE_DIM;
+	cout << "bottom collsion is " << collisionY << '\n';
+	if (tileMap2[collisionY][collisionX] > 0) {
+		cout << "collision detected" << '\n';
+		player.posY = tile[collisionY][collisionX].y - (48 * 2);
+	}
+	//update player rect to change pos
+	player1.x = player.posX;
+	player1.y = player.posY;
+
+	cout << "xPos is " << player.posX << '\n';
+	/*if (tileMap2[(player.posY + (48 * 2)) / TILE_DIM][(player.posX + (32 * 2)) / TILE_DIM] > 0) {
+		player.posY = player.posY + 5;
+		cout << "this happened" << '\n';
+	}*/
 }
 
 void render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	SDL_Rect ball_rect = {
-		(int)ball.x,
-		(int)ball.y,
-		(int)ball.width,
-		(int)ball.height
-	};
 
 	for (int i = 0; i < tilesPerWindowHeight; i++) {
 		for (int j = 0; j < tilesPerWindowWidth; j++) {
-			switch (tileMap[i + yOffset][j + xOffset]) {
-			case 1:
-				SDL_RenderCopy(renderer,tile_texture,&selectT1,&tile[i][j]);
-				break;
-			case 2:
-				SDL_RenderCopy(renderer, tile_texture, &selectT2, &tile[i][j]);
-				break;
-			case 3:
-				SDL_RenderCopy(renderer, tile_texture, &selectT3, &tile[i][j]);
-				break;
-			case 4:
-				SDL_RenderCopy(renderer, tile_texture, &selectT4, &tile[i][j]);
-				break;
+			int textureNum = tileMap2[i + yOffset][j + xOffset];
+			int x, y;
+			if (textureNum > (TILE_WIDTH_IN_TILE_MAP - 1)) {
+				x = ((textureNum + 1)%TILE_WIDTH_IN_TILE_MAP) - 1;
+				y = ((textureNum + 1) / TILE_WIDTH_IN_TILE_MAP);
 			}
+			else {
+				x = textureNum;
+				y = 0;
+			}
+			SDL_RenderCopy(renderer, tile_texture, &tileSelect[y][x], &tile[i][j]);
 		}
+	}
+	if (gameMode == 1) {
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_RenderDrawRect(renderer, &selWindow);
+	}
+	else {
+		//cout << "should be rendering the player" << '\n';
+		
+		SDL_RenderCopy(renderer, spriteTexture, NULL, &player1);
 	}
 	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	//SDL_RenderFillRect(renderer, &ball_rect);
@@ -238,7 +445,6 @@ void destroyWindow() {
 int main(int argc, char* args[]) {
 	
 	gameIsRunning = initializeWindow();
-	//readMap();
 	setup(); 
 	
 	while (gameIsRunning) {
