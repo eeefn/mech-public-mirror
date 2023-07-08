@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include "./Player.h"
+#include "./Collider.h"
 
 /*
 weekend notes:
@@ -15,7 +16,7 @@ weekend notes:
 --> note- fill does not take into account current tile positioning rn
 */
 short selectColor = 0;
-int debugCount = 0;
+//int debugCount = 0;
 int tilesPerWindowWidth;
 int tilesPerWindowHeight;
 int gameIsRunning = FALSE;
@@ -26,18 +27,19 @@ static int editYOffset, editXOffset = 0;
 const Uint8* keyPtr;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
-SDL_Rect tile[45][80]; //dependent on window size. This should be retroffitted at some point. 
+SDL_Rect tile[WINDOW_HEIGHT/TILE_DIM][WINDOW_WIDTH/TILE_DIM]; 
 SDL_Rect selWindow;
-//int tileMap[MAX_LVL_HEIGHT][MAX_LVL_WIDTH];
 short tileMap2[MAX_LVL_HEIGHT][MAX_LVL_WIDTH];
 SDL_Texture* tile_texture;
 SDL_Texture* spriteTexture;
-SDL_Rect player1;
+//this is the spriteSelect for animations. Currently 1*15 because only jump exists
+SDL_Rect playerAnim[4][15];
+//destination for the player
+SDL_Rect spriteDest;
 int gameMode = 0;
 using std::cout;
 int selOffY, selOffX = 0;
-int gravity = 10;
-//extern Player player;
+
 
 void readMap2(std::string mapIn) {
 	std::ifstream map(mapIn, std::ios::in | std::ios::binary);
@@ -134,12 +136,13 @@ void setup() {
 	SDL_GetCurrentDisplayMode(0,&dm);
 	int width = dm.w;
 	int height = dm.h;
-	tilesPerWindowWidth = (dm.w + 16 - 1) / 16;
-	tilesPerWindowHeight = (dm.h + 16 - 1) / 16;
-
+	tilesPerWindowWidth = (dm.w + TILE_DIM - 1) / TILE_DIM;
+	tilesPerWindowHeight = (dm.h + TILE_DIM - 1) / TILE_DIM;
 
 	keyPtr = SDL_GetKeyboardState(NULL);
-	//create surface  for tilemap and give it to the renderer
+
+	/*create surface  for tilemap and give it to the renderer
+	----------------------------------------------------------*/
 	SDL_Surface* tileMapSurface = SDL_LoadBMP("tile4.bmp");
 	if (!tileMapSurface) {
 		fprintf(stderr, "could not find image");
@@ -147,15 +150,18 @@ void setup() {
 	}
 	tile_texture = SDL_CreateTextureFromSurface(renderer, tileMapSurface);
 	SDL_FreeSurface(tileMapSurface);
-	SDL_Surface* spriteSheetSurface = SDL_LoadBMP("mushBoy.bmp");
+
+	/*create surface from spriteSheet and turn it into a texture*/
+	SDL_Surface* spriteSheetSurface = SDL_LoadBMP("mushBoyJ.bmp");
 	if (!spriteSheetSurface) {
-		fprintf(stderr, "could not find image");
+		fprintf(stderr, "could not find spritesheet");
 		return;
 	}
 	spriteTexture = SDL_CreateTextureFromSurface(renderer, spriteSheetSurface);
 	SDL_FreeSurface(spriteSheetSurface);
-	//instantiate the player
+	//instantiate the player and the colliser
 	Player* player = new Player();
+	Collider* collider = new Collider();
 	//this is probably important
 	srand(time(NULL));
 	//populate the tiles from map data
@@ -181,41 +187,128 @@ void setup() {
 			tileSelect[i][j].h = TEX_DIM;
 		}
 	}
-	player1.x = 0;
-	player1.y = 0;
-	player1.w = 32*2;
-	player1.h = 48*2;
+	for (unsigned int i = 0; i < 15; i++) {
+		for (unsigned int j = 0; j < 4; j++) {
+			playerAnim[j][i].x = i * 32;
+			playerAnim[j][i].y = j*48;
+			playerAnim[j][i].w = 32;
+			playerAnim[j][i].h = 48;
+		}
+		
+	}
+	spriteDest.x = 0;
+	spriteDest.y = 0;
+	spriteDest.w = PLAYER_WIDTH;
+	spriteDest.h = PLAYER_HEIGHT;
 }
 
 void processInput() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
-		//editor mode
-		if (gameMode == 1) {
-
-		}//play mode
-		else {
+	//some of this should go in an editor class. this is temp for sure
+	if (gameMode == 1) {
+		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.sym) {
-			case SDLK_w: player.velY -= player.playerSpeed; break;
-			case SDLK_s: player.velY += player.playerSpeed; break;
-			case SDLK_a: player.velX -= player.playerSpeed; break;
-			case SDLK_d: player.velX += player.playerSpeed; break;
+			case SDLK_e: gameMode = 0; break;
+			case SDLK_RIGHT: selWindow.w += TILE_DIM; break;
+			case SDLK_LEFT:
+				selWindow.w -= TILE_DIM;
+				if (selWindow.w < TILE_DIM) {
+					selWindow.w = TILE_DIM;
+				}
+				break;
+			case SDLK_DOWN: selWindow.h += TILE_DIM; break;
+			case SDLK_UP:
+				selWindow.h -= TILE_DIM;
+				if (selWindow.h < TILE_DIM) {
+					selWindow.h = TILE_DIM;
+				}
+				break;
+			case SDLK_a: 
+				selWindow.x -= TILE_DIM;
+				if (selWindow.x <= 0) {
+					selWindow.x = 0;
+				}
+				break;
+			case SDLK_d: selWindow.x += TILE_DIM; break;
+			case SDLK_s: selWindow.y += TILE_DIM; break;
+			case SDLK_w: 
+				selWindow.y -= TILE_DIM;
+				if (selWindow.y <= 0) {
+					selWindow.y = 0;
+				}
+				break;
+			case SDLK_0: selectColor = 0; break;
+			case SDLK_1: selectColor = 1; break;
+			case SDLK_2: selectColor = 2; break;
+			case SDLK_3: selectColor = 3; break;
+			case SDLK_f: editMapFill(); break;
+			case SDLK_z: saveMap("lvl1Test.bin"); break;
+			case SDLK_ESCAPE: gameIsRunning = false; break;
+
+			}
+		}
+		else if (event.type == SDL_QUIT) {
+			gameIsRunning = false;
+		}
+	}
+	else {
+		if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
+			switch (event.key.keysym.sym) {
+			case SDLK_w:
+				if (!player.inAir) {
+						//adjust player velocity to initiate jump
+					player.velY -= player.playerJumpAcc;
+						//change animation to jumping. The reason frame is set to -1 is 
+						//player update increments current frame right after this assignment, resulting
+						//in the 0th frame being played
+					player.curAnim = JUMP_ANIM;
+					player.playFrame = -1;
+					player.inAir = true;
+				}
+				break;
+			case SDLK_a:
+				player.velX -= player.playerSpeedX;
+				player.curAnim = RUN_L_ANIM;
+				player.playFrame = -1;
+				break;
+			case SDLK_d:
+				player.velX += player.playerSpeedX;
+				player.curAnim = RUN_R_ANIM;
+				player.playFrame = -1;
+				break;
+			case SDLK_e: 
+				gameMode = 1; 
+				//setup selector
+				selWindow.h = TILE_DIM;
+				selWindow.w = TILE_DIM;
+				selWindow.x = selOffX;
+				selWindow.y = selOffY;
+				break;
 			case SDLK_ESCAPE: gameIsRunning = FALSE; break;
 			}
 		}
-	}
-	if (event.type == SDL_KEYUP && event.key.repeat == 0) {
-		switch(event.key.keysym.sym) {
-			case SDLK_w: player.velY += player.playerSpeed; break;
-			case SDLK_s: player.velY -= player.playerSpeed; break;
-			case SDLK_a: player.velX += player.playerSpeed; break;
-			case SDLK_d: player.velX -= player.playerSpeed; break;
+		if (event.type == SDL_KEYUP && event.key.repeat == 0) {
+			switch (event.key.keysym.sym) {
+				//case SDLK_w: player.velY += player.playerJumpY; break;
+				//case SDLK_s: player.velY -= player.playerSpeedY; break;
+			case SDLK_a:
+				player.velX += player.playerSpeedX;
+				player.curAnim = IDLE_ANIM;
+				player.playFrame = -1;
+				break;
+			case SDLK_d:
+				player.velX -= player.playerSpeedX;
+				player.curAnim = IDLE_ANIM;
+				player.playFrame = -1;
+				break;
+			}
+		}
+		else if (event.type == SDL_QUIT) {
+			gameIsRunning = FALSE;
 		}
 	}
-	else if(event.type == SDL_QUIT){
-		gameIsRunning = FALSE;
-	}
+	
 	/*
 	switch (event.type)
 	{
@@ -223,18 +316,7 @@ void processInput() {
 		gameIsRunning = FALSE;
 		break;
 	case SDL_KEYDOWN:
-		if (gameMode == 1) {
-			if (event.key.keysym.sym == SDLK_ESCAPE) {
-				gameIsRunning = FALSE;
-			}
-			if (event.key.keysym.sym == SDLK_e) {
-				if (gameMode == 0) {
-					gameMode = 1;
-				}
-				else {
-					gameMode = 0;
-				}
-			}
+		if (gameMode == 1) 
 			//controls for changing selection size
 			if (event.key.keysym.sym == SDLK_d) {
 				selWindow.w += TILE_DIM;
@@ -309,34 +391,6 @@ void processInput() {
 				saveMap("lvl1Test.bin");
 			}
 		}
-		else {
-			if (event.key.keysym.sym == SDLK_ESCAPE) {
-				gameIsRunning = FALSE;
-			}
-			if (event.key.keysym.sym == SDLK_a) {
-				player.velX -= 1000.f;
-			}
-			if (event.key.keysym.sym == SDLK_d) {
-				player.accX += 5.f;
-			}
-			if (event.key.keysym.sym == SDLK_s) {
-				player1.y += 5;
-			}
-			if (event.key.keysym.sym == SDLK_w) {
-				player1.y -= 5;
-			}
-			if (event.key.keysym.sym == SDLK_e) {
-				if (gameMode == 0) {
-					gameMode = 1;
-					selWindow.h = TILE_DIM;
-					selWindow.w = TILE_DIM;
-					selWindow.x = selOffX;
-					selWindow.y = selOffY;
-				}
-				else {
-					gameMode = 0;
-				}
-			}
 		}*/
 		/*
 		if (event.key.keysym.sym == SDLK_RIGHT) {
@@ -381,32 +435,24 @@ void update() {
 	float deltaTime = (SDL_GetTicks() - lastFrameTime) / 1000.0f;
 
 	lastFrameTime = SDL_GetTicks();
-	//update player physics
-	player.updatePlayer(deltaTime);
-	//maybe collision detection here
-	int collisionY = (player.posY + 48 * 2) / TILE_DIM;
-	int collisionX = (player.posX + 48 * 2) / TILE_DIM;
-	cout << "bottom collsion is " << collisionY << '\n';
-	if (tileMap2[collisionY][collisionX] > 0) {
-		cout << "collision detected" << '\n';
-		player.posY = tile[collisionY][collisionX].y - (48 * 2);
-	}
-	//update player rect to change pos
-	player1.x = player.posX;
-	player1.y = player.posY;
+	//update player physics if we are not editing the map
+	if (gameMode == 0) {
+		player.updatePlayer(deltaTime);
 
-	cout << "xPos is " << player.posX << '\n';
-	/*if (tileMap2[(player.posY + (48 * 2)) / TILE_DIM][(player.posX + (32 * 2)) / TILE_DIM] > 0) {
-		player.posY = player.posY + 5;
-		cout << "this happened" << '\n';
-	}*/
+		if (collider.collisionCheck(player.posX, player.posY, PLAYER_WIDTH, PLAYER_HEIGHT, player.velY, player.velX, tileMap2)) {
+			player.processCollision(collider.colResults, tile);
+		}
+		//update player rect to change pos
+		spriteDest.x = player.posX;
+		spriteDest.y = player.posY;
+	}
 }
 
 void render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-
+	//traverse the map
 	for (int i = 0; i < tilesPerWindowHeight; i++) {
 		for (int j = 0; j < tilesPerWindowWidth; j++) {
 			int textureNum = tileMap2[i + yOffset][j + xOffset];
@@ -422,17 +468,15 @@ void render() {
 			SDL_RenderCopy(renderer, tile_texture, &tileSelect[y][x], &tile[i][j]);
 		}
 	}
+	//editor and gameplay
 	if (gameMode == 1) {
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderDrawRect(renderer, &selWindow);
 	}
 	else {
 		//cout << "should be rendering the player" << '\n';
-		
-		SDL_RenderCopy(renderer, spriteTexture, NULL, &player1);
+		SDL_RenderCopy(renderer, spriteTexture, &playerAnim[player.curAnim][player.playFrame], &spriteDest);
 	}
-	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	//SDL_RenderFillRect(renderer, &ball_rect);
 	SDL_RenderPresent(renderer);
 }
 
