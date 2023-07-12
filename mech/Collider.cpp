@@ -18,7 +18,7 @@ Collider::Collider() {
 	}
 }
 
-bool Collider::collisionCheck(int xPos, int yPos, int entityWidth, int entityHeight, float yVel, float xVel, short tileMap[][MAX_LVL_WIDTH]) {
+bool Collider::collisionCheck(int xPos, int yPos, int entityWidth, int entityHeight, float yVel, float xVel, short tileMap[][MAX_LVL_WIDTH],int xOffset, int yOffset) {
 	bool colOccur = false;
 	//reset collision results
 	for (unsigned int i = 0; i < 4; i++) {
@@ -40,6 +40,8 @@ bool Collider::collisionCheck(int xPos, int yPos, int entityWidth, int entityHei
 	//if going down
 	if (yVel > 0) {
 		//iterate through the bottom  x tiles to check for collision
+		//cout << "checking " << xTilePos << " through " << xTilePos + xLen << " at "<< yTilePos + yLen << '\n';
+		
 		for (short i = xTilePos; i < (xTilePos + xLen); i++) {
 			if (tileMap[yTilePos + yLen][i] > 0) {
 				//cout << "collison down at " << xTilePos << ", " << yLen << '\n';

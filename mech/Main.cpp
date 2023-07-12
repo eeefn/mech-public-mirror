@@ -1,44 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL.h>
-#include "./constants.h"
 #include <time.h>
+#include "./Player.h"
+#include "./Collider.h"
+#include "./constants.h"
+#include "./GameObject.h"
+#include "./Map.h"
+
 #include <fstream>
 #include <iostream>
 #include <string>
-#include "./Player.h"
-#include "./Collider.h"
+#include <vector>
 
+
+using std::cout;
+using std::vector;
 /*
 weekend notes:
---> see if we can do the controls in a better way
---> i think the editor mode should be a public class that keeps the state of the editing
---> note- fill does not take into account current tile positioning rn
+
 */
 short selectColor = 0;
-//int debugCount = 0;
+int selOffY, selOffX = 0;
+short texSelX, texSelY = 0;
+int gameMode = 0;
+int debug = 0;
 int tilesPerWindowWidth;
 int tilesPerWindowHeight;
-int gameIsRunning = FALSE;
-SDL_Rect tileSelect[TILE_WIDTH_IN_TILE_MAP][TILE_WIDTH_IN_TILE_MAP];
 int lastFrameTime = 0;
 static int xOffset, yOffset = 0;
 static int editYOffset, editXOffset = 0;
+bool gameIsRunning = false;
+
+SDL_Rect tileSelect[TILE_WIDTH_IN_TILE_MAP][TILE_WIDTH_IN_TILE_MAP];
+
 const Uint8* keyPtr;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
-SDL_Rect tile[WINDOW_HEIGHT/TILE_DIM][WINDOW_WIDTH/TILE_DIM]; 
-SDL_Rect selWindow;
+//Rects for rendering tiles, objects and the player to
+SDL_Rect objRen;
+SDL_Rect selWindowRen;
+SDL_Rect spriteDest;
+SDL_Rect renTile;
+
 short tileMap2[MAX_LVL_HEIGHT][MAX_LVL_WIDTH];
+vector<GameObject> objList;
+//textures for 
 SDL_Texture* tile_texture;
 SDL_Texture* spriteTexture;
 //this is the spriteSelect for animations. Currently 1*15 because only jump exists
 SDL_Rect playerAnim[4][15];
-//destination for the player
-SDL_Rect spriteDest;
-int gameMode = 0;
-using std::cout;
-int selOffY, selOffX = 0;
+
 
 
 void readMap2(std::string mapIn) {
@@ -51,14 +63,9 @@ void readMap2(std::string mapIn) {
 }
 
 void editMapFill() {
-	cout << "map fill" << '\n';
-	cout << "selWindow stats" << '\n';
-	cout << "y: " << selWindow.y / TILE_DIM << '\n';
-	cout << "x: " << selWindow.x / TILE_DIM << '\n';
-	cout << "w: " << selWindow.w / TILE_DIM << '\n';
-	cout << "h: " << selWindow.h / TILE_DIM << '\n';
-	for (int i = selWindow.y / TILE_DIM; i < (selWindow.h / TILE_DIM) + (selWindow.y / TILE_DIM) ; i++) {
-		for (int j = selWindow.x / TILE_DIM; j < (selWindow.w / TILE_DIM) + (selWindow.x / TILE_DIM) ; j++) {
+	
+	for (int i = selWindowRen.y / TILE_DIM + yOffset; i < (selWindowRen.h / TILE_DIM) + (selWindowRen.y / TILE_DIM + yOffset) ; i++) {
+		for (int j = selWindowRen.x / TILE_DIM + xOffset; j < (selWindowRen.w / TILE_DIM) + (selWindowRen.x / TILE_DIM + xOffset) ; j++) {
 			cout << "i is: " << i << ". j is: " << j << '\n';
 			tileMap2[i][j] = selectColor;
 		}
@@ -73,35 +80,6 @@ void saveMap(std::string mapIn) {
 		}
 	}
 }
-
-//TODO: make this function accept txt
-/*
-void readMap() {
-	std::ifstream file;
-	file.open("lvl.txt",std::ifstream::in);
-	if (!file.is_open()) {
-		fprintf(stderr, "error reading level file");
-		return;
-	}
-	std::string inStr;
-	int i = 0;
-	while (std::getline(file,inStr)) {
-		//cout << inStr << '\n';
-		for (unsigned int j = 0; j < inStr.length(); j++) {
-			tileMap[i][j] = inStr[j] - 48;
-		}
-		i++;
-	}
-	file.close();
-	i = 0;
-	for (i; i < 75;i++) {
-		for (int j = 0; j < 75;j++) {
-			cout << tileMap[i][j];
-		}
-		cout << '\n';
-	}
-}
-*/
 
 int initializeWindow() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -159,23 +137,17 @@ void setup() {
 	}
 	spriteTexture = SDL_CreateTextureFromSurface(renderer, spriteSheetSurface);
 	SDL_FreeSurface(spriteSheetSurface);
-	//instantiate the player and the colliser
+	//instantiate the player, collider, and the map
 	Player* player = new Player();
 	Collider* collider = new Collider();
+	Map* map = new Map("lvl1Test.bin");
 	//this is probably important
 	srand(time(NULL));
 	//populate the tiles from map data
-
+	
 	readMap2("lvl1Test.bin");
-	//this section creates an array of of rectangles. Indexed to cover the screen 
-	for (int i = 0; i < tilesPerWindowHeight; i++) {
-		for (int j = 0; j < tilesPerWindowWidth; j++) {
-			tile[i][j].x = j * TILE_DIM; //swapped as i is height
-			tile[i][j].y = i * TILE_DIM; 
-			tile[i][j].w = TILE_DIM;
-			tile[i][j].h = TILE_DIM;
-		}
-	}
+
+	//create a grid of rectangles representing the textures in the tileMap.
 	for (unsigned int i = 0; i < TILE_WIDTH_IN_TILE_MAP; i++) {
 		for (unsigned int j = 0; j < TILE_WIDTH_IN_TILE_MAP; j++) {
 			//cout << "tile i: " << i << "j: " << j << '\n';
@@ -187,6 +159,7 @@ void setup() {
 			tileSelect[i][j].h = TEX_DIM;
 		}
 	}
+	//create a grid of rectangles representing the animations from player spritesheet
 	for (unsigned int i = 0; i < 15; i++) {
 		for (unsigned int j = 0; j < 4; j++) {
 			playerAnim[j][i].x = i * 32;
@@ -196,6 +169,12 @@ void setup() {
 		}
 		
 	}
+	//initialize the rendering rect that iterates over the screen each frame
+	renTile.x = 0;
+	renTile.y = 0;
+	renTile.w = TILE_DIM;
+	renTile.h = TILE_DIM;
+	//initialize the rect that the sprite gets rendered to
 	spriteDest.x = 0;
 	spriteDest.y = 0;
 	spriteDest.w = PLAYER_WIDTH;
@@ -210,32 +189,32 @@ void processInput() {
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.sym) {
 			case SDLK_e: gameMode = 0; break;
-			case SDLK_RIGHT: selWindow.w += TILE_DIM; break;
+			case SDLK_RIGHT: selWindowRen.w += TILE_DIM; break;
 			case SDLK_LEFT:
-				selWindow.w -= TILE_DIM;
-				if (selWindow.w < TILE_DIM) {
-					selWindow.w = TILE_DIM;
+				selWindowRen.w -= TILE_DIM;
+				if (selWindowRen.w < TILE_DIM) {
+					selWindowRen.w = TILE_DIM;
 				}
 				break;
-			case SDLK_DOWN: selWindow.h += TILE_DIM; break;
+			case SDLK_DOWN: selWindowRen.h += TILE_DIM; break;
 			case SDLK_UP:
-				selWindow.h -= TILE_DIM;
-				if (selWindow.h < TILE_DIM) {
-					selWindow.h = TILE_DIM;
+				selWindowRen.h -= TILE_DIM;
+				if (selWindowRen.h < TILE_DIM) {
+					selWindowRen.h = TILE_DIM;
 				}
 				break;
 			case SDLK_a: 
-				selWindow.x -= TILE_DIM;
-				if (selWindow.x <= 0) {
-					selWindow.x = 0;
+				selWindowRen.x -= TILE_DIM;
+				if (selWindowRen.x <= 0) {
+					selWindowRen.x = 0;
 				}
 				break;
-			case SDLK_d: selWindow.x += TILE_DIM; break;
-			case SDLK_s: selWindow.y += TILE_DIM; break;
+			case SDLK_d: selWindowRen.x += TILE_DIM; break;
+			case SDLK_s: selWindowRen.y += TILE_DIM; break;
 			case SDLK_w: 
-				selWindow.y -= TILE_DIM;
-				if (selWindow.y <= 0) {
-					selWindow.y = 0;
+				selWindowRen.y -= TILE_DIM;
+				if (selWindowRen.y <= 0) {
+					selWindowRen.y = 0;
 				}
 				break;
 			case SDLK_0: selectColor = 0; break;
@@ -280,10 +259,10 @@ void processInput() {
 			case SDLK_e: 
 				gameMode = 1; 
 				//setup selector
-				selWindow.h = TILE_DIM;
-				selWindow.w = TILE_DIM;
-				selWindow.x = selOffX;
-				selWindow.y = selOffY;
+				selWindowRen.h = TILE_DIM;
+				selWindowRen.w = TILE_DIM;
+				selWindowRen.x = selOffX - (spriteDest.x % TILE_DIM);
+				selWindowRen.y = selOffY - (spriteDest.y % TILE_DIM);
 				break;
 			case SDLK_ESCAPE: gameIsRunning = FALSE; break;
 			}
@@ -438,43 +417,79 @@ void update() {
 	//update player physics if we are not editing the map
 	if (gameMode == 0) {
 		player.updatePlayer(deltaTime);
-
-		if (collider.collisionCheck(player.posX, player.posY, PLAYER_WIDTH, PLAYER_HEIGHT, player.velY, player.velX, tileMap2)) {
-			player.processCollision(collider.colResults, tile);
-		}
 		//update player rect to change pos
-		spriteDest.x = player.posX;
-		spriteDest.y = player.posY;
+		xOffset = (player.posX) / TILE_DIM - (WINDOW_WIDTH / 2 - PLAYER_WIDTH / 2) / TILE_DIM;
+		yOffset = (player.posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - PLAYER_HEIGHT / 2) / TILE_DIM;
+		//cout << "yOffset: " << yOffset << '\n';
+		if (xOffset >= 0) {
+			spriteDest.x = player.posX - (xOffset * TILE_DIM) - player.posX % TILE_DIM;
+		}
+		else {
+			xOffset = 0;
+			//cout << "S" << '\n';
+			spriteDest.x = player.posX - (xOffset * TILE_DIM);
+		}
+		if (yOffset >= 0) {
+			spriteDest.y = player.posY - (yOffset * TILE_DIM) - player.posY % TILE_DIM;
+		}
+		else {
+			yOffset = 0;
+			spriteDest.y = player.posY - (yOffset * TILE_DIM);
+		}
+		if (collider.collisionCheck(player.posX, player.posY, PLAYER_WIDTH, PLAYER_HEIGHT, player.velY, player.velX, tileMap2, xOffset, yOffset)) {
+			player.processCollision(collider.colResults);
+		}
+	}
+}
+
+void textureSelect(short select) {
+	if (select > (TILE_WIDTH_IN_TILE_MAP - 1)) {
+		texSelX = ((select + 1) % TILE_WIDTH_IN_TILE_MAP) - 1;
+		texSelY = ((select + 1) / TILE_WIDTH_IN_TILE_MAP);
+	}
+	else {
+		texSelX = select;
+		texSelY = 0;
 	}
 }
 
 void render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
+	
+	if (debug < 75) {
+		cout << "offsets: " << xOffset << " " << yOffset << '\n';
+		cout << "max of window " << tilesPerWindowHeight + xOffset << " " << tilesPerWindowWidth + yOffset << '\n';
+		cout << "playerPos: " << player.posX << " " << player.posY << '\n';
+	}
+	//iterate through the tiles we currently want to render. Im saying <= so there should be 1 extra tile
+	//to play with in both height and width
+	
+	for (int y = yOffset; y <= tilesPerWindowHeight + yOffset; y++) {
+		for (int x = xOffset; x <= tilesPerWindowWidth + xOffset; x++) {
+			short texSel = tileMap2[y][x];
+			textureSelect(texSel);
+			//handle offsets in the left corner. I havent handled the right corner 0.0
+			renTile.x = ((x - xOffset) * TILE_DIM);
+			if (player.posX > (WINDOW_WIDTH/2 - PLAYER_WIDTH/2)) {
+				renTile.x -= (player.posX % TILE_DIM);
+			}
+			renTile.y = ((y - yOffset) * TILE_DIM);
+			if (player.posY > (WINDOW_HEIGHT/2 - PLAYER_HEIGHT/2 - 8)) {
+				renTile.y -= (player.posY % TILE_DIM);
+			}
+			SDL_RenderCopy(renderer,tile_texture, &tileSelect[texSelY][texSelX], &renTile);
 
-	//traverse the map
-	for (int i = 0; i < tilesPerWindowHeight; i++) {
-		for (int j = 0; j < tilesPerWindowWidth; j++) {
-			int textureNum = tileMap2[i + yOffset][j + xOffset];
-			int x, y;
-			if (textureNum > (TILE_WIDTH_IN_TILE_MAP - 1)) {
-				x = ((textureNum + 1)%TILE_WIDTH_IN_TILE_MAP) - 1;
-				y = ((textureNum + 1) / TILE_WIDTH_IN_TILE_MAP);
-			}
-			else {
-				x = textureNum;
-				y = 0;
-			}
-			SDL_RenderCopy(renderer, tile_texture, &tileSelect[y][x], &tile[i][j]);
 		}
 	}
 	//editor and gameplay
 	if (gameMode == 1) {
+		//render selection window for editor.
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_RenderDrawRect(renderer, &selWindow);
+		SDL_RenderDrawRect(renderer, &selWindowRen);
 	}
 	else {
-		//cout << "should be rendering the player" << '\n';
+		//render player
 		SDL_RenderCopy(renderer, spriteTexture, &playerAnim[player.curAnim][player.playFrame], &spriteDest);
 	}
 	SDL_RenderPresent(renderer);
@@ -485,6 +500,8 @@ void destroyWindow() {
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
+
+
 
 int main(int argc, char* args[]) {
 	

@@ -144,17 +144,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collider.h" />
     <ClInclude Include="constants.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Desktop\tile1.bmp" />
-    <Image Include="..\..\..\..\Desktop\tile2.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\..\Desktop\lvl.txt" />

@@ -8,7 +8,7 @@ public:
 	int xTilePos, yTilePos;
 	bool colResults[4];
 	Collider();
-	bool collisionCheck(int xPos, int yPos, int entityWidth, int entityHeight, float yVel, float xVel,short tileMap[][MAX_LVL_WIDTH]);
+	bool collisionCheck(int xPos, int yPos, int entityWidth, int entityHeight, float yVel, float xVel,short tileMap[][MAX_LVL_WIDTH], int xOffset, int yOffset);
 
 };
 

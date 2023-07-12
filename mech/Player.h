@@ -10,6 +10,7 @@
 #define ANIM_SPEED 2
 #define PLAYER_WIDTH 32*PLAYER_SCALE
 #define PLAYER_HEIGHT 48*PLAYER_SCALE
+#define MAX_VEL 200
 
 
 
@@ -27,7 +28,7 @@ public:
 	int playerJumpAcc, playerSpeedX;
 	Player();
 	void updatePlayer(float dt);
-	void processCollision(bool collisions[4],SDL_Rect tile[][WINDOW_WIDTH / TILE_DIM]);
+	void processCollision(bool collisions[4]);
 
 };
 extern Player player;

@@ -23,12 +23,12 @@ Player::Player() {
 	//currFrame = 0;
 	//
 	curFrame = 0;
-	posX = 0;
-	posY = 0;
+	posX = WINDOW_WIDTH/2 - PLAYER_WIDTH/2;
+	posY = WINDOW_HEIGHT/2 - PLAYER_HEIGHT/2;
 	velX = 0;
 	velY = 0;
 	accX = 0;
-	gravity = 200;
+	gravity = 250;
 	//this is gravity. im pretty sure this should never be modified. still fuzzy tho
 	accY = gravity;
 	playerSpeedX = 100;
@@ -42,6 +42,9 @@ void Player::updatePlayer(float dt) {
 		this->accY = gravity;
 	}
 	this->velY += this->accY * dt;
+	if (this->velY >= MAX_VEL) {
+		this->velY = MAX_VEL;
+	}
 	//Position is updated by velocity and delta time
 	this->posX += round(this->velX * dt); 
 	this->posY += round(this->velY * dt);
@@ -55,9 +58,6 @@ void Player::updatePlayer(float dt) {
 	if (!(animCycleComplete && curAnim == JUMP_ANIM)) {
 		curFrame = (curFrame + 1) % totalFrame;
 		playFrame = curFrame / ANIM_SPEED;
-		//cout << "currFrame is " << currFrame << '\n';
-		//cout << "playframe is " << playFrame << '\n';
-		//curFrame = (curFrame + 1) % 15;
 	}
 	if (playFrame == 14) {
 		animCycleComplete = true;
@@ -84,7 +84,7 @@ void Player::updatePlayer(float dt) {
 }
 
 
-void Player::processCollision(bool collisions[4],SDL_Rect tile[][WINDOW_WIDTH / TILE_DIM]){
+void Player::processCollision(bool collisions[4]) {
 	//check y collisions
 	if (collisions[0]) {
 		//hit ground. This works because of integer division, break the pos into discrete tiles, the re multiply to 
