@@ -10,8 +10,8 @@ using std::cout;
 Mech::Mech() {
 	
 	//init rectangles
-	cout << "initializing mech" << '\n';
-	for (unsigned int i = 0; i < 3; i++) {
+	//cout << "initializing mech" << '\n';
+	for (unsigned int i = 0; i < 4; i++) {
 		for (unsigned int j = 0; j < 59; j++) {
 			mechArr[i][j].x = j * 96;
 			mechArr[i][j].y = i * 144;
@@ -19,8 +19,8 @@ Mech::Mech() {
 			mechArr[i][j].h = 144;
 		}
 	}
-	posX = 100;
-	posY = 100;
+	posX = 400;
+	posY = 80;
 	isPlayer = false;
 	velX, velY = 0;
 	accX = 0;
@@ -29,26 +29,67 @@ Mech::Mech() {
 	dispRect.y = 100;	
 	dispRect.w = 96 * 2;
 	dispRect.h = 144 * 2;
+	highlighted = true;
+	poweredUp = false;
+	stood = false;
+	currFrame = 0;
+	playFrame = 0;
 	
 }
 
 void Mech::renderMech(SDL_Renderer* rend) {
-	SDL_RenderCopy(rend, mechTex, &mechArr[2][0],&dispRect);
-	SDL_RenderCopy(rend, mechTex, &mechArr[3][0], &dispRect);
+	if (!mech.isPlayer) {
+		SDL_RenderCopy(rend, mechTex, &mechArr[2][0], &dispRect);
+		SDL_RenderCopy(rend, mechTex, &mechArr[3][0], &dispRect);
+		if (highlighted) {
+			SDL_RenderCopy(rend, mechTex, &mechArr[1][30], &dispRect);
+		}
+	}
+	else {
+		if (!poweredUp) {
+			playFrame = currFrame / 2;
+			SDL_RenderCopy(rend, mechTex, &mechArr[2][playFrame], &dispRect);
+			SDL_RenderCopy(rend, mechTex, &mechArr[3][playFrame], &dispRect);
+			cout << "powering up at frame: " << currFrame << '\n';
+			currFrame++;
+			if (currFrame >= 120) {
+				poweredUp = true;
+				currFrame = 0;
+			}
+		}
+		else if(!stood) {
+			playFrame = currFrame / 2;
+			cout << "standing up at frame: " << currFrame << '\n';
+			SDL_RenderCopy(rend, mechTex, &mechArr[0][playFrame], &dispRect);
+			SDL_RenderCopy(rend, mechTex, &mechArr[1][playFrame], &dispRect);
+			currFrame++;
+			if (currFrame >= 59) {
+				stood = true;
+				playFrame = 29;
+			}
+		}
+		else {
+			SDL_RenderCopy(rend, mechTex, &mechArr[0][playFrame], &dispRect);
+			SDL_RenderCopy(rend, mechTex, &mechArr[1][playFrame], &dispRect);
+		}
+		
+	}
+	
 }
 
-void Mech::updateMech(float dt) {
-	if (accY > 250) {
-		accY = 250;
+
+void Mech::updateEntity(float dt, int yO, int xO, int pPosX) {
+	//
+	Entity::updateEntity(dt);
+	//update the position of the display rectangle to indicate screen coords
+	if (pPosX > (WINDOW_WIDTH / 2 - 64 / 2)) {
+		dispRect.x = posX - (pPosX - (WINDOW_WIDTH/2 - 64/2));
 	}
-	velY += accY * dt;
-	if (velY >= MAX_VEL) {
-		velY = MAX_VEL;
+	else {
+		dispRect.x = posX;
 	}
-	posX += round(velX * dt);
-	posY += round(velY * dt);
-	dispRect.x = posX;
-	dispRect.y = posY;
+	//dispRect.x = posX - (xO * 16);
+	dispRect.y = posY - (yO * 16);
 }
 
 void Mech::processCollision(bool collisions[4]) {

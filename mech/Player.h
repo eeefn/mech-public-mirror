@@ -1,5 +1,6 @@
 #pragma once
 #include "./constants.h"
+#include "./Entity.h"
 #include <SDL.h>
 #define IDLE_ANIM 2
 #define JUMP_ANIM 0
@@ -14,21 +15,21 @@
 
 
 
-class Player {
+class Player : public Entity{
 public:
 	//current animation
 	short totalFrame, playFrame;
 	short curAnim, curFrame;
 	bool inAir;
 	bool animCycleComplete;
-	int posX, posY;
-	int velX, velY;
-	float accX, accY;
-	int gravity;
+	//int posX, posY;
+	//int velX, velY;
+	//float accX, accY;
+	//int gravity;
 	int playerJumpAcc, playerSpeedX;
 	int soul;
 	Player();
-	void updatePlayer(float dt);
+	void updateEntity(float dt);
 	void processCollision(bool collisions[4]);
 
 };

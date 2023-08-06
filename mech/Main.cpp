@@ -139,7 +139,7 @@ void setup() {
 	map.read("lvl1Test.bin");
 	map.tileMap[24][20] = -1;
 	map.initGameObject();
-	cout << map.gameObjList.at(0)->xTile << '\n';
+	//cout << map.gameObjList.at(0)->xTile << '\n';
 
 	//this is probably important
 	srand(time(NULL));
@@ -272,6 +272,13 @@ void processInput() {
 				selWindowRen.x = selOffX - (spriteDest.x % TILE_DIM);
 				selWindowRen.y = selOffY - (spriteDest.y % TILE_DIM);
 				break;
+			case SDLK_q:
+				if (mech.highlighted) {
+					mech.isPlayer = true;
+					player.isPlayer = false;
+					mech.highlighted = false;
+				}
+				break;
 			case SDLK_ESCAPE: gameIsRunning = FALSE; break;
 			}
 		}
@@ -309,21 +316,19 @@ void update() {
 	lastFrameTime = SDL_GetTicks();
 	//update player physics if we are not editing the map
 	if (gameMode == 0) {
-		player.updatePlayer(deltaTime);
-		mech.updateMech(deltaTime);
+		player.updateEntity(deltaTime);
+		mech.updateEntity(deltaTime,yOffset,xOffset,player.posX);
 		if (collider.collisionCheck(mech.posX, mech.posY, MECH_WIDTH, MECH_HEIGHT, mech.velY, mech.velX, map.tileMap,xOffset,yOffset)) {
 			mech.processCollision(collider.colResults);
 		}
 		//update player rect to change pos
 		xOffset = (player.posX) / TILE_DIM - (WINDOW_WIDTH / 2 - PLAYER_WIDTH / 2) / TILE_DIM;
 		yOffset = (player.posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - PLAYER_HEIGHT / 2) / TILE_DIM;
-		//cout << "yOffset: " << yOffset << '\n';
 		if (xOffset >= 0) {
 			spriteDest.x = player.posX - (xOffset * TILE_DIM) - player.posX % TILE_DIM;
 		}
 		else {
 			xOffset = 0;
-			//cout << "S" << '\n';
 			spriteDest.x = player.posX - (xOffset * TILE_DIM);
 		}
 		if (yOffset >= 0) {
@@ -335,6 +340,12 @@ void update() {
 		}
 		if (collider.collisionCheck(player.posX, player.posY, PLAYER_WIDTH, PLAYER_HEIGHT, player.velY, player.velX, map.tileMap, xOffset, yOffset)) {
 			player.processCollision(collider.colResults);
+		}
+		if (abs(player.posX - mech.posX) > 60) {
+			mech.highlighted = false;
+		}
+		else {
+			mech.highlighted = true;
 		}
 	}
 }
@@ -379,16 +390,12 @@ void render() {
 				for (auto &obj:map.gameObjList) {
 					if ((obj->xTile == x) && (obj->yTile == y)) {
 						//change the rendering tile size to render our object
-						//cout << "detected mushroom" << '\n';
-
 						renTile.h = obj->height;
 						renTile.w = obj->width;
 						objTex.h = obj->height;
 						objTex.w = obj->width;
 						objTex.x = obj->spriteSheetXPos;
 						objTex.y = obj->spriteSheetYPos;
-						//cout << "h,w: " << objTex.h << ", " << objTex.w << '\n';
-						//cout << "x,y: " << objTex.x << ", " << objTex.y << '\n';
 						SDL_RenderCopy(renderer, gameObjectTexture,NULL,&renTile);
 					}
 				}
@@ -414,7 +421,10 @@ void render() {
 	else {
 		mech.renderMech(renderer);
 		//render player
-		SDL_RenderCopy(renderer, spriteTexture, &playerAnim[player.curAnim][player.playFrame], &spriteDest);		
+		if (player.isPlayer) {
+			SDL_RenderCopy(renderer, spriteTexture, &playerAnim[player.curAnim][player.playFrame], &spriteDest);
+		}
+				
 		//render gui
 		gui.renderSoul(renderer);
 	}

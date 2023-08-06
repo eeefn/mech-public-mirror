@@ -11,13 +11,13 @@ using std::cout;
 
 Player player;
 
-Player::Player() {
+Player::Player()  {
 	//setup rectangles from spritesheet. For now im just initializing 
 	//the very first one to get the character moving around
 	inAir = true;
 	animCycleComplete = false;
 	curAnim = IDLE_ANIM;
-	//
+	isPlayer = true;
 	totalFrame = 15 * ANIM_SPEED;
 	playFrame = 0;
 	//currFrame = 0;
@@ -27,32 +27,22 @@ Player::Player() {
 	velX = 0;
 	velY = 0;
 	accX = 0;
-	gravity = 250;
+	//gravity = 250;
 	//this is gravity. im pretty sure this should never be modified. still fuzzy tho
-	accY = gravity;
+	accY = GRAVITY;
 	playerSpeedX = 100;
 	playerJumpAcc = 200;
 	soul = 100;
 }
 
-void Player::updatePlayer(float dt) {
-	//lets do physics. velocity is updated by acceleration * delta time
-	//cout << "accy is " << accY << '\n';
-	if (this->accY > gravity) {
-		this->accY = gravity;
-	}
-	this->velY += this->accY * dt;
-	if (this->velY >= MAX_VEL) {
-		this->velY = MAX_VEL;
-	}
-	//Position is updated by velocity and delta time
-	this->posX += round(this->velX * dt); 
-	this->posY += round(this->velY * dt);
+void Player::updateEntity(float dt) {
+	//updateEntity in the parent does physics
+	Entity::updateEntity(dt);
 	//i think this should be moved to a collision method within some other class
-	if (this->posX < 0) {
+	if (posX < 0) {
 		posX = 0;
 	}
-	if (this->posY < 0) {
+	if (posY < 0) {
 		posY = 0;
 	}
 	if (!(animCycleComplete && curAnim == JUMP_ANIM)) {

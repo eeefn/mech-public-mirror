@@ -6,7 +6,7 @@
 Gui gui;
 
 Gui::Gui() {
-	std::cout << "constructing gui" << '\n';
+	//std::cout << "constructing gui" << '\n';
 	soulColor = 0;
 	pulseCount = 0;
 	//initialize our gui rectangles
@@ -27,9 +27,9 @@ Gui::Gui() {
 void Gui::renderSoul(SDL_Renderer* rend) {
 	pulseCount++;
 	int fullness = player.soul / 5;
-	std::cout << "soul " << player.soul << '\n';
+	//std::cout << "soul " << player.soul << '\n';
 	fullness = (fullness - 20) * -1;
-	std::cout << "fullness " << fullness << '\n';
+	//std::cout << "fullness " << fullness << '\n';
 	if (fullness > 21) {
 		fullness = 21;
 	}
