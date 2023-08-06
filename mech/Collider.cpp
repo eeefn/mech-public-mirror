@@ -62,7 +62,7 @@ bool Collider::collisionCheck(int xPos, int yPos, int entityWidth, int entityHei
 		cout << "MR";
 		//moving right
 		for (unsigned int i = yTilePos; i < (yTilePos + yLen); i++) {
-			if (tileMap[i][xTilePos + xLen]) {
+			if (tileMap[i][xTilePos + xLen] > 0) {
 				colResults[2] = true;
 				colOccur = true;
 			}
@@ -71,7 +71,7 @@ bool Collider::collisionCheck(int xPos, int yPos, int entityWidth, int entityHei
 	else if (xVel < 0){
 		//moving left
 		for (unsigned int i = yTilePos; i < (yTilePos + yLen); i++) {
-			if (tileMap[i][xTilePos]) {
+			if (tileMap[i][xTilePos] > 0) {
 				colResults[3] = true;
 				//cout << "collison left at " << xTilePos << ", " << i << '\n';
 				colOccur = true;

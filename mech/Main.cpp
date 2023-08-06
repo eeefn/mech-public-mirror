@@ -8,6 +8,8 @@
 #include "./constants.h"
 #include "./GameObject.h"
 #include "./Map.h"
+#include "./Gui.h"
+#include "./Mech.h"
 
 #include <fstream>
 #include <iostream>
@@ -19,7 +21,8 @@ using std::cout;
 using std::vector;
 /*
 weekend notes:
-
+need to make an abstraction for the camera, that allows the camera to follow a specific entity.
+both mech and player will extend the entity class. 
 */
 short selectColor = 0;
 int selOffY, selOffX = 0;
@@ -39,15 +42,17 @@ const Uint8* keyPtr;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 //Rects for rendering tiles, objects and the player to
-SDL_Rect objRen;
+SDL_Rect objTex;
 SDL_Rect selWindowRen;
 SDL_Rect spriteDest;
 SDL_Rect renTile;
 
-vector<GameObject> objList;
+
+//vector<GameObject> objList;
 //textures for 
 SDL_Texture* tile_texture;
 SDL_Texture* spriteTexture;
+SDL_Texture* gameObjectTexture;
 //this is the spriteSelect for animations. Currently 1*15 because only jump exists
 SDL_Rect playerAnim[4][15];
 
@@ -89,7 +94,7 @@ void setup() {
 	tilesPerWindowHeight = (dm.h + TILE_DIM - 1) / TILE_DIM;
 
 	keyPtr = SDL_GetKeyboardState(NULL);
-
+	//eventually these three will be merged into an atlas
 	/*create surface  for tilemap and give it to the renderer
 	----------------------------------------------------------*/
 	SDL_Surface* tileMapSurface = SDL_LoadBMP("tile4.bmp");
@@ -108,8 +113,34 @@ void setup() {
 	}
 	spriteTexture = SDL_CreateTextureFromSurface(renderer, spriteSheetSurface);
 	SDL_FreeSurface(spriteSheetSurface);
+	
+	/*create surface from gameObjects and give it to renderer*/
+	SDL_Surface* gameObjectSurface = SDL_LoadBMP("objSheetv1.bmp");
+	if (!gameObjectSurface) {
+		fprintf(stderr, "could not find gameObject texture");
+		return;
+	}
+	gameObjectTexture = SDL_CreateTextureFromSurface(renderer, gameObjectSurface);
+	/*create surface from gui and give it to renderer*/
+	SDL_Surface* guiSurface = SDL_LoadBMP("gui.bmp");
+	if (!guiSurface) {
+		fprintf(stderr, "could not find gui image");
+		return;
+	}
+	gui.guiTex = SDL_CreateTextureFromSurface(renderer, guiSurface);
+	/*create surface from mech and give it to renderer*/
+	SDL_Surface* mechSurface = SDL_LoadBMP("mech.bmp");
+	if (!mechSurface) {
+		fprintf(stderr, "could not find mech image");
+		return;
+	}
+	mech.mechTex = SDL_CreateTextureFromSurface(renderer, mechSurface);
 	//instantiate the map
 	map.read("lvl1Test.bin");
+	map.tileMap[24][20] = -1;
+	map.initGameObject();
+	cout << map.gameObjList.at(0)->xTile << '\n';
+
 	//this is probably important
 	srand(time(NULL));
 	//populate the tiles from map data
@@ -118,11 +149,8 @@ void setup() {
 	//create a grid of rectangles representing the textures in the tileMap.
 	for (unsigned int i = 0; i < TILE_WIDTH_IN_TILE_MAP; i++) {
 		for (unsigned int j = 0; j < TILE_WIDTH_IN_TILE_MAP; j++) {
-			//cout << "tile i: " << i << "j: " << j << '\n';
 			tileSelect[i][j].x = TEX_DIM * j;
 			tileSelect[i][j].y = TEX_DIM * i;
-			//cout << "x assigned to " << tileSelect[i][j].x << '\n';
-			//cout << "y assigned to " << tileSelect[i][j].y << '\n';
 			tileSelect[i][j].w = TEX_DIM;
 			tileSelect[i][j].h = TEX_DIM;
 		}
@@ -147,6 +175,12 @@ void setup() {
 	spriteDest.y = 0;
 	spriteDest.w = PLAYER_WIDTH;
 	spriteDest.h = PLAYER_HEIGHT;
+	//initialize the rect select for gameobject textures
+	objTex.x = 0;
+	objTex.y = 0;
+	objTex.w = TILE_DIM;
+	objTex.h = TILE_DIM;
+
 }
 
 void processInput() {
@@ -202,6 +236,12 @@ void processInput() {
 	else {
 		if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
 			switch (event.key.keysym.sym) {
+			case SDLK_DOWN:
+				player.soul = player.soul - 5;
+				break;
+			case SDLK_UP:
+				gui.soulColor = gui.soulColor++;
+				break;
 			case SDLK_w:
 				if (!player.inAir) {
 						//adjust player velocity to initiate jump
@@ -270,6 +310,10 @@ void update() {
 	//update player physics if we are not editing the map
 	if (gameMode == 0) {
 		player.updatePlayer(deltaTime);
+		mech.updateMech(deltaTime);
+		if (collider.collisionCheck(mech.posX, mech.posY, MECH_WIDTH, MECH_HEIGHT, mech.velY, mech.velX, map.tileMap,xOffset,yOffset)) {
+			mech.processCollision(collider.colResults);
+		}
 		//update player rect to change pos
 		xOffset = (player.posX) / TILE_DIM - (WINDOW_WIDTH / 2 - PLAYER_WIDTH / 2) / TILE_DIM;
 		yOffset = (player.posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - PLAYER_HEIGHT / 2) / TILE_DIM;
@@ -317,17 +361,47 @@ void render() {
 		for (int x = xOffset; x <= tilesPerWindowWidth + xOffset; x++) {
 			//grab the texture we should have for the given tile from the map
 			short texSel = map.tileMap[y][x];
-			textureSelect(texSel);
-			//handle offsets in the left corner. I havent handled the right corner 0.0
 			renTile.x = ((x - xOffset) * TILE_DIM);
-			if (player.posX > (WINDOW_WIDTH/2 - PLAYER_WIDTH/2)) {
+			if (player.posX > (WINDOW_WIDTH / 2 - PLAYER_WIDTH / 2)) {
 				renTile.x -= (player.posX % TILE_DIM);
 			}
 			renTile.y = ((y - yOffset) * TILE_DIM);
-			if (player.posY > (WINDOW_HEIGHT/2 - PLAYER_HEIGHT/2 - 8)) {
+			if (player.posY > (WINDOW_HEIGHT / 2 - PLAYER_HEIGHT / 2 - 8)) {
 				renTile.y -= (player.posY % TILE_DIM);
 			}
-			SDL_RenderCopy(renderer,tile_texture, &tileSelect[texSelY][texSelX], &renTile);
+			if (texSel > 0) {
+				textureSelect(texSel);
+				//handle offsets in the left corner. I havent handled the right corner 0.0
+				SDL_RenderCopy(renderer, tile_texture, &tileSelect[texSelY][texSelX], &renTile);
+			}
+			else {
+				//find the object at the location
+				for (auto &obj:map.gameObjList) {
+					if ((obj->xTile == x) && (obj->yTile == y)) {
+						//change the rendering tile size to render our object
+						//cout << "detected mushroom" << '\n';
+
+						renTile.h = obj->height;
+						renTile.w = obj->width;
+						objTex.h = obj->height;
+						objTex.w = obj->width;
+						objTex.x = obj->spriteSheetXPos;
+						objTex.y = obj->spriteSheetYPos;
+						//cout << "h,w: " << objTex.h << ", " << objTex.w << '\n';
+						//cout << "x,y: " << objTex.x << ", " << objTex.y << '\n';
+						SDL_RenderCopy(renderer, gameObjectTexture,NULL,&renTile);
+					}
+				}
+				/*if (!mech.isPlayer) {
+					SDL_RenderCopy(renderer);
+				}*/
+				renTile.w = TILE_DIM;
+				renTile.h = TILE_DIM;
+				//find object based on id
+				//lookup in vector
+				//get properties and change rentile
+			}
+			
 
 		}
 	}
@@ -338,8 +412,11 @@ void render() {
 		SDL_RenderDrawRect(renderer, &selWindowRen);
 	}
 	else {
+		mech.renderMech(renderer);
 		//render player
-		SDL_RenderCopy(renderer, spriteTexture, &playerAnim[player.curAnim][player.playFrame], &spriteDest);
+		SDL_RenderCopy(renderer, spriteTexture, &playerAnim[player.curAnim][player.playFrame], &spriteDest);		
+		//render gui
+		gui.renderSoul(renderer);
 	}
 	SDL_RenderPresent(renderer);
 }

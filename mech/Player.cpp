@@ -21,7 +21,6 @@ Player::Player() {
 	totalFrame = 15 * ANIM_SPEED;
 	playFrame = 0;
 	//currFrame = 0;
-	//
 	curFrame = 0;
 	posX = WINDOW_WIDTH/2 - PLAYER_WIDTH/2;
 	posY = WINDOW_HEIGHT/2 - PLAYER_HEIGHT/2;
@@ -33,6 +32,7 @@ Player::Player() {
 	accY = gravity;
 	playerSpeedX = 100;
 	playerJumpAcc = 200;
+	soul = 100;
 }
 
 void Player::updatePlayer(float dt) {

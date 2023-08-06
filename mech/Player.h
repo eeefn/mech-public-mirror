@@ -26,6 +26,7 @@ public:
 	float accX, accY;
 	int gravity;
 	int playerJumpAcc, playerSpeedX;
+	int soul;
 	Player();
 	void updatePlayer(float dt);
 	void processCollision(bool collisions[4]);
