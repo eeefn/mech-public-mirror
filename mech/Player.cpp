@@ -30,11 +30,46 @@ Player::Player()  {
 	//gravity = 250;
 	//this is gravity. im pretty sure this should never be modified. still fuzzy tho
 	accY = GRAVITY;
-	playerSpeedX = 100;
+	entitySpeedX = 100;
 	playerJumpAcc = 200;
 	soul = 100;
 }
+void Player::jump() {
+	//adjust player velocity to initiate jump
+	velY -= playerJumpAcc;
+	//change animation to jumping. The reason frame is set to -1 is 
+	//player update increments current frame right after this assignment, resulting
+	//in the 0th frame being played
+	curAnim = JUMP_ANIM;
+	playFrame = -1;
+	inAir = true;
+}
 
+void Player::moveLeft(bool key) {
+	if (key) {
+		velX -= entitySpeedX;
+		curAnim = RUN_L_ANIM;
+		playFrame = -1;
+	}
+	else {
+		velX += entitySpeedX;
+		curAnim = IDLE_ANIM;
+		playFrame = -1;
+	}
+}
+void Player::moveRight(bool key) {
+	if (key) {
+		velX += entitySpeedX;
+		curAnim = RUN_R_ANIM;
+		playFrame = -1;
+	}
+	else {
+		velX -= entitySpeedX;
+		curAnim = IDLE_ANIM;
+		playFrame = -1;
+	}
+
+}
 void Player::updateEntity(float dt) {
 	//updateEntity in the parent does physics
 	Entity::updateEntity(dt);

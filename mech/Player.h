@@ -29,6 +29,9 @@ public:
 	int playerJumpAcc, playerSpeedX;
 	int soul;
 	Player();
+	void jump();
+	void moveLeft(bool key);
+	void moveRight(bool key);
 	void updateEntity(float dt);
 	void processCollision(bool collisions[4]);
 

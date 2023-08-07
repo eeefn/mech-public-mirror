@@ -3,7 +3,15 @@
 #include <iostream>
 
 using std::cout;
+void Entity::jump() {
+	cout << "called base jump function" << '\n';
+}
+void Entity::moveLeft(bool key) {
 
+}
+void Entity::moveRight(bool key) {
+
+}
 void Entity::updateEntity(float dt) {
 	//cout << "hello from entity :)" << '\n';
 	if (accY > GRAVITY) {

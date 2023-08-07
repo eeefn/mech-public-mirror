@@ -18,6 +18,8 @@ class Mech : public Entity
 		bool poweredUp, stood;
 		int currFrame,playFrame;
 		void updateEntity(float dt, int yO,int xO,int pPos);
+		void moveLeft(bool key);
+		void moveRight(bool key);
 		void renderMech(SDL_Renderer* rend);
 		void processCollision(bool collisions[4]);
 };

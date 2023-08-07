@@ -19,22 +19,17 @@ Mech::Mech() {
 			mechArr[i][j].h = 144;
 		}
 	}
-	posX = 400;
-	posY = 80;
-	isPlayer = false;
+	posX = 400; posY = 80;
+	isPlayer = false; inAir = false;
 	velX, velY = 0;
-	accX = 0;
-	accY = 250;
-	dispRect.x = 100;
-	dispRect.y = 100;	
+	currFrame, playFrame = 0;
+	accX = 0; accY = 250;
+	dispRect.x, dispRect.y = 100;	
 	dispRect.w = 96 * 2;
 	dispRect.h = 144 * 2;
 	highlighted = true;
-	poweredUp = false;
-	stood = false;
-	currFrame = 0;
-	playFrame = 0;
-	
+	poweredUp, stood = false;
+	entitySpeedX = 70;
 }
 
 void Mech::renderMech(SDL_Renderer* rend) {
@@ -47,12 +42,12 @@ void Mech::renderMech(SDL_Renderer* rend) {
 	}
 	else {
 		if (!poweredUp) {
-			playFrame = currFrame / 2;
+			playFrame = currFrame / 4;
 			SDL_RenderCopy(rend, mechTex, &mechArr[2][playFrame], &dispRect);
 			SDL_RenderCopy(rend, mechTex, &mechArr[3][playFrame], &dispRect);
 			cout << "powering up at frame: " << currFrame << '\n';
 			currFrame++;
-			if (currFrame >= 120) {
+			if (currFrame >= 240) {
 				poweredUp = true;
 				currFrame = 0;
 			}
@@ -77,7 +72,24 @@ void Mech::renderMech(SDL_Renderer* rend) {
 	
 }
 
+void Mech::moveLeft(bool key) {
+	if (key) {
+		velX -= entitySpeedX;
+	}
+	else {
+		velX += entitySpeedX;
+	}
 
+}
+
+void Mech::moveRight(bool key) {
+	if (key) {
+		velX += entitySpeedX;
+	}
+	else {
+		velX -= entitySpeedX;
+	}
+}
 void Mech::updateEntity(float dt, int yO, int xO, int pPosX) {
 	//
 	Entity::updateEntity(dt);

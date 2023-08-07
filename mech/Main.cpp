@@ -15,6 +15,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 
 using std::cout;
@@ -48,7 +49,7 @@ SDL_Rect spriteDest;
 SDL_Rect renTile;
 
 
-//vector<GameObject> objList;
+vector<Entity*> entityList;
 //textures for 
 SDL_Texture* tile_texture;
 SDL_Texture* spriteTexture;
@@ -180,6 +181,11 @@ void setup() {
 	objTex.y = 0;
 	objTex.w = TILE_DIM;
 	objTex.h = TILE_DIM;
+	//setup our entitys
+	Entity* pptr = &player;
+	Entity* mptr = &mech;
+	entityList.push_back(pptr);
+	entityList.push_back(mptr);
 
 }
 
@@ -236,70 +242,57 @@ void processInput() {
 	else {
 		if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
 			switch (event.key.keysym.sym) {
-			case SDLK_DOWN:
-				player.soul = player.soul - 5;
-				break;
-			case SDLK_UP:
-				gui.soulColor = gui.soulColor++;
-				break;
-			case SDLK_w:
-				if (!player.inAir) {
-						//adjust player velocity to initiate jump
-					player.velY -= player.playerJumpAcc;
-						//change animation to jumping. The reason frame is set to -1 is 
-						//player update increments current frame right after this assignment, resulting
-						//in the 0th frame being played
-					player.curAnim = JUMP_ANIM;
-					player.playFrame = -1;
-					player.inAir = true;
+				case SDLK_DOWN:
+					player.soul = player.soul - 5;
+					break;
+				case SDLK_UP:
+					gui.soulColor = gui.soulColor++;
+					break;
+				case SDLK_w:
+					if (!entityList.at(0)->inAir) {
+						entityList.at(0)->jump();
+					}
+					break;
+				case SDLK_a:
+					entityList.at(0)->moveLeft(true);
+					break;
+				case SDLK_d:
+					entityList.at(0)->moveRight(true);
+					break;
+				case SDLK_e:
+					gameMode = 1;
+					//setup selector
+					selWindowRen.h = TILE_DIM;
+					selWindowRen.w = TILE_DIM;
+					selWindowRen.x = selOffX - (spriteDest.x % TILE_DIM);
+					selWindowRen.y = selOffY - (spriteDest.y % TILE_DIM);
+					break;
+				case SDLK_q:
+					if (mech.highlighted) {
+						mech.isPlayer = true;
+						player.isPlayer = false;
+						mech.highlighted = false;
+						//swap the position of mech and player.
+						std::iter_swap(entityList.begin(), entityList.end() - 1);
+					}
+					break;
+				case SDLK_ESCAPE: gameIsRunning = FALSE; break;
 				}
-				break;
-			case SDLK_a:
-				player.velX -= player.playerSpeedX;
-				player.curAnim = RUN_L_ANIM;
-				player.playFrame = -1;
-				break;
-			case SDLK_d:
-				player.velX += player.playerSpeedX;
-				player.curAnim = RUN_R_ANIM;
-				player.playFrame = -1;
-				break;
-			case SDLK_e: 
-				gameMode = 1; 
-				//setup selector
-				selWindowRen.h = TILE_DIM;
-				selWindowRen.w = TILE_DIM;
-				selWindowRen.x = selOffX - (spriteDest.x % TILE_DIM);
-				selWindowRen.y = selOffY - (spriteDest.y % TILE_DIM);
-				break;
-			case SDLK_q:
-				if (mech.highlighted) {
-					mech.isPlayer = true;
-					player.isPlayer = false;
-					mech.highlighted = false;
-				}
-				break;
-			case SDLK_ESCAPE: gameIsRunning = FALSE; break;
-			}
 		}
 		if (event.type == SDL_KEYUP && event.key.repeat == 0) {
-			switch (event.key.keysym.sym) {
-				//case SDLK_w: player.velY += player.playerJumpY; break;
-				//case SDLK_s: player.velY -= player.playerSpeedY; break;
-			case SDLK_a:
-				player.velX += player.playerSpeedX;
-				player.curAnim = IDLE_ANIM;
-				player.playFrame = -1;
-				break;
-			case SDLK_d:
-				player.velX -= player.playerSpeedX;
-				player.curAnim = IDLE_ANIM;
-				player.playFrame = -1;
-				break;
-			}
+				switch (event.key.keysym.sym) {
+					//case SDLK_w: player.velY += player.playerJumpY; break;
+					//case SDLK_s: player.velY -= player.playerSpeedY; break;
+				case SDLK_a:
+					entityList.at(0)->moveLeft(false);
+					break;
+				case SDLK_d:
+					entityList.at(0)->moveRight(false);
+					break;
+				}
 		}
 		else if (event.type == SDL_QUIT) {
-			gameIsRunning = FALSE;
+				gameIsRunning = FALSE;
 		}
 	}
 }
