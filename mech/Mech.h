@@ -6,6 +6,7 @@
 #define MAX_VEL 200
 #define MECH_WIDTH 96 * 2
 #define MECH_HEIGHT 144 * 2
+
 class Mech : public Entity 
 {
 	//size of the sheet
@@ -14,12 +15,17 @@ class Mech : public Entity
 		Mech();
 		SDL_Rect mechArr[4][60];
 		SDL_Rect dispRect;
+		SDL_Rect handRect[5];
 		SDL_Texture* mechTex;
-		bool poweredUp, stood;
+		SDL_Texture* mechAttatchmentTex;
+		SDL_Rect mechHandArr[5];
+		bool poweredUp, stood, grappling,reelOut;
 		int currFrame,playFrame;
-		void updateEntity(float dt, int yO,int xO,int pPos);
+		int gDist;
+		void updateEntity(float dt, int yO,int xO,int pPosX,int pPosY);
 		void moveLeft(bool key);
 		void moveRight(bool key);
+		void attackRight(int xClick);
 		void renderMech(SDL_Renderer* rend);
 		void processCollision(bool collisions[4]);
 };

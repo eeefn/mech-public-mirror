@@ -13,6 +13,7 @@ public:
 	virtual void jump();
 	virtual void moveLeft(bool key);
 	virtual void moveRight(bool key);
+	virtual void attackRight(int xClick);
 	void processCollision();
 	void render();
 	

@@ -136,6 +136,13 @@ void setup() {
 		return;
 	}
 	mech.mechTex = SDL_CreateTextureFromSurface(renderer, mechSurface);
+	SDL_Surface* mechAtSurface = SDL_LoadBMP("handAt.bmp");
+	if (!mechAtSurface) {
+		fprintf(stderr, "could not find hands");
+		return;
+	}
+	mech.mechAttatchmentTex = SDL_CreateTextureFromSurface(renderer, mechAtSurface);
+
 	//instantiate the map
 	map.read("lvl1Test.bin");
 	map.tileMap[24][20] = -1;
@@ -279,6 +286,13 @@ void processInput() {
 				case SDLK_ESCAPE: gameIsRunning = FALSE; break;
 				}
 		}
+		if (event.type == SDL_MOUSEBUTTONDOWN) {
+			switch (event.button.button) {
+			case SDL_BUTTON_RIGHT:
+				entityList.at(0)->attackRight(event.button.x);
+				break;
+			}
+		}
 		if (event.type == SDL_KEYUP && event.key.repeat == 0) {
 				switch (event.key.keysym.sym) {
 					//case SDLK_w: player.velY += player.playerJumpY; break;
@@ -310,7 +324,7 @@ void update() {
 	//update player physics if we are not editing the map
 	if (gameMode == 0) {
 		player.updateEntity(deltaTime);
-		mech.updateEntity(deltaTime,yOffset,xOffset,player.posX);
+		mech.updateEntity(deltaTime,yOffset,xOffset,player.posX,player.posY);
 		if (collider.collisionCheck(mech.posX, mech.posY, MECH_WIDTH, MECH_HEIGHT, mech.velY, mech.velX, map.tileMap,xOffset,yOffset)) {
 			mech.processCollision(collider.colResults);
 		}
@@ -392,9 +406,6 @@ void render() {
 						SDL_RenderCopy(renderer, gameObjectTexture,NULL,&renTile);
 					}
 				}
-				/*if (!mech.isPlayer) {
-					SDL_RenderCopy(renderer);
-				}*/
 				renTile.w = TILE_DIM;
 				renTile.h = TILE_DIM;
 				//find object based on id
