@@ -1,4 +1,4 @@
-#include "Mushroom.h"
+#include "./headers/Mushroom.h"
 
 Mushroom::Mushroom(short mType, short id, int xT, int yT) {
 	this->mushType = mType;
