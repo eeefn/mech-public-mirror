@@ -443,7 +443,7 @@ void destroyWindow() {
 
 
 
-int main(int argc, char* args[]) {
+int main(int argc, char* argv[]) {
 	
 	gameIsRunning = initializeWindow();
 	setup(); 
@@ -454,6 +454,6 @@ int main(int argc, char* args[]) {
 		render();
 	}
 	destroyWindow();
-
+	std::cout << "Hello";
 	return 0;
 }
