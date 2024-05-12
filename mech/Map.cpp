@@ -1,6 +1,6 @@
-#include "Map.h"
-#include "./constants.h"
-#include "./Mushroom.h"
+#include "./headers/Map.h"
+#include "./headers/constants.h"
+#include "./headers/Mushroom.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>

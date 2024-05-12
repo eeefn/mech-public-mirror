@@ -3,13 +3,13 @@
 #include <SDL.h>
 #include <time.h>
 
-#include "./Player.h"
-#include "./Collider.h"
-#include "./constants.h"
-#include "./GameObject.h"
-#include "./Map.h"
-#include "./Gui.h"
-#include "./Mech.h"
+#include "./headers/Player.h"
+#include "./headers/Collider.h"
+#include "./headers/constants.h"
+#include "./headers/GameObject.h"
+#include "./headers/Map.h"
+#include "./headers/Gui.h"
+#include "./headers/Mech.h"
 
 #include <fstream>
 #include <iostream>

@@ -1,4 +1,4 @@
-#include "Mech.h"
+#include "./headers/Mech.h"
 #include "stdio.h"
 #include <iostream>
 

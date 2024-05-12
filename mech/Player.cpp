@@ -1,10 +1,10 @@
 #pragma once
-#include "./Player.h"
+#include "./headers/Player.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
 #include <cmath>
-#include "./constants.h"
+#include "./headers/constants.h"
 #include <SDL.h>
 
 using std::cout;
