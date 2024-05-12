@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "stdio.h"
 #include <iostream>
+#include <math.h>
 
 using std::cout;
 void Entity::jump() {

@@ -1,0 +1,10 @@
+TARGET = main.exe
+INCLUDEPATH = "C:\Users\eef\SDL2\x86_64-w64-mingw32\include\SDL2"
+LIBRARYPATH = "C:\Users\eef\SDL2\x86_64-w64-mingw32\lib"
+cc = g++
+SOURCES = main.cpp Map.cpp Mech.cpp Mushroom.cpp Player.cpp Gui.cpp Entity.cpp Collider.cpp
+
+all: $(TARGET)
+
+$(TARGET): $(SOURCES)
+	$(cc) --std=c++14 -I $(INCLUDEPATH) -L $(LIBRARYPATH) -o main $(SOURCES) -lmingw32 -lSDL2main -lSDL2
