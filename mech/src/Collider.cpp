@@ -1,6 +1,6 @@
-#include "./headers/Collider.h"
+#include "../headers/Collider.h"
 #include <SDL.h>
-#include "./headers/constants.h"
+#include "../headers/constants.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
