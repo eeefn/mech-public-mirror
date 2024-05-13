@@ -250,14 +250,9 @@ void processInput() {
 	else {
 		if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
 			gameIsRunning = input.processKeydown(&event, &entityList);
-			
 		}
 		if (event.type == SDL_MOUSEBUTTONDOWN) {
-			switch (event.button.button) {
-			case SDL_BUTTON_RIGHT:
-				entityList.at(0)->attackRight(event.button.x);
-				break;
-			}
+			input.processMousedown(&event,&entityList);
 		}
 		if (event.type == SDL_KEYUP && event.key.repeat == 0) {
 				switch (event.key.keysym.sym) {
