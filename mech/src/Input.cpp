@@ -13,11 +13,18 @@ Input::Input(){
     std::cout << "input constructed";
 }
 
+void Input::processMousedown(SDL_Event *keydownEvent, vector<Entity*> *entityList){
+	Entity *playerEntity = entityList->at(0);
+	switch (keydownEvent->button.button) {
+		case SDL_BUTTON_RIGHT:
+			playerEntity->attackRight(keydownEvent->button.x);
+			break;
+	}
+}
+
 int Input::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityList){
     bool gameIsRunning = true;
     Entity *playerEntity = entityList->at(0);
-    std::cout << "proccess keydown called";
-    std::cout << keydownEvent->key.keysym.sym;
     switch (keydownEvent->key.keysym.sym) {
 		case SDLK_DOWN:
 			player.soul = player.soul - 5;
