@@ -10,6 +10,7 @@
 #include "../headers/Map.h"
 #include "../headers/Gui.h"
 #include "../headers/Mech.h"
+#include "../headers/Input.h"
 
 #include <fstream>
 #include <iostream>
@@ -248,43 +249,8 @@ void processInput() {
 	}
 	else {
 		if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
-			switch (event.key.keysym.sym) {
-				case SDLK_DOWN:
-					player.soul = player.soul - 5;
-					break;
-				case SDLK_UP:
-					gui.soulColor = gui.soulColor++;
-					break;
-				case SDLK_w:
-					if (!entityList.at(0)->inAir) {
-						entityList.at(0)->jump();
-					}
-					break;
-				case SDLK_a:
-					entityList.at(0)->moveLeft(true);
-					break;
-				case SDLK_d:
-					entityList.at(0)->moveRight(true);
-					break;
-				case SDLK_e:
-					gameMode = 1;
-					//setup selector
-					selWindowRen.h = TILE_DIM;
-					selWindowRen.w = TILE_DIM;
-					selWindowRen.x = selOffX - (spriteDest.x % TILE_DIM);
-					selWindowRen.y = selOffY - (spriteDest.y % TILE_DIM);
-					break;
-				case SDLK_q:
-					if (mech.highlighted) {
-						mech.isPlayer = true;
-						player.isPlayer = false;
-						mech.highlighted = false;
-						//swap the position of mech and player.
-						std::iter_swap(entityList.begin(), entityList.end() - 1);
-					}
-					break;
-				case SDLK_ESCAPE: gameIsRunning = FALSE; break;
-				}
+			gameIsRunning = input.processKeydown(&event, &entityList);
+			
 		}
 		if (event.type == SDL_MOUSEBUTTONDOWN) {
 			switch (event.button.button) {
