@@ -1,4 +1,4 @@
-#include "GameObject.h"
+#include "../headers/GameObject.h"
 #include <vector>
 
 

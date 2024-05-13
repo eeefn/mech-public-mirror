@@ -3,13 +3,13 @@
 #include <SDL.h>
 #include <time.h>
 
-#include "./headers/Player.h"
-#include "./headers/Collider.h"
-#include "./headers/constants.h"
-#include "./headers/GameObject.h"
-#include "./headers/Map.h"
-#include "./headers/Gui.h"
-#include "./headers/Mech.h"
+#include "../headers/Player.h"
+#include "../headers/Collider.h"
+#include "../headers/constants.h"
+#include "../headers/GameObject.h"
+#include "../headers/Map.h"
+#include "../headers/Gui.h"
+#include "../headers/Mech.h"
 
 #include <fstream>
 #include <iostream>
@@ -98,16 +98,16 @@ void setup() {
 	//eventually these three will be merged into an atlas
 	/*create surface  for tilemap and give it to the renderer
 	----------------------------------------------------------*/
-	SDL_Surface* tileMapSurface = SDL_LoadBMP("tile4.bmp");
+	SDL_Surface* tileMapSurface = SDL_LoadBMP("./resources/tile4.bmp");
 	if (!tileMapSurface) {
-		fprintf(stderr, "could not find image");
+		fprintf(stderr, "could not find tile images");
 		return;
 	}
 	tile_texture = SDL_CreateTextureFromSurface(renderer, tileMapSurface);
 	SDL_FreeSurface(tileMapSurface);
 
 	/*create surface from spriteSheet and turn it into a texture*/
-	SDL_Surface* spriteSheetSurface = SDL_LoadBMP("mushBoyJ.bmp");
+	SDL_Surface* spriteSheetSurface = SDL_LoadBMP("./resources/mushBoyJ.bmp");
 	if (!spriteSheetSurface) {
 		fprintf(stderr, "could not find spritesheet");
 		return;
@@ -116,27 +116,27 @@ void setup() {
 	SDL_FreeSurface(spriteSheetSurface);
 	
 	/*create surface from gameObjects and give it to renderer*/
-	SDL_Surface* gameObjectSurface = SDL_LoadBMP("objSheetv1.bmp");
+	SDL_Surface* gameObjectSurface = SDL_LoadBMP("./resources/objSheetv1.bmp");
 	if (!gameObjectSurface) {
 		fprintf(stderr, "could not find gameObject texture");
 		return;
 	}
 	gameObjectTexture = SDL_CreateTextureFromSurface(renderer, gameObjectSurface);
 	/*create surface from gui and give it to renderer*/
-	SDL_Surface* guiSurface = SDL_LoadBMP("gui.bmp");
+	SDL_Surface* guiSurface = SDL_LoadBMP("./resources/gui.bmp");
 	if (!guiSurface) {
 		fprintf(stderr, "could not find gui image");
 		return;
 	}
 	gui.guiTex = SDL_CreateTextureFromSurface(renderer, guiSurface);
 	/*create surface from mech and give it to renderer*/
-	SDL_Surface* mechSurface = SDL_LoadBMP("mech.bmp");
+	SDL_Surface* mechSurface = SDL_LoadBMP("./resources/mech.bmp");
 	if (!mechSurface) {
 		fprintf(stderr, "could not find mech image");
 		return;
 	}
 	mech.mechTex = SDL_CreateTextureFromSurface(renderer, mechSurface);
-	SDL_Surface* mechAtSurface = SDL_LoadBMP("handAt.bmp");
+	SDL_Surface* mechAtSurface = SDL_LoadBMP("./resources/handAt.bmp");
 	if (!mechAtSurface) {
 		fprintf(stderr, "could not find hands");
 		return;

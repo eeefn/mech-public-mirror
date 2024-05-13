@@ -1,8 +1,8 @@
-#include "./headers/Gui.h"
+#include "../headers/Gui.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-#include "./headers/Player.h"
+#include "../headers/Player.h"
 Gui gui;
 
 Gui::Gui() {
