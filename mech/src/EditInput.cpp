@@ -18,7 +18,6 @@ int EditInput::processKeydown(SDL_Event *keydownEvent,int *xOffset, int *yOffset
     switch (keydownEvent->key.keysym.sym) {
 		case SDLK_e: 
             *gameMode = PLAY;
-            std::cout << gameMode << " " <<  "attempted exit";
             break;
 		case SDLK_RIGHT: gui.selWindowRen.w += TILE_DIM; break;
 		case SDLK_LEFT:
@@ -54,7 +53,9 @@ int EditInput::processKeydown(SDL_Event *keydownEvent,int *xOffset, int *yOffset
         case SDLK_3: gui.selectColor = 3; break;
         case SDLK_f: map.fill(gui.selWindowRen,*xOffset,*yOffset,gui.selectColor); break;
         case SDLK_z: map.save("lvl1Test.bin"); break;
-        case SDLK_ESCAPE: gameIsRunning = false; break;
+        case SDLK_ESCAPE: 
+            gameIsRunning = false; 
+            break;
 
 	}
     return gameIsRunning;

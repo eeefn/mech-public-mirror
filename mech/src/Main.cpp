@@ -12,6 +12,7 @@
 #include "../headers/Mech.h"
 #include "../headers/PlayInput.h"
 #include "../headers/EditInput.h"
+#include "../headers/InputFactory.h"
 
 #include <fstream>
 #include <iostream>
@@ -200,9 +201,11 @@ void processInput() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
 	//some of this should go in an editor class. this is temp for sure
+	InputFactory inputFactory = InputFactory(&gameMode);
+	inputFactory.processInput();
 	if (gameMode == EDIT) {
 		if (event.type == SDL_KEYDOWN) {
-			editInput.processKeydown(&event,&xOffset,&yOffset,&gameMode);
+			gameIsRunning = editInput.processKeydown(&event,&xOffset,&yOffset,&gameMode);
 		}
 		else if (event.type == SDL_QUIT) {
 			gameIsRunning = false;
@@ -367,6 +370,6 @@ int main(int argc, char* argv[]) {
 		render();
 	}
 	destroyWindow();
-	std::cout << "Hello";
+	std::cout << "Goodbye";
 	return 0;
 }
