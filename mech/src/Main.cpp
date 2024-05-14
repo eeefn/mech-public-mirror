@@ -29,7 +29,7 @@ both mech and player will extend the entity class.
 short selectColor = 0;
 int selOffY, selOffX = 0;
 short texSelX, texSelY = 0;
-int gameMode = 0;
+int gameMode = PLAY;
 int debug = 0;
 int tilesPerWindowWidth;
 int tilesPerWindowHeight;
@@ -201,10 +201,10 @@ void processInput() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
 	//some of this should go in an editor class. this is temp for sure
-	if (gameMode == 1) {
+	if (gameMode == EDIT) {
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.sym) {
-			case SDLK_e: gameMode = 0; break;
+			case SDLK_e: gameMode = PLAY; break;
 			case SDLK_RIGHT: selWindowRen.w += TILE_DIM; break;
 			case SDLK_LEFT:
 				selWindowRen.w -= TILE_DIM;
@@ -274,7 +274,7 @@ void update() {
 
 	lastFrameTime = SDL_GetTicks();
 	//update player physics if we are not editing the map
-	if (gameMode == 0) {
+	if (gameMode == PLAY) {
 		player.updateEntity(deltaTime);
 		mech.updateEntity(deltaTime,yOffset,xOffset,player.posX,player.posY);
 		if (collider.collisionCheck(mech.posX, mech.posY, MECH_WIDTH, MECH_HEIGHT, mech.velY, mech.velX, map.tileMap,xOffset,yOffset)) {
@@ -369,7 +369,7 @@ void render() {
 		}
 	}
 	//editor and gameplay
-	if (gameMode == 1) {
+	if (gameMode == EDIT) {
 		//render selection window for editor.
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderDrawRect(renderer, &selWindowRen);
