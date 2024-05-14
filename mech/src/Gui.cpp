@@ -6,9 +6,10 @@
 Gui gui;
 
 Gui::Gui() {
-	//std::cout << "constructing gui" << '\n';
+
 	soulColor = 0;
 	pulseCount = 0;
+	selectColor = 0;
 	//initialize our gui rectangles
 	for (unsigned int i = 0; i < 8; i++) {
 		for (unsigned int j = 0; j < 22; j++) {

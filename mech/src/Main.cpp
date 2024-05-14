@@ -27,7 +27,7 @@ weekend notes:
 need to make an abstraction for the camera, that allows the camera to follow a specific entity.
 both mech and player will extend the entity class. 
 */
-short selectColor = 0;
+//short selectColor = 0;
 int selOffY, selOffX = 0;
 short texSelX, texSelY = 0;
 int gameMode = PLAY;
@@ -205,7 +205,7 @@ void processInput() {
 	if (gameMode == EDIT) {
 		
 		if (event.type == SDL_KEYDOWN) {
-			editInput.processKeydown(&event,&selWindowRen,&xOffset,&yOffset,&selectColor,&gameMode);
+			editInput.processKeydown(&event,&selWindowRen,&xOffset,&yOffset,&gameMode);
 		}
 		else if (event.type == SDL_QUIT) {
 			gameIsRunning = false;

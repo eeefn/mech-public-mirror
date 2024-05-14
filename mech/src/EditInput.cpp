@@ -1,6 +1,7 @@
 #include "../headers/EditInput.h"
 #include "../headers/Player.h"
 #include "../headers/Map.h"
+#include "../headers/Gui.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -12,9 +13,8 @@ EditInput::EditInput(){
     return;
 }
 
-int EditInput::processKeydown(SDL_Event *keydownEvent, SDL_Rect *selWindowRen,int *xOffset,int *yOffset,short *selectColor, int *gameMode){
+int EditInput::processKeydown(SDL_Event *keydownEvent, SDL_Rect *selWindowRen, int *xOffset, int *yOffset, int *gameMode){
     bool gameIsRunning = true;
-
     switch (keydownEvent->key.keysym.sym) {
 		case SDLK_e: gameMode = PLAY; break;
 		case SDLK_RIGHT: selWindowRen->w += TILE_DIM; break;
@@ -45,11 +45,11 @@ int EditInput::processKeydown(SDL_Event *keydownEvent, SDL_Rect *selWindowRen,in
                 selWindowRen->y = 0;
             }
             break;
-        case SDLK_0: *selectColor = 0; break;
-        case SDLK_1: *selectColor = 1; break;
-        case SDLK_2: *selectColor = 2; break;
-        case SDLK_3: *selectColor = 3; break;
-        case SDLK_f: map.fill(*selWindowRen,*xOffset,*yOffset,*selectColor); break;
+        case SDLK_0: gui.selectColor = 0; break;
+        case SDLK_1: gui.selectColor = 1; break;
+        case SDLK_2: gui.selectColor = 2; break;
+        case SDLK_3: gui.selectColor = 3; break;
+        case SDLK_f: map.fill(*selWindowRen,*xOffset,*yOffset,gui.selectColor); break;
         case SDLK_z: map.save("lvl1Test.bin"); break;
         case SDLK_ESCAPE: gameIsRunning = false; break;
 
