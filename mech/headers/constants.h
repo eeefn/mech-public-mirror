@@ -8,6 +8,8 @@
 #define MAX_LVL_WIDTH 200
 #define TEX_DIM 8
 #define TILE_DIM 16
+#define EDIT 1
+#define PLAY 0
 //pixels of texture sheet
 #define TILES_IN_MAP (64 / TILE_DIM)
 #define TILE_WIDTH_IN_TILE_MAP (64 / TEX_DIM)
