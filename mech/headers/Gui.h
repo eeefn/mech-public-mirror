@@ -7,6 +7,7 @@ public:
 	//array of rects for displaying the right tile from gui
 	int soulColor;
 	int pulseCount;
+	short selectColor;
 	SDL_Rect guiArr[8][22];
 	SDL_Rect guiComponent;
 	SDL_Texture* guiTex;
