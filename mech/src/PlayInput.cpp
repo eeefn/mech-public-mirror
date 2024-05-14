@@ -1,4 +1,4 @@
-#include "../headers/Input.h"
+#include "../headers/PlayInput.h"
 #include "../headers/Player.h"
 #include "../headers/Gui.h"
 #include "../headers/Mech.h"
@@ -7,13 +7,13 @@
 #include <iostream>
 #include <vector>
 
-Input input;
+PlayInput input;
 
-Input::Input(){
+PlayInput::PlayInput(){
     std::cout << "input constructed";
 }
 
-void Input::processKeyup(SDL_Event *keyupEvent, vector<Entity*> *entityList){
+void PlayInput::processKeyup(SDL_Event *keyupEvent, vector<Entity*> *entityList){
 	Entity *playerEntity = entityList->at(0);
 	switch (keyupEvent->key.keysym.sym) {
 		case SDLK_a:
@@ -25,7 +25,7 @@ void Input::processKeyup(SDL_Event *keyupEvent, vector<Entity*> *entityList){
 	}
 }
 
-void Input::processMousedown(SDL_Event *keydownEvent, vector<Entity*> *entityList){
+void PlayInput::processMousedown(SDL_Event *keydownEvent, vector<Entity*> *entityList){
 	Entity *playerEntity = entityList->at(0);
 	switch (keydownEvent->button.button) {
 		case SDL_BUTTON_RIGHT:
@@ -34,7 +34,7 @@ void Input::processMousedown(SDL_Event *keydownEvent, vector<Entity*> *entityLis
 	}
 }
 
-int Input::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityList){
+int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityList){
     bool gameIsRunning = true;
     Entity *playerEntity = entityList->at(0);
     switch (keydownEvent->key.keysym.sym) {
