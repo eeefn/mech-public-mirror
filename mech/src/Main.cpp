@@ -203,28 +203,6 @@ void processInput() {
 	//some of this should go in an editor class. this is temp for sure
 	InputFactory inputFactory = InputFactory(&event,&xOffset,&yOffset,&gameMode,&entityList,&spriteDest);
 	gameIsRunning = inputFactory.processInput();
-	/*if (gameMode == EDIT) {
-		if (event.type == SDL_KEYDOWN) {
-			gameIsRunning = editInput.processKeydown(&event,&xOffset,&yOffset,&gameMode);
-		}
-		else if (event.type == SDL_QUIT) {
-			gameIsRunning = false;
-		}
-	}
-	else {
-		if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
-			gameIsRunning = playInput.processKeydown(&event, &entityList, &spriteDest, &gameMode);
-		}
-		if (event.type == SDL_MOUSEBUTTONDOWN) {
-			playInput.processMousedown(&event,&entityList);
-		}
-		if (event.type == SDL_KEYUP && event.key.repeat == 0) {
-			playInput.processKeyup(&event, &entityList);
-		}
-		else if (event.type == SDL_QUIT) {
-				gameIsRunning = FALSE;
-		}
-	}*/
 }
 
 void update() {
