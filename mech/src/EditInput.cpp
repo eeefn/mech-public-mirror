@@ -13,6 +13,17 @@ EditInput::EditInput(){
     return;
 }
 
+bool EditInput::processInput(SDL_Event *keydownEvent, int *xOffset, int *yOffset, int *gameMode){
+    bool gameIsRunning = true;    
+    if(keydownEvent->type == SDL_KEYDOWN){
+        gameIsRunning = this->processKeydown(keydownEvent,xOffset,yOffset,gameMode);
+    }
+    if(keydownEvent->type == SDL_QUIT){
+        gameIsRunning = false;
+    }
+    return gameIsRunning;
+}
+
 int EditInput::processKeydown(SDL_Event *keydownEvent,int *xOffset, int *yOffset, int *gameMode){
     bool gameIsRunning = true;
     switch (keydownEvent->key.keysym.sym) {
