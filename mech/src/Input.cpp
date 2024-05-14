@@ -13,6 +13,18 @@ Input::Input(){
     std::cout << "input constructed";
 }
 
+void Input::processKeyup(SDL_Event *keyupEvent, vector<Entity*> *entityList){
+	Entity *playerEntity = entityList->at(0);
+	switch (keyupEvent->key.keysym.sym) {
+		case SDLK_a:
+			playerEntity->moveLeft(false);
+			break;
+		case SDLK_d:
+			playerEntity->moveRight(false);
+			break;
+	}
+}
+
 void Input::processMousedown(SDL_Event *keydownEvent, vector<Entity*> *entityList){
 	Entity *playerEntity = entityList->at(0);
 	switch (keydownEvent->button.button) {

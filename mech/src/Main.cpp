@@ -255,16 +255,7 @@ void processInput() {
 			input.processMousedown(&event,&entityList);
 		}
 		if (event.type == SDL_KEYUP && event.key.repeat == 0) {
-				switch (event.key.keysym.sym) {
-					//case SDLK_w: player.velY += player.playerJumpY; break;
-					//case SDLK_s: player.velY -= player.playerSpeedY; break;
-				case SDLK_a:
-					entityList.at(0)->moveLeft(false);
-					break;
-				case SDLK_d:
-					entityList.at(0)->moveRight(false);
-					break;
-				}
+			input.processKeyup(&event, &entityList);
 		}
 		else if (event.type == SDL_QUIT) {
 				gameIsRunning = FALSE;
