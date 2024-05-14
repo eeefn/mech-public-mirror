@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 
-PlayInput input;
+PlayInput playInput;
 
 PlayInput::PlayInput(){
     std::cout << "input constructed";
@@ -34,7 +34,7 @@ void PlayInput::processMousedown(SDL_Event *keydownEvent, vector<Entity*> *entit
 	}
 }
 
-int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityList){
+int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityList, SDL_Rect *spriteDest, int *gameMode){
     bool gameIsRunning = true;
     Entity *playerEntity = entityList->at(0);
     switch (keydownEvent->key.keysym.sym) {
@@ -55,14 +55,14 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityLi
 		case SDLK_d:
 			playerEntity->moveRight(true);
 			break;
-		/*case SDLK_e:
-			gameMode = 1;
+		case SDLK_e:
+			*gameMode = 1;
 			//setup selector
-			selWindowRen.h = TILE_DIM;
-			selWindowRen.w = TILE_DIM;
-			selWindowRen.x = selOffX - (spriteDest.x % TILE_DIM);
-			selWindowRen.y = selOffY - (spriteDest.y % TILE_DIM);
-			break;*/
+			gui.selWindowRen.h = TILE_DIM;
+			gui.selWindowRen.w = TILE_DIM;
+			gui.selWindowRen.x = /*selOffX - */(spriteDest->x % TILE_DIM);
+			gui.selWindowRen.y = /*selOffY - */(spriteDest->y % TILE_DIM);
+			break;
 		case SDLK_q:
 			if (mech.highlighted) {
 				mech.isPlayer = true;

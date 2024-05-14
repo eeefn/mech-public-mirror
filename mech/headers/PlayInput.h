@@ -7,10 +7,10 @@ using std::vector;
 
 class PlayInput{
     public:
-        int processKeydown(SDL_Event *keyEvent,vector<Entity*> *entityList);
+        int processKeydown(SDL_Event *keyEvent,vector<Entity*> *entityList, SDL_Rect *spriteDest, int *gameMode);
         void processMousedown(SDL_Event *keydownEvent, vector<Entity*> *entityList);
         void processKeyup(SDL_Event *keyupEvent, vector<Entity*> *entityList);
         PlayInput();
 };
 
-extern PlayInput input;
+extern PlayInput playInput;
