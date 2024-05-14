@@ -2,6 +2,7 @@
 #include "../headers/Player.h"
 #include "../headers/Gui.h"
 #include "../headers/Mech.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -13,6 +14,22 @@ PlayInput::PlayInput(){
     std::cout << "input constructed";
 }
 
+bool PlayInput::processInput(SDL_Event *keyEvent, vector<Entity*> *entityList, SDL_Rect *spriteDest,int *gameMode){
+	bool gameIsRunning = true;
+	if (keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat == 0) {
+		gameIsRunning = playInput.processKeydown(keyEvent, entityList, spriteDest, gameMode);
+	}
+	if (keyEvent->type == SDL_MOUSEBUTTONDOWN) {
+		playInput.processMousedown(keyEvent,entityList);
+	}
+	if (keyEvent->type == SDL_KEYUP && keyEvent->key.repeat == 0) {
+		playInput.processKeyup(keyEvent, entityList);
+	}
+	else if (keyEvent->type == SDL_QUIT) {
+			gameIsRunning = false;
+	}
+	return gameIsRunning;
+}
 void PlayInput::processKeyup(SDL_Event *keyupEvent, vector<Entity*> *entityList){
 	Entity *playerEntity = entityList->at(0);
 	switch (keyupEvent->key.keysym.sym) {

@@ -201,9 +201,9 @@ void processInput() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
 	//some of this should go in an editor class. this is temp for sure
-	InputFactory inputFactory = InputFactory(&gameMode);
-	inputFactory.processInput();
-	if (gameMode == EDIT) {
+	InputFactory inputFactory = InputFactory(&event,&xOffset,&yOffset,&gameMode,&entityList,&spriteDest);
+	gameIsRunning = inputFactory.processInput();
+	/*if (gameMode == EDIT) {
 		if (event.type == SDL_KEYDOWN) {
 			gameIsRunning = editInput.processKeydown(&event,&xOffset,&yOffset,&gameMode);
 		}
@@ -224,7 +224,7 @@ void processInput() {
 		else if (event.type == SDL_QUIT) {
 				gameIsRunning = FALSE;
 		}
-	}
+	}*/
 }
 
 void update() {
