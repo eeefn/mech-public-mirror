@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include <vector>
 
-#include "../headers/Entity.h"
+#include "../Entity.h"
 using std::vector;
 
 class PlayInput{

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../headers/Entity.h"
+#include "../Entity.h"
 
 #include <SDL.h>
 #include <vector>

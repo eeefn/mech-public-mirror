@@ -2,8 +2,8 @@
 #include <SDL.h>
 #include <vector>
 
+#include "../Entity.h"
 
-#include "../headers/Entity.h"
 using std::vector;
 
 class EditInput{

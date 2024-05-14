@@ -1,7 +1,7 @@
-#include "../headers/EditInput.h"
-#include "../headers/Player.h"
-#include "../headers/Map.h"
-#include "../headers/Gui.h"
+#include "../../headers/controller/EditInput.h"
+#include "../../headers/Player.h"
+#include "../../headers/Map.h"
+#include "../../headers/Gui.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
