@@ -203,46 +203,9 @@ void processInput() {
 	SDL_PollEvent(&event);
 	//some of this should go in an editor class. this is temp for sure
 	if (gameMode == EDIT) {
+		
 		if (event.type == SDL_KEYDOWN) {
-			switch (event.key.keysym.sym) {
-			case SDLK_e: gameMode = PLAY; break;
-			case SDLK_RIGHT: selWindowRen.w += TILE_DIM; break;
-			case SDLK_LEFT:
-				selWindowRen.w -= TILE_DIM;
-				if (selWindowRen.w < TILE_DIM) {
-					selWindowRen.w = TILE_DIM;
-				}
-				break;
-			case SDLK_DOWN: selWindowRen.h += TILE_DIM; break;
-			case SDLK_UP:
-				selWindowRen.h -= TILE_DIM;
-				if (selWindowRen.h < TILE_DIM) {
-					selWindowRen.h = TILE_DIM;
-				}
-				break;
-			case SDLK_a: 
-				selWindowRen.x -= TILE_DIM;
-				if (selWindowRen.x <= 0) {
-					selWindowRen.x = 0;
-				}
-				break;
-			case SDLK_d: selWindowRen.x += TILE_DIM; break;
-			case SDLK_s: selWindowRen.y += TILE_DIM; break;
-			case SDLK_w: 
-				selWindowRen.y -= TILE_DIM;
-				if (selWindowRen.y <= 0) {
-					selWindowRen.y = 0;
-				}
-				break;
-			case SDLK_0: selectColor = 0; break;
-			case SDLK_1: selectColor = 1; break;
-			case SDLK_2: selectColor = 2; break;
-			case SDLK_3: selectColor = 3; break;
-			case SDLK_f: map.fill(selWindowRen,xOffset,yOffset,selectColor); break;
-			case SDLK_z: map.save("lvl1Test.bin"); break;
-			case SDLK_ESCAPE: gameIsRunning = false; break;
-
-			}
+			editInput.processKeydown(&event,&selWindowRen,&xOffset,&yOffset,&selectColor,&gameMode);
 		}
 		else if (event.type == SDL_QUIT) {
 			gameIsRunning = false;
