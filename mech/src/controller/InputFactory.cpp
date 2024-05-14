@@ -1,7 +1,7 @@
-#include "../headers/InputFactory.h"
-#include "../headers/EditInput.h"
-#include "../headers/PlayInput.h"
-#include "../headers/constants.h"
+#include "../../headers/controller/InputFactory.h"
+#include "../../headers/controller/EditInput.h"
+#include "../../headers/controller/PlayInput.h"
+#include "../../headers/constants.h"
 
 
 #include <stdlib.h>

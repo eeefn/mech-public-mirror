@@ -10,9 +10,9 @@
 #include "../headers/Map.h"
 #include "../headers/Gui.h"
 #include "../headers/Mech.h"
-#include "../headers/PlayInput.h"
-#include "../headers/EditInput.h"
-#include "../headers/InputFactory.h"
+//#include "../headers/PlayInput.h"
+//#include "../headers/EditInput.h"
+#include "../headers/controller/InputFactory.h"
 
 #include <fstream>
 #include <iostream>
@@ -200,7 +200,6 @@ void setup() {
 void processInput() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	//some of this should go in an editor class. this is temp for sure
 	InputFactory inputFactory = InputFactory(&event,&xOffset,&yOffset,&gameMode,&entityList,&spriteDest);
 	gameIsRunning = inputFactory.processInput();
 }
