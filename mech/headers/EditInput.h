@@ -8,7 +8,7 @@ using std::vector;
 
 class EditInput{
     public:
-        int processKeydown(SDL_Event *keydownEvent, SDL_Rect *selWindowRen, int *xOffset, int *yOffset, int *gameMode);
+        int processKeydown(SDL_Event *keydownEvent, int *xOffset, int *yOffset, int *gameMode);
         EditInput();
 };
 

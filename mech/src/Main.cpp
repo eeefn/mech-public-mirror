@@ -36,7 +36,6 @@ int tilesPerWindowWidth;
 int tilesPerWindowHeight;
 int lastFrameTime = 0;
 static int xOffset, yOffset = 0;
-static int editYOffset, editXOffset = 0;
 bool gameIsRunning = false;
 
 SDL_Rect tileSelect[TILE_WIDTH_IN_TILE_MAP][TILE_WIDTH_IN_TILE_MAP];
@@ -46,7 +45,6 @@ SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 //Rects for rendering tiles, objects and the player to
 SDL_Rect objTex;
-SDL_Rect selWindowRen;
 SDL_Rect spriteDest;
 SDL_Rect renTile;
 
@@ -203,9 +201,8 @@ void processInput() {
 	SDL_PollEvent(&event);
 	//some of this should go in an editor class. this is temp for sure
 	if (gameMode == EDIT) {
-		
 		if (event.type == SDL_KEYDOWN) {
-			editInput.processKeydown(&event,&selWindowRen,&xOffset,&yOffset,&gameMode);
+			editInput.processKeydown(&event,&xOffset,&yOffset,&gameMode);
 		}
 		else if (event.type == SDL_QUIT) {
 			gameIsRunning = false;
@@ -213,13 +210,13 @@ void processInput() {
 	}
 	else {
 		if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
-			gameIsRunning = input.processKeydown(&event, &entityList);
+			gameIsRunning = playInput.processKeydown(&event, &entityList, &spriteDest, &gameMode);
 		}
 		if (event.type == SDL_MOUSEBUTTONDOWN) {
-			input.processMousedown(&event,&entityList);
+			playInput.processMousedown(&event,&entityList);
 		}
 		if (event.type == SDL_KEYUP && event.key.repeat == 0) {
-			input.processKeyup(&event, &entityList);
+			playInput.processKeyup(&event, &entityList);
 		}
 		else if (event.type == SDL_QUIT) {
 				gameIsRunning = FALSE;
@@ -336,7 +333,7 @@ void render() {
 	if (gameMode == EDIT) {
 		//render selection window for editor.
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_RenderDrawRect(renderer, &selWindowRen);
+		SDL_RenderDrawRect(renderer, &gui.selWindowRen);
 	}
 	else {
 		mech.renderMech(renderer);
