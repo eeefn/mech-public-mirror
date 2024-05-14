@@ -11,6 +11,7 @@
 #include "../headers/Gui.h"
 #include "../headers/Mech.h"
 #include "../headers/PlayInput.h"
+#include "../headers/EditInput.h"
 
 #include <fstream>
 #include <iostream>
