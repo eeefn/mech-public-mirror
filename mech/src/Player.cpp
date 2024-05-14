@@ -1,11 +1,12 @@
-#pragma once
-#include "../headers/Player.h"
+
+#include <SDL.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
 #include <cmath>
 #include "../headers/constants.h"
-#include <SDL.h>
+#include "../headers/Player.h"
+
 
 using std::cout;
 
