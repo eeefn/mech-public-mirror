@@ -10,7 +10,7 @@
 #include "../headers/Map.h"
 #include "../headers/Gui.h"
 #include "../headers/Mech.h"
-#include "../headers/Input.h"
+#include "../headers/PlayInput.h"
 
 #include <fstream>
 #include <iostream>
