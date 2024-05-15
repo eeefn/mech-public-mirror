@@ -2,7 +2,7 @@ TARGET = main.exe
 INCLUDEPATH = "C:\Users\eef\SDL2\x86_64-w64-mingw32\include\SDL2"
 LIBRARYPATH = "C:\Users\eef\SDL2\x86_64-w64-mingw32\lib"
 cc = g++
-SOURCES = "src/main.cpp" "src/Map.cpp" "src/Mech.cpp" "src/Mushroom.cpp" "src/Player.cpp" "src/Gui.cpp" "src/Entity.cpp" "src/Collider.cpp" "src/controller/PlayInput.cpp" "src/controller/EditInput.cpp" "src/controller/InputFactory.cpp"
+SOURCES = "src/main.cpp" "src/Map.cpp" "src/Mech.cpp" "src/Mushroom.cpp" "src/Player.cpp" "src/Gui.cpp" "src/Entity.cpp" "src/Collider.cpp" "src/controller/PlayInput.cpp" "src/controller/EditInput.cpp" "src/controller/InputFactory.cpp" "src/Camera.cpp"
 
 all: $(TARGET)
 
