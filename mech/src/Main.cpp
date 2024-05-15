@@ -27,7 +27,7 @@ weekend notes:
 need to make an abstraction for the camera, that allows the camera to follow a specific entity.
 both mech and player will extend the entity class. 
 */
-//short selectColor = 0;
+
 int selOffY, selOffX = 0;
 short texSelX, texSelY = 0;
 int gameMode = PLAY;
@@ -35,17 +35,15 @@ int debug = 0;
 int tilesPerWindowWidth;
 int tilesPerWindowHeight;
 int lastFrameTime = 0;
-//static int xOffset, yOffset = 0;
 bool gameIsRunning = false;
 
 const Uint8* keyPtr;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
-//Rects for rendering tiles, objects and the player to
 
+//Rects for rendering tiles, objects and the player to
 SDL_Rect spriteDest;
 SDL_Rect renTile;
-
 
 vector<Entity*> entityList;
 //textures for 
@@ -240,51 +238,10 @@ void update() {
 void render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
-	camera.renderMap();
 	//iterate through the tiles we currently want to render. Im saying <= so there should be 1 extra tile
 	//to play with in both height and width
-	/*
-	for (int y = yOffset; y <= tilesPerWindowHeight + yOffset; y++) {
-		for (int x = xOffset; x <= tilesPerWindowWidth + xOffset; x++) {
-			//grab the texture we should have for the given tile from the map
-			short texSel = map.tileMap[y][x];
-			renTile.x = ((x - xOffset) * TILE_DIM);
-			if (player.posX > (WINDOW_WIDTH / 2 - PLAYER_WIDTH / 2)) {
-				renTile.x -= (player.posX % TILE_DIM);
-			}
-			renTile.y = ((y - yOffset) * TILE_DIM);
-			if (player.posY > (WINDOW_HEIGHT / 2 - PLAYER_HEIGHT / 2 - 8)) {
-				renTile.y -= (player.posY % TILE_DIM);
-			}
-			if (texSel > 0) {
-				textureSelect(texSel);
-				//handle offsets in the left corner. I havent handled the right corner 0.0
-				SDL_RenderCopy(renderer, tile_texture, &tileSelect[texSelY][texSelX], &renTile);
-			}
-			else {
-				//find the object at the location
-				for (auto &obj:map.gameObjList) {
-					if ((obj->xTile == x) && (obj->yTile == y)) {
-						//change the rendering tile size to render our object
-						renTile.h = obj->height;
-						renTile.w = obj->width;
-						objTex.h = obj->height;
-						objTex.w = obj->width;
-						objTex.x = obj->spriteSheetXPos;
-						objTex.y = obj->spriteSheetYPos;
-						SDL_RenderCopy(renderer, gameObjectTexture,NULL,&renTile);
-					}
-				}
-				renTile.w = TILE_DIM;
-				renTile.h = TILE_DIM;
-				//find object based on id
-				//lookup in vector
-				//get properties and change rentile
-			}
+	camera.renderMap();
 
-		}
-	}
-	*/
 	//editor and gameplay
 	if (gameMode == EDIT) {
 		//render selection window for editor.
