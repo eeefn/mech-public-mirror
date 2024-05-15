@@ -321,7 +321,6 @@ void render() {
 		if (player.isPlayer) {
 			SDL_RenderCopy(renderer, spriteTexture, &playerAnim[player.curAnim][player.playFrame], &spriteDest);
 		}
-				
 		//render gui
 		gui.renderSoul(renderer);
 	}

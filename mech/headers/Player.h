@@ -20,7 +20,7 @@ public:
 	//current animation
 	short totalFrame, playFrame;
 	short curAnim, curFrame;
-	bool inAir;
+	//bool inAir;
 	bool animCycleComplete;
 	//int posX, posY;
 	//int velX, velY;
