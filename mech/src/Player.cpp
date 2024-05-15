@@ -28,13 +28,12 @@ Player::Player()  {
 	velX = 0;
 	velY = 0;
 	accX = 0;
-	//gravity = 250;
-	//this is gravity. im pretty sure this should never be modified. still fuzzy tho
 	accY = GRAVITY;
 	entitySpeedX = 100;
 	playerJumpAcc = 200;
 	soul = 100;
 }
+
 void Player::jump() {
 	//adjust player velocity to initiate jump
 	velY -= playerJumpAcc;
@@ -43,7 +42,7 @@ void Player::jump() {
 	//in the 0th frame being played
 	curAnim = JUMP_ANIM;
 	playFrame = -1;
-	inAir = true;
+	this->inAir = true;
 }
 
 void Player::moveLeft(bool key) {
