@@ -10,8 +10,7 @@
 #include "../headers/Map.h"
 #include "../headers/Gui.h"
 #include "../headers/Mech.h"
-//#include "../headers/PlayInput.h"
-//#include "../headers/EditInput.h"
+#include "../headers/Camera.h"
 #include "../headers/controller/InputFactory.h"
 
 #include <fstream>
@@ -36,16 +35,14 @@ int debug = 0;
 int tilesPerWindowWidth;
 int tilesPerWindowHeight;
 int lastFrameTime = 0;
-static int xOffset, yOffset = 0;
+//static int xOffset, yOffset = 0;
 bool gameIsRunning = false;
-
-SDL_Rect tileSelect[TILE_WIDTH_IN_TILE_MAP][TILE_WIDTH_IN_TILE_MAP];
 
 const Uint8* keyPtr;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 //Rects for rendering tiles, objects and the player to
-SDL_Rect objTex;
+
 SDL_Rect spriteDest;
 SDL_Rect renTile;
 
@@ -90,11 +87,13 @@ void setup() {
 	tilesPerWindowWidth is cieling((pixels of width)/(width of tile)) */
 	SDL_DisplayMode dm;
 	SDL_GetCurrentDisplayMode(0,&dm);
-	int width = dm.w;
+
+	
+	/*int width = dm.w;
 	int height = dm.h;
 	tilesPerWindowWidth = (dm.w + TILE_DIM - 1) / TILE_DIM;
 	tilesPerWindowHeight = (dm.h + TILE_DIM - 1) / TILE_DIM;
-
+*/
 	keyPtr = SDL_GetKeyboardState(NULL);
 	//eventually these three will be merged into an atlas
 	/*create surface  for tilemap and give it to the renderer
@@ -106,7 +105,7 @@ void setup() {
 	}
 	tile_texture = SDL_CreateTextureFromSurface(renderer, tileMapSurface);
 	SDL_FreeSurface(tileMapSurface);
-
+	
 	/*create surface from spriteSheet and turn it into a texture*/
 	SDL_Surface* spriteSheetSurface = SDL_LoadBMP("./resources/mushBoyJ.bmp");
 	if (!spriteSheetSurface) {
@@ -123,6 +122,7 @@ void setup() {
 		return;
 	}
 	gameObjectTexture = SDL_CreateTextureFromSurface(renderer, gameObjectSurface);
+	camera.initializeCamera(dm.h,dm.w,renderer,tile_texture,gameObjectTexture);
 	/*create surface from gui and give it to renderer*/
 	SDL_Surface* guiSurface = SDL_LoadBMP("./resources/gui.bmp");
 	if (!guiSurface) {
@@ -156,14 +156,7 @@ void setup() {
 	
 
 	//create a grid of rectangles representing the textures in the tileMap.
-	for (unsigned int i = 0; i < TILE_WIDTH_IN_TILE_MAP; i++) {
-		for (unsigned int j = 0; j < TILE_WIDTH_IN_TILE_MAP; j++) {
-			tileSelect[i][j].x = TEX_DIM * j;
-			tileSelect[i][j].y = TEX_DIM * i;
-			tileSelect[i][j].w = TEX_DIM;
-			tileSelect[i][j].h = TEX_DIM;
-		}
-	}
+
 	//create a grid of rectangles representing the animations from player spritesheet
 	for (unsigned int i = 0; i < 15; i++) {
 		for (unsigned int j = 0; j < 4; j++) {
@@ -173,22 +166,14 @@ void setup() {
 			playerAnim[j][i].h = 48;
 		}
 		
-	}
-	//initialize the rendering rect that iterates over the screen each frame
-	renTile.x = 0;
-	renTile.y = 0;
-	renTile.w = TILE_DIM;
-	renTile.h = TILE_DIM;
+	}	
 	//initialize the rect that the sprite gets rendered to
 	spriteDest.x = 0;
 	spriteDest.y = 0;
 	spriteDest.w = PLAYER_WIDTH;
 	spriteDest.h = PLAYER_HEIGHT;
 	//initialize the rect select for gameobject textures
-	objTex.x = 0;
-	objTex.y = 0;
-	objTex.w = TILE_DIM;
-	objTex.h = TILE_DIM;
+
 	//setup our entitys
 	Entity* pptr = &player;
 	Entity* mptr = &mech;
@@ -200,7 +185,7 @@ void setup() {
 void processInput() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	InputFactory inputFactory = InputFactory(&event,&xOffset,&yOffset,&gameMode,&entityList,&spriteDest);
+	InputFactory inputFactory = InputFactory(&event,&camera.xOffset,&camera.yOffset,&gameMode,&entityList,&spriteDest);
 	gameIsRunning = inputFactory.processInput();
 }
 
@@ -217,28 +202,28 @@ void update() {
 	//update player physics if we are not editing the map
 	if (gameMode == PLAY) {
 		player.updateEntity(deltaTime);
-		mech.updateEntity(deltaTime,yOffset,xOffset,player.posX,player.posY);
-		if (collider.collisionCheck(mech.posX, mech.posY, MECH_WIDTH, MECH_HEIGHT, mech.velY, mech.velX, map.tileMap,xOffset,yOffset)) {
+		mech.updateEntity(deltaTime,camera.yOffset,camera.xOffset,player.posX,player.posY);
+		if (collider.collisionCheck(mech.posX, mech.posY, MECH_WIDTH, MECH_HEIGHT, mech.velY, mech.velX, map.tileMap,camera.xOffset,camera.yOffset)) {
 			mech.processCollision(collider.colResults);
 		}
 		//update player rect to change pos
-		xOffset = (player.posX) / TILE_DIM - (WINDOW_WIDTH / 2 - PLAYER_WIDTH / 2) / TILE_DIM;
-		yOffset = (player.posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - PLAYER_HEIGHT / 2) / TILE_DIM;
-		if (xOffset >= 0) {
-			spriteDest.x = player.posX - (xOffset * TILE_DIM) - player.posX % TILE_DIM;
+		camera.xOffset = (player.posX) / TILE_DIM - (WINDOW_WIDTH / 2 - PLAYER_WIDTH / 2) / TILE_DIM;
+		camera.yOffset = (player.posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - PLAYER_HEIGHT / 2) / TILE_DIM;
+		if (camera.xOffset >= 0) {
+			spriteDest.x = player.posX - (camera.xOffset * TILE_DIM) - player.posX % TILE_DIM;
 		}
 		else {
-			xOffset = 0;
-			spriteDest.x = player.posX - (xOffset * TILE_DIM);
+			camera.xOffset = 0;
+			spriteDest.x = player.posX - (camera.xOffset * TILE_DIM);
 		}
-		if (yOffset >= 0) {
-			spriteDest.y = player.posY - (yOffset * TILE_DIM) - player.posY % TILE_DIM;
+		if (camera.yOffset >= 0) {
+			spriteDest.y = player.posY - (camera.yOffset * TILE_DIM) - player.posY % TILE_DIM;
 		}
 		else {
-			yOffset = 0;
-			spriteDest.y = player.posY - (yOffset * TILE_DIM);
+			camera.yOffset = 0;
+			spriteDest.y = player.posY - (camera.yOffset * TILE_DIM);
 		}
-		if (collider.collisionCheck(player.posX, player.posY, PLAYER_WIDTH, PLAYER_HEIGHT, player.velY, player.velX, map.tileMap, xOffset, yOffset)) {
+		if (collider.collisionCheck(player.posX, player.posY, PLAYER_WIDTH, PLAYER_HEIGHT, player.velY, player.velX, map.tileMap, camera.xOffset, camera.yOffset)) {
 			player.processCollision(collider.colResults);
 		}
 		if (abs(player.posX - mech.posX) > 60) {
@@ -250,24 +235,15 @@ void update() {
 	}
 }
 
-void textureSelect(short select) {
-	if (select > (TILE_WIDTH_IN_TILE_MAP - 1)) {
-		texSelX = ((select + 1) % TILE_WIDTH_IN_TILE_MAP) - 1;
-		texSelY = ((select + 1) / TILE_WIDTH_IN_TILE_MAP);
-	}
-	else {
-		texSelX = select;
-		texSelY = 0;
-	}
-}
+
 
 void render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
-	
+	camera.renderMap();
 	//iterate through the tiles we currently want to render. Im saying <= so there should be 1 extra tile
 	//to play with in both height and width
-	
+	/*
 	for (int y = yOffset; y <= tilesPerWindowHeight + yOffset; y++) {
 		for (int x = xOffset; x <= tilesPerWindowWidth + xOffset; x++) {
 			//grab the texture we should have for the given tile from the map
@@ -305,10 +281,10 @@ void render() {
 				//lookup in vector
 				//get properties and change rentile
 			}
-			
 
 		}
 	}
+	*/
 	//editor and gameplay
 	if (gameMode == EDIT) {
 		//render selection window for editor.
