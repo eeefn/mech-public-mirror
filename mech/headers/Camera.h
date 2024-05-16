@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include "../headers/constants.h"
+#include "../headers/Entity.h"
 class Camera{
     public:
         int yOffset;
@@ -14,7 +15,7 @@ class Camera{
         SDL_Rect objTex;
         SDL_Texture *tileTexture;
         SDL_Texture *objectTexture;
-        void renderMap();
+        void renderMap(Entity *cameraTarget);
         void textureSelect(short select);
         void initializeTileSelect();
         void initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_Texture *tileTexture,SDL_Texture *objectTexture);

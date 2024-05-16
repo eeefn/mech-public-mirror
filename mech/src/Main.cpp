@@ -19,14 +19,8 @@
 #include <vector>
 #include <algorithm>
 
-
 using std::cout;
 using std::vector;
-/*
-weekend notes:
-need to make an abstraction for the camera, that allows the camera to follow a specific entity.
-both mech and player will extend the entity class. 
-*/
 
 //int selOffY, selOffX = 0;
 short texSelX, texSelY = 0;
@@ -86,12 +80,6 @@ void setup() {
 	SDL_DisplayMode dm;
 	SDL_GetCurrentDisplayMode(0,&dm);
 
-	
-	/*int width = dm.w;
-	int height = dm.h;
-	tilesPerWindowWidth = (dm.w + TILE_DIM - 1) / TILE_DIM;
-	tilesPerWindowHeight = (dm.h + TILE_DIM - 1) / TILE_DIM;
-*/
 	keyPtr = SDL_GetKeyboardState(NULL);
 	//eventually these three will be merged into an atlas
 	/*create surface  for tilemap and give it to the renderer
@@ -201,19 +189,20 @@ void update() {
 		auto cameraTarget = entityList.at(0);
 		camera.xOffset = (cameraTarget->posX) / TILE_DIM - (WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2) / TILE_DIM;
 		camera.yOffset = (cameraTarget->posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2) / TILE_DIM;
+
 		if (camera.xOffset >= 0) {
-			cameraTarget->displayRect.x = player.posX - (camera.xOffset * TILE_DIM) - player.posX % TILE_DIM;
+			cameraTarget->displayRect.x = cameraTarget->posX - (camera.xOffset * TILE_DIM) - cameraTarget->posX % TILE_DIM;
 		}
 		else {
 			camera.xOffset = 0;
-			cameraTarget->displayRect.x = player.posX - (camera.xOffset * TILE_DIM);
+			cameraTarget->displayRect.x = cameraTarget->posX - (camera.xOffset * TILE_DIM);
 		}
 		if (camera.yOffset >= 0) {
-			cameraTarget->displayRect.y = player.posY - (camera.yOffset * TILE_DIM) - player.posY % TILE_DIM;
+			cameraTarget->displayRect.y = cameraTarget->posY - (camera.yOffset * TILE_DIM) - cameraTarget->posY % TILE_DIM;
 		}
 		else {
 			camera.yOffset = 0;
-			cameraTarget->displayRect.y = player.posY - (camera.yOffset * TILE_DIM);
+			cameraTarget->displayRect.y = cameraTarget->posY - (camera.yOffset * TILE_DIM);
 		}
 		if (collider.collisionCheck(player.posX, player.posY, PLAYER_WIDTH, PLAYER_HEIGHT, player.velY, player.velX, map.tileMap, camera.xOffset, camera.yOffset)) {
 			player.processCollision(collider.colResults);
@@ -227,14 +216,12 @@ void update() {
 	}
 }
 
-
-
 void render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	//iterate through the tiles we currently want to render. Im saying <= so there should be 1 extra tile
 	//to play with in both height and width
-	camera.renderMap();
+	camera.renderMap(entityList.at(0));
 
 	//editor and gameplay
 	if (gameMode == EDIT) {
