@@ -11,10 +11,11 @@ class Mech : public Entity
 {
 	//size of the sheet
 	public:
+		// 
 		bool highlighted;
 		Mech();
 		SDL_Rect mechArr[4][60];
-		SDL_Rect dispRect;
+		//SDL_Rect dispRect;
 		SDL_Rect handRect[5];
 		SDL_Texture* mechTex;
 		SDL_Texture* mechAttatchmentTex;

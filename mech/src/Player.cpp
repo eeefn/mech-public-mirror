@@ -15,6 +15,12 @@ Player player;
 Player::Player()  {
 	//setup rectangles from spritesheet. For now im just initializing 
 	//the very first one to get the character moving around
+	displayRect.x = 0;
+	displayRect.y = 0;
+	displayRect.w = PLAYER_WIDTH;
+	displayRect.h = PLAYER_HEIGHT;
+	entityWidth = PLAYER_WIDTH;
+	entityHeight = PLAYER_HEIGHT;
 	inAir = true;
 	animCycleComplete = false;
 	curAnim = IDLE_ANIM;
