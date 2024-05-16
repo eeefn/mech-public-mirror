@@ -14,10 +14,10 @@ PlayInput::PlayInput(){
     std::cout << "input constructed";
 }
 
-bool PlayInput::processInput(SDL_Event *keyEvent, vector<Entity*> *entityList, SDL_Rect *spriteDest,int *gameMode){
+bool PlayInput::processInput(SDL_Event *keyEvent, vector<Entity*> *entityList, int *gameMode){
 	bool gameIsRunning = true;
 	if (keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat == 0) {
-		gameIsRunning = playInput.processKeydown(keyEvent, entityList, spriteDest, gameMode);
+		gameIsRunning = playInput.processKeydown(keyEvent, entityList, gameMode);
 	}
 	if (keyEvent->type == SDL_MOUSEBUTTONDOWN) {
 		playInput.processMousedown(keyEvent,entityList);
@@ -51,7 +51,7 @@ void PlayInput::processMousedown(SDL_Event *keydownEvent, vector<Entity*> *entit
 	}
 }
 
-int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityList, SDL_Rect *spriteDest, int *gameMode){
+int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityList, int *gameMode){
     bool gameIsRunning = true;
     Entity *playerEntity = entityList->at(0);
     switch (keydownEvent->key.keysym.sym) {
@@ -77,8 +77,8 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityLi
 			//setup selector
 			gui.selWindowRen.h = TILE_DIM;
 			gui.selWindowRen.w = TILE_DIM;
-			gui.selWindowRen.x = /*selOffX - */(spriteDest->x % TILE_DIM);
-			gui.selWindowRen.y = /*selOffY - */(spriteDest->y % TILE_DIM);
+			gui.selWindowRen.x = (playerEntity->displayRect.x % TILE_DIM);
+			gui.selWindowRen.y = /*selOffY - */(playerEntity->displayRect.y % TILE_DIM);
 			break;
 		case SDLK_q:
 			if (mech.highlighted) {

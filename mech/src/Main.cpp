@@ -164,7 +164,7 @@ void setup() {
 void processInput() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	InputFactory inputFactory = InputFactory(&event,&camera.xOffset,&camera.yOffset,&gameMode,&entityList,&player.displayRect);
+	InputFactory inputFactory = InputFactory(&event,&camera.xOffset,&camera.yOffset,&gameMode,&entityList);
 	gameIsRunning = inputFactory.processInput();
 }
 
