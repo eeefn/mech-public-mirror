@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include "../headers/constants.h"
-#include "../headers/Entity.h"
+#include "../headers/entities/Entity.h"
 class Camera{
     public:
         int yOffset;

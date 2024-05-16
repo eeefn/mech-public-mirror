@@ -1,7 +1,8 @@
 #include "../../headers/controller/PlayInput.h"
-#include "../../headers/Player.h"
+#include "../../headers/entities/Player.h"
+#include "../../headers/entities/Mech.h"
 #include "../../headers/Gui.h"
-#include "../../headers/Mech.h"
+
 
 #include <stdlib.h>
 #include <stdio.h>
