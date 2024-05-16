@@ -1,6 +1,5 @@
 #include "../headers/Camera.h"
 #include "../headers/Map.h"
-#include "../headers/Player.h"
 #include "../headers/constants.h"
 Camera camera;
 Camera::Camera(){
@@ -32,18 +31,18 @@ void Camera::initializeTileSelect(){
 	}
 }
 
-void Camera::renderMap(){
+void Camera::renderMap(Entity *cameraTarget){
     for (int y = yOffset; y <= tilesPerWindowHeight + yOffset; y++) {
 		for (int x = xOffset; x <= tilesPerWindowWidth + xOffset; x++) {
 			//grab the texture we should have for the given tile from the map
 			short texSel = map.tileMap[y][x];
 			renTile.x = ((x - xOffset) * TILE_DIM);
-			if (player.posX > (WINDOW_WIDTH / 2 - PLAYER_WIDTH / 2)) {
-				renTile.x -= (player.posX % TILE_DIM);
+			if (cameraTarget->posX > (WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2)) {
+				renTile.x -= (cameraTarget->posX % TILE_DIM);
 			}
 			renTile.y = ((y - yOffset) * TILE_DIM);
-			if (player.posY > (WINDOW_HEIGHT / 2 - PLAYER_HEIGHT / 2 - 8)) {
-				renTile.y -= (player.posY % TILE_DIM);
+			if (cameraTarget->posY > (WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2 - 8)) {
+				renTile.y -= (cameraTarget->posY % TILE_DIM);
 			}
 			if (texSel > 0) {
 				textureSelect(texSel);
