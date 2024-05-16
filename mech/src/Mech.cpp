@@ -34,9 +34,9 @@ Mech::Mech() {
 	velX, velY = 0;
 	currFrame, playFrame = 0;
 	accX = 0; accY = 250;
-	dispRect.x, dispRect.y = 100;	
-	dispRect.w = 96 * 2;
-	dispRect.h = 144 * 2;
+	displayRect.x, displayRect.y = 100;	
+	displayRect.w = 96 * 2;
+	displayRect.h = 144 * 2;
 	gDist = 0;
 	highlighted = true;
 	poweredUp, stood = false;
@@ -45,18 +45,18 @@ Mech::Mech() {
 
 void Mech::renderMech(SDL_Renderer* rend) {
 	if (!mech.isPlayer) {
-		SDL_RenderCopy(rend, mechTex, &mechArr[2][0], &dispRect);
-		SDL_RenderCopy(rend, mechTex, &mechArr[3][0], &dispRect);
+		SDL_RenderCopy(rend, mechTex, &mechArr[2][0], &displayRect);
+		SDL_RenderCopy(rend, mechTex, &mechArr[3][0], &displayRect);
 		
 		if (highlighted) {
-			SDL_RenderCopy(rend, mechTex, &mechArr[1][30], &dispRect);
+			SDL_RenderCopy(rend, mechTex, &mechArr[1][30], &displayRect);
 		}
 	}
 	else {
 		if (!poweredUp) {
 			playFrame = currFrame / 4;
-			SDL_RenderCopy(rend, mechTex, &mechArr[2][playFrame], &dispRect);
-			SDL_RenderCopy(rend, mechTex, &mechArr[3][playFrame], &dispRect);
+			SDL_RenderCopy(rend, mechTex, &mechArr[2][playFrame], &displayRect);
+			SDL_RenderCopy(rend, mechTex, &mechArr[3][playFrame], &displayRect);
 			cout << "powering up at frame: " << currFrame << '\n';
 			currFrame++;
 			if (currFrame >= 240) {
@@ -67,8 +67,8 @@ void Mech::renderMech(SDL_Renderer* rend) {
 		else if(!stood) {
 			playFrame = currFrame / 2;
 			cout << "standing up at frame: " << currFrame << '\n';
-			SDL_RenderCopy(rend, mechTex, &mechArr[0][playFrame], &dispRect);
-			SDL_RenderCopy(rend, mechTex, &mechArr[1][playFrame], &dispRect);
+			SDL_RenderCopy(rend, mechTex, &mechArr[0][playFrame], &displayRect);
+			SDL_RenderCopy(rend, mechTex, &mechArr[1][playFrame], &displayRect);
 			currFrame++;
 			if (currFrame >= 59) {
 				stood = true;
@@ -76,8 +76,8 @@ void Mech::renderMech(SDL_Renderer* rend) {
 			}
 		}
 		else {
-			SDL_RenderCopy(rend, mechTex, &mechArr[0][playFrame], &dispRect);
-			SDL_RenderCopy(rend, mechTex, &mechArr[1][playFrame], &dispRect);
+			SDL_RenderCopy(rend, mechTex, &mechArr[0][playFrame], &displayRect);
+			SDL_RenderCopy(rend, mechTex, &mechArr[1][playFrame], &displayRect);
 			//render grapple
 			if (grappling) {
 				for (int i = handRect[3].x-20; i >= handRect[0].x; i-=28) {
@@ -147,25 +147,25 @@ void Mech::updateEntity(float dt, int yO, int xO, int pPosX,int pPosY) {
 	Entity::updateEntity(dt);
 	//update the position of the display rectangle to indicate screen coords
 	if (pPosX > (WINDOW_WIDTH / 2 - 64 / 2)) {
-		dispRect.x = posX - (pPosX - (WINDOW_WIDTH/2 - 64/2));
+		displayRect.x = posX - (pPosX - (WINDOW_WIDTH/2 - 64/2));
 		//grapple
 		handRect[0].x = posX - (pPosX - (WINDOW_WIDTH / 2 - 64 / 2)) + 160;
 		
 	}
 	else {
-		dispRect.x = posX;
+		displayRect.x = posX;
 		handRect[0].x = posX + 160;
 	}
 	if (pPosY > (WINDOW_HEIGHT / 2 - 56)) {
-		dispRect.y = posY - (pPosY - (WINDOW_HEIGHT / 2 - 56));
+		displayRect.y = posY - (pPosY - (WINDOW_HEIGHT / 2 - 56));
 		handRect[0].y = posY - (pPosY - (WINDOW_HEIGHT / 2 - 56)) + 150;
 	}
 	else {
-		dispRect.y = posY;
+		displayRect.y = posY;
 		handRect[0].y = posY + 150;
 	}
-	//dispRect.x = posX - (xO * 16);
-	//dispRect.y = posY - (yO * 16);
+	//displayRect.x = posX - (xO * 16);
+	//displayRect.y = posY - (yO * 16);
 	//handRect[0].y = posY + 135;
 	handRect[3].y = handRect[0].y - 2;
 	//this whole section is extremely hacky and i feel shame in my heart

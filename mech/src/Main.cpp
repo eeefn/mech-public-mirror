@@ -28,7 +28,7 @@ need to make an abstraction for the camera, that allows the camera to follow a s
 both mech and player will extend the entity class. 
 */
 
-int selOffY, selOffX = 0;
+//int selOffY, selOffX = 0;
 short texSelX, texSelY = 0;
 int gameMode = PLAY;
 int debug = 0;
@@ -42,7 +42,7 @@ SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 
 //Rects for rendering tiles, objects and the player to
-SDL_Rect spriteDest;
+
 SDL_Rect renTile;
 
 vector<Entity*> entityList;
@@ -152,9 +152,6 @@ void setup() {
 	srand(time(NULL));
 	//populate the tiles from map data
 	
-
-	//create a grid of rectangles representing the textures in the tileMap.
-
 	//create a grid of rectangles representing the animations from player spritesheet
 	for (unsigned int i = 0; i < 15; i++) {
 		for (unsigned int j = 0; j < 4; j++) {
@@ -165,11 +162,7 @@ void setup() {
 		}
 		
 	}	
-	//initialize the rect that the sprite gets rendered to
-	spriteDest.x = 0;
-	spriteDest.y = 0;
-	spriteDest.w = PLAYER_WIDTH;
-	spriteDest.h = PLAYER_HEIGHT;
+
 	//initialize the rect select for gameobject textures
 
 	//setup our entitys
@@ -183,7 +176,7 @@ void setup() {
 void processInput() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	InputFactory inputFactory = InputFactory(&event,&camera.xOffset,&camera.yOffset,&gameMode,&entityList,&spriteDest);
+	InputFactory inputFactory = InputFactory(&event,&camera.xOffset,&camera.yOffset,&gameMode,&entityList,&player.displayRect);
 	gameIsRunning = inputFactory.processInput();
 }
 
@@ -204,22 +197,23 @@ void update() {
 		if (collider.collisionCheck(mech.posX, mech.posY, MECH_WIDTH, MECH_HEIGHT, mech.velY, mech.velX, map.tileMap,camera.xOffset,camera.yOffset)) {
 			mech.processCollision(collider.colResults);
 		}
-		//update player rect to change pos
-		camera.xOffset = (player.posX) / TILE_DIM - (WINDOW_WIDTH / 2 - PLAYER_WIDTH / 2) / TILE_DIM;
-		camera.yOffset = (player.posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - PLAYER_HEIGHT / 2) / TILE_DIM;
+		//update the offset of the camera based on the entity that the target is currently following. 
+		auto cameraTarget = entityList.at(0);
+		camera.xOffset = (cameraTarget->posX) / TILE_DIM - (WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2) / TILE_DIM;
+		camera.yOffset = (cameraTarget->posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2) / TILE_DIM;
 		if (camera.xOffset >= 0) {
-			spriteDest.x = player.posX - (camera.xOffset * TILE_DIM) - player.posX % TILE_DIM;
+			cameraTarget->displayRect.x = player.posX - (camera.xOffset * TILE_DIM) - player.posX % TILE_DIM;
 		}
 		else {
 			camera.xOffset = 0;
-			spriteDest.x = player.posX - (camera.xOffset * TILE_DIM);
+			cameraTarget->displayRect.x = player.posX - (camera.xOffset * TILE_DIM);
 		}
 		if (camera.yOffset >= 0) {
-			spriteDest.y = player.posY - (camera.yOffset * TILE_DIM) - player.posY % TILE_DIM;
+			cameraTarget->displayRect.y = player.posY - (camera.yOffset * TILE_DIM) - player.posY % TILE_DIM;
 		}
 		else {
 			camera.yOffset = 0;
-			spriteDest.y = player.posY - (camera.yOffset * TILE_DIM);
+			cameraTarget->displayRect.y = player.posY - (camera.yOffset * TILE_DIM);
 		}
 		if (collider.collisionCheck(player.posX, player.posY, PLAYER_WIDTH, PLAYER_HEIGHT, player.velY, player.velX, map.tileMap, camera.xOffset, camera.yOffset)) {
 			player.processCollision(collider.colResults);
@@ -252,7 +246,7 @@ void render() {
 		mech.renderMech(renderer);
 		//render player
 		if (player.isPlayer) {
-			SDL_RenderCopy(renderer, spriteTexture, &playerAnim[player.curAnim][player.playFrame], &spriteDest);
+			SDL_RenderCopy(renderer, spriteTexture, &playerAnim[player.curAnim][player.playFrame], &player.displayRect);
 		}
 		//render gui
 		gui.renderSoul(renderer);
@@ -266,10 +260,7 @@ void destroyWindow() {
 	SDL_Quit();
 }
 
-
-
 int main(int argc, char* argv[]) {
-	
 	gameIsRunning = initializeWindow();
 	setup(); 
 	

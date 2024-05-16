@@ -20,12 +20,7 @@ public:
 	//current animation
 	short totalFrame, playFrame;
 	short curAnim, curFrame;
-	//bool inAir;
 	bool animCycleComplete;
-	//int posX, posY;
-	//int velX, velY;
-	//float accX, accY;
-	//int gravity;
 	int playerJumpAcc, playerSpeedX;
 	int soul;
 	Player();
