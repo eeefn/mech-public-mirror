@@ -3,14 +3,16 @@
 #include <SDL.h>
 #include <time.h>
 
-#include "../headers/Player.h"
+#include "../headers/entities/Mech.h"
+#include "../headers/entities/Player.h"
+
 #include "../headers/Collider.h"
 #include "../headers/constants.h"
 #include "../headers/GameObject.h"
 #include "../headers/Map.h"
 #include "../headers/Gui.h"
-#include "../headers/Mech.h"
 #include "../headers/Camera.h"
+
 #include "../headers/controller/InputFactory.h"
 
 #include <fstream>
@@ -150,8 +152,6 @@ void setup() {
 		}
 		
 	}	
-
-	//initialize the rect select for gameobject textures
 
 	//setup our entitys
 	Entity* pptr = &player;

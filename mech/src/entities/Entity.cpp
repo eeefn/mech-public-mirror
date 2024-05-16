@@ -1,4 +1,4 @@
-#include "../headers/Entity.h"
+#include "../../headers/entities/Entity.h"
 #include "stdio.h"
 #include <iostream>
 #include <math.h>

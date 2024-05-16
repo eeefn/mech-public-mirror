@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <cmath>
-#include "../headers/constants.h"
-#include "../headers/Player.h"
+#include "../../headers/constants.h"
+#include "../../headers/entities/Player.h"
 
 
 using std::cout;
