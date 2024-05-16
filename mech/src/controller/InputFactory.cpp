@@ -8,13 +8,12 @@
 #include <stdio.h>
 #include <iostream>
 
-InputFactory::InputFactory(SDL_Event *event,int *xOffset, int *yOffset, int *gameMode,vector<Entity*> *entityList, SDL_Rect *spriteDest){
+InputFactory::InputFactory(SDL_Event *event,int *xOffset, int *yOffset, int *gameMode,vector<Entity*> *entityList){
     this->gameMode = gameMode;
     this->event = event;
     this->xOffset = xOffset;
     this->yOffset = yOffset;
     this->entityList = entityList;
-    this->spriteDest = spriteDest;
     return;
 }
 
@@ -24,7 +23,7 @@ bool InputFactory::processInput(){
         gameIsRunning = editInput.processInput(this->event,this->xOffset,this->yOffset,this->gameMode);
     }
     else if(*this->gameMode == PLAY){
-        gameIsRunning = playInput.processInput(this->event,this->entityList,this->spriteDest,this->gameMode);
+        gameIsRunning = playInput.processInput(this->event,this->entityList,this->gameMode);
     }
     return gameIsRunning;
 }
