@@ -15,9 +15,11 @@ class Camera{
         SDL_Rect objTex;
         SDL_Texture *tileTexture;
         SDL_Texture *objectTexture;
+        Entity *cameraTarget;
         void renderMap(Entity *cameraTarget);
         void textureSelect(short select);
         void initializeTileSelect();
+        int getXPosWithinFrame(int xPos);
         void initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_Texture *tileTexture,SDL_Texture *objectTexture);
         Camera();
         SDL_Renderer *renderer;

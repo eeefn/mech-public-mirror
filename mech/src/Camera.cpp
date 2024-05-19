@@ -19,6 +19,14 @@ void Camera::initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_T
     this->objectTexture = objectTexture;
     this->renderer = renderer;
 }
+int Camera::getXPosWithinFrame(int xPos){
+	if (cameraTarget->posX <= (WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2)){
+		return xPos;
+	}
+	else{
+		return xPos;//(xPos - (WINDOW_WIDTH / 2) - (cameraTarget->entityWidth / 2));
+	}
+}
 
 void Camera::initializeTileSelect(){
     for (unsigned int i = 0; i < TILE_WIDTH_IN_TILE_MAP; i++) {
@@ -32,6 +40,7 @@ void Camera::initializeTileSelect(){
 }
 
 void Camera::renderMap(Entity *cameraTarget){
+	this->cameraTarget = cameraTarget;
     for (int y = yOffset; y <= tilesPerWindowHeight + yOffset; y++) {
 		for (int x = xOffset; x <= tilesPerWindowWidth + xOffset; x++) {
 			//grab the texture we should have for the given tile from the map
