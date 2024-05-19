@@ -147,24 +147,10 @@ void Mech::updateEntity(float dt, int yO, int xO, int pPosX,int pPosY) {
 	//
 	Entity::updateEntity(dt);
 	//update the position of the display rectangle to indicate screen coords
-	/*if (pPosX > (WINDOW_WIDTH / 2 - 64 / 2)) {
-		std::cout << "outside window width";
-		displayRect.x = posX - (pPosX - (WINDOW_WIDTH/2 - 64/2));
-		//grapple
-		handRect[0].x = posX - (pPosX - (WINDOW_WIDTH / 2 - 64 / 2)) + 160;
+	//	handRect[0].x = posX - (pPosX - (WINDOW_WIDTH / 2 - 64 / 2)) + 160;
 		
-	}*/
 	displayRect.x = camera.getXPosWithinFrame(posX);
-	/*
-	if (camera.xOffset > posX % TILE_DIM){
-		displayRect.x = posX - ( - (WINDOW_WIDTH/2 - 64/2));
 
-	}
-	else {
-		displayRect.x = posX;
-		handRect[0].x = posX + 160;
-	}
-	*/
 	if (pPosY > (WINDOW_HEIGHT / 2 - 56)) {
 		displayRect.y = posY - (pPosY - (WINDOW_HEIGHT / 2 - 56));
 		handRect[0].y = posY - (pPosY - (WINDOW_HEIGHT / 2 - 56)) + 150;

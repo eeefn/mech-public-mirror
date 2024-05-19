@@ -1,6 +1,9 @@
 #include "../headers/Camera.h"
 #include "../headers/Map.h"
 #include "../headers/constants.h"
+#include "../headers/entities/Player.h"
+#include <iostream>
+
 Camera camera;
 Camera::Camera(){
     xOffset = 0; yOffset = 0;
@@ -18,13 +21,16 @@ void Camera::initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_T
     this->tileTexture = tileTexture;
     this->objectTexture = objectTexture;
     this->renderer = renderer;
+	this->cameraTarget = &player;
 }
-int Camera::getXPosWithinFrame(int xPos){
-	if (cameraTarget->posX <= (WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2)){
-		return xPos;
+int Camera::getXPosWithinFrame(int xPos){	
+	int cameraOffset = this->cameraTarget->posX - (WINDOW_WIDTH /2) + (cameraTarget->entityWidth /2);
+
+	if (cameraOffset > 0){
+		return xPos - cameraOffset;
 	}
 	else{
-		return xPos;//(xPos - (WINDOW_WIDTH / 2) - (cameraTarget->entityWidth / 2));
+		return xPos;
 	}
 }
 
