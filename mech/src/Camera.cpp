@@ -1,6 +1,9 @@
 #include "../headers/Camera.h"
 #include "../headers/Map.h"
 #include "../headers/constants.h"
+#include "../headers/entities/Player.h"
+#include <iostream>
+
 Camera camera;
 Camera::Camera(){
     xOffset = 0; yOffset = 0;
@@ -18,6 +21,17 @@ void Camera::initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_T
     this->tileTexture = tileTexture;
     this->objectTexture = objectTexture;
     this->renderer = renderer;
+	this->cameraTarget = &player;
+}
+int Camera::getXPosWithinFrame(int xPos){	
+	int cameraOffset = this->cameraTarget->posX - (WINDOW_WIDTH /2) + (cameraTarget->entityWidth /2);
+
+	if (cameraOffset > 0){
+		return xPos - cameraOffset;
+	}
+	else{
+		return xPos;
+	}
 }
 
 void Camera::initializeTileSelect(){
@@ -32,6 +46,7 @@ void Camera::initializeTileSelect(){
 }
 
 void Camera::renderMap(Entity *cameraTarget){
+	this->cameraTarget = cameraTarget;
     for (int y = yOffset; y <= tilesPerWindowHeight + yOffset; y++) {
 		for (int x = xOffset; x <= tilesPerWindowWidth + xOffset; x++) {
 			//grab the texture we should have for the given tile from the map

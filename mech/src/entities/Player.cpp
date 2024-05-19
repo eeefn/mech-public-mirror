@@ -38,6 +38,8 @@ Player::Player()  {
 	entitySpeedX = 100;
 	playerJumpAcc = 200;
 	soul = 100;
+	entityWidth = PLAYER_WIDTH;
+	entityHeight = PLAYER_HEIGHT;
 }
 
 void Player::jump() {

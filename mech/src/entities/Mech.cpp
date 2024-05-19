@@ -1,4 +1,5 @@
 #include "../../headers/entities/Mech.h"
+#include "../../headers/Camera.h"
 #include "stdio.h"
 #include <iostream>
 
@@ -146,16 +147,10 @@ void Mech::updateEntity(float dt, int yO, int xO, int pPosX,int pPosY) {
 	//
 	Entity::updateEntity(dt);
 	//update the position of the display rectangle to indicate screen coords
-	if (pPosX > (WINDOW_WIDTH / 2 - 64 / 2)) {
-		displayRect.x = posX - (pPosX - (WINDOW_WIDTH/2 - 64/2));
-		//grapple
-		handRect[0].x = posX - (pPosX - (WINDOW_WIDTH / 2 - 64 / 2)) + 160;
+	//	handRect[0].x = posX - (pPosX - (WINDOW_WIDTH / 2 - 64 / 2)) + 160;
 		
-	}
-	else {
-		displayRect.x = posX;
-		handRect[0].x = posX + 160;
-	}
+	displayRect.x = camera.getXPosWithinFrame(posX);
+
 	if (pPosY > (WINDOW_HEIGHT / 2 - 56)) {
 		displayRect.y = posY - (pPosY - (WINDOW_HEIGHT / 2 - 56));
 		handRect[0].y = posY - (pPosY - (WINDOW_HEIGHT / 2 - 56)) + 150;
