@@ -103,10 +103,16 @@ void Camera::textureSelect(short select) {
 }
 
 void Camera::update(Entity *cameraTarget){	
+	updateCameraOffsets(cameraTarget);
+	updateTargetDisplayPos(cameraTarget);	
+}
 
+void Camera::updateCameraOffsets(Entity *cameraTarget){
 	camera.xOffset = (cameraTarget->posX) / TILE_DIM - (WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2) / TILE_DIM;
 	camera.yOffset = (cameraTarget->posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2) / TILE_DIM;
+}
 
+void Camera::updateTargetDisplayPos(Entity *cameraTarget){
 	if (camera.xOffset >= 0) {
 		cameraTarget->displayRect.x = cameraTarget->posX - (camera.xOffset * TILE_DIM) - cameraTarget->posX % TILE_DIM;
 	}
