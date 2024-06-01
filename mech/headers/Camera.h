@@ -21,6 +21,7 @@ class Camera{
         void initializeTileSelect();
         int getXPosWithinFrame(int xPos);
         void initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_Texture *tileTexture,SDL_Texture *objectTexture);
+        void update(Entity *cameraTarget);
         Camera();
         SDL_Renderer *renderer;
 };

@@ -78,7 +78,7 @@ int initializeWindow() {
 void setup() {
 	/*setting up the display of our tiles. Find the height and width of current display. 
 	use that to determine how many tiles should go in the width and the height by doing ceiling of integer division.
-	tilesPerWindowWidth is cieling((pixels of width)/(width of tile)) */
+	tilesPerWindowWidth is ceiling((pixels of width)/(width of tile)) */
 	SDL_DisplayMode dm;
 	SDL_GetCurrentDisplayMode(0,&dm);
 
@@ -187,23 +187,9 @@ void update() {
 		}
 		//update the offset of the camera based on the entity that the target is currently following. 
 		auto cameraTarget = entityList.at(0);
-		camera.xOffset = (cameraTarget->posX) / TILE_DIM - (WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2) / TILE_DIM;
-		camera.yOffset = (cameraTarget->posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2) / TILE_DIM;
 
-		if (camera.xOffset >= 0) {
-			cameraTarget->displayRect.x = cameraTarget->posX - (camera.xOffset * TILE_DIM) - cameraTarget->posX % TILE_DIM;
-		}
-		else {
-			camera.xOffset = 0;
-			cameraTarget->displayRect.x = cameraTarget->posX - (camera.xOffset * TILE_DIM);
-		}
-		if (camera.yOffset >= 0) {
-			cameraTarget->displayRect.y = cameraTarget->posY - (camera.yOffset * TILE_DIM) - cameraTarget->posY % TILE_DIM;
-		}
-		else {
-			camera.yOffset = 0;
-			cameraTarget->displayRect.y = cameraTarget->posY - (camera.yOffset * TILE_DIM);
-		}
+		camera.update(cameraTarget);
+
 		if (collider.collisionCheck(player.posX, player.posY, PLAYER_WIDTH, PLAYER_HEIGHT, player.velY, player.velX, map.tileMap, camera.xOffset, camera.yOffset)) {
 			player.processCollision(collider.colResults);
 		}
@@ -249,6 +235,7 @@ void destroyWindow() {
 
 int main(int argc, char* argv[]) {
 	gameIsRunning = initializeWindow();
+	
 	setup(); 
 	
 	while (gameIsRunning) {
@@ -256,6 +243,7 @@ int main(int argc, char* argv[]) {
 		update();
 		render();
 	}
+
 	destroyWindow();
 	std::cout << "Goodbye";
 	return 0;

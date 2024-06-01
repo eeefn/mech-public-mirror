@@ -23,6 +23,7 @@ void Camera::initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_T
     this->renderer = renderer;
 	this->cameraTarget = &player;
 }
+
 int Camera::getXPosWithinFrame(int xPos){	
 	int cameraOffset = this->cameraTarget->posX - (WINDOW_WIDTH /2) + (cameraTarget->entityWidth /2);
 
@@ -101,3 +102,23 @@ void Camera::textureSelect(short select) {
 	}
 }
 
+void Camera::update(Entity *cameraTarget){	
+
+	camera.xOffset = (cameraTarget->posX) / TILE_DIM - (WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2) / TILE_DIM;
+	camera.yOffset = (cameraTarget->posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2) / TILE_DIM;
+
+	if (camera.xOffset >= 0) {
+		cameraTarget->displayRect.x = cameraTarget->posX - (camera.xOffset * TILE_DIM) - cameraTarget->posX % TILE_DIM;
+	}
+	else {
+		camera.xOffset = 0;
+		cameraTarget->displayRect.x = cameraTarget->posX - (camera.xOffset * TILE_DIM);
+	}
+	if (camera.yOffset >= 0) {
+		cameraTarget->displayRect.y = cameraTarget->posY - (camera.yOffset * TILE_DIM) - cameraTarget->posY % TILE_DIM;
+	}
+	else {
+		camera.yOffset = 0;
+		cameraTarget->displayRect.y = cameraTarget->posY - (camera.yOffset * TILE_DIM);
+	}
+}
