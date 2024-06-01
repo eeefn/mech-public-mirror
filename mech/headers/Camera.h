@@ -17,14 +17,15 @@ class Camera{
         void renderMap(Entity *cameraTarget);
         int getXPosWithinFrame(int xPos);
         void initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_Texture *tileTexture,SDL_Texture *objectTexture);
-        void update(Entity *cameraTarget);
+        void update();
+        void setCameraTarget(Entity *newCameraTarget);
         Camera();
         SDL_Renderer *renderer;
     private:
         void textureSelect(short select);
         void initializeTileSelect();
-        void updateTargetDisplayPos(Entity *cameraTarget);
-        void updateCameraOffsets(Entity *cameraTarget);
+        void updateTargetDisplayPos();
+        void updateCameraOffsets();
 };
 
 extern Camera camera;

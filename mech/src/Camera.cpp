@@ -15,6 +15,10 @@ Camera::Camera(){
     initializeTileSelect();
 }
 
+void Camera::setCameraTarget(Entity *newCameraTarget){
+	camera.cameraTarget = newCameraTarget;
+}
+
 void Camera::initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_Texture *tileTexture,SDL_Texture *objectTexture){
     this->tilesPerWindowHeight = (height + TILE_DIM - 1) / TILE_DIM;
     this->tilesPerWindowWidth = (width + TILE_DIM - 1) / TILE_DIM;
@@ -102,17 +106,17 @@ void Camera::textureSelect(short select) {
 	}
 }
 
-void Camera::update(Entity *cameraTarget){	
-	updateCameraOffsets(cameraTarget);
-	updateTargetDisplayPos(cameraTarget);	
+void Camera::update(){	
+	updateCameraOffsets();
+	updateTargetDisplayPos();	
 }
 
-void Camera::updateCameraOffsets(Entity *cameraTarget){
+void Camera::updateCameraOffsets(){
 	camera.xOffset = (cameraTarget->posX) / TILE_DIM - (WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2) / TILE_DIM;
 	camera.yOffset = (cameraTarget->posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2) / TILE_DIM;
 }
 
-void Camera::updateTargetDisplayPos(Entity *cameraTarget){
+void Camera::updateTargetDisplayPos(){
 	if (camera.xOffset >= 0) {
 		cameraTarget->displayRect.x = cameraTarget->posX - (camera.xOffset * TILE_DIM) - cameraTarget->posX % TILE_DIM;
 	}
