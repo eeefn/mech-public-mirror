@@ -2,6 +2,7 @@
 #include "../../headers/entities/Player.h"
 #include "../../headers/entities/Mech.h"
 #include "../../headers/Gui.h"
+#include "../../headers/Camera.h"
 
 
 #include <stdlib.h>
@@ -88,7 +89,8 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityLi
 				mech.highlighted = false;
 				//swap the position of mech and player.
 				std::iter_swap(entityList->begin(), entityList->end() - 1);
-				}
+				camera.setCameraTarget(entityList->at(0));
+			}
 			break;
 		case SDLK_ESCAPE: gameIsRunning = false; break;
 	}

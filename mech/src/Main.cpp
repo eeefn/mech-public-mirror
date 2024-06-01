@@ -188,7 +188,7 @@ void update() {
 		//update the offset of the camera based on the entity that the target is currently following. 
 		auto cameraTarget = entityList.at(0);
 
-		camera.update(cameraTarget);
+		camera.update();
 
 		if (collider.collisionCheck(player.posX, player.posY, PLAYER_WIDTH, PLAYER_HEIGHT, player.velY, player.velX, map.tileMap, camera.xOffset, camera.yOffset)) {
 			player.processCollision(collider.colResults);
@@ -203,10 +203,10 @@ void update() {
 }
 
 void render() {
+
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
-	//iterate through the tiles we currently want to render. Im saying <= so there should be 1 extra tile
-	//to play with in both height and width
+	
 	camera.renderMap(entityList.at(0));
 
 	//editor and gameplay
