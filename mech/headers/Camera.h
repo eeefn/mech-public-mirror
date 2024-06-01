@@ -4,12 +4,10 @@
 #include "../headers/entities/Entity.h"
 class Camera{
     public:
-        int yOffset;
-        int xOffset;
-        int texSelY;
-        int texSelX;
-        int tilesPerWindowHeight;
-        int tilesPerWindowWidth;
+        int yOffset, xOffset;
+        int texSelY, texSelX;
+        int tilesPerWindowHeight, tilesPerWindowWidth;
+        
         SDL_Rect tileSelect[TILE_WIDTH_IN_TILE_MAP][TILE_WIDTH_IN_TILE_MAP];
         SDL_Rect renTile;
         SDL_Rect objTex;
@@ -17,13 +15,16 @@ class Camera{
         SDL_Texture *objectTexture;
         Entity *cameraTarget;
         void renderMap(Entity *cameraTarget);
-        void textureSelect(short select);
-        void initializeTileSelect();
         int getXPosWithinFrame(int xPos);
         void initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_Texture *tileTexture,SDL_Texture *objectTexture);
         void update(Entity *cameraTarget);
         Camera();
         SDL_Renderer *renderer;
+    private:
+        void textureSelect(short select);
+        void initializeTileSelect();
+        void updateTargetDisplayPos(Entity *cameraTarget);
+        void updateCameraOffsets(Entity *cameraTarget);
 };
 
 extern Camera camera;
