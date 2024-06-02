@@ -16,7 +16,7 @@ public:
 	virtual void moveLeft(bool key);
 	virtual void moveRight(bool key);
 	virtual void attackRight(int xClick);
-	virtual void render();	
+	virtual void render(SDL_Renderer* renderer);	
 	void processCollision();
 	
 };

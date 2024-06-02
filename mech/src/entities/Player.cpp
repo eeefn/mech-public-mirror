@@ -15,12 +15,9 @@ Player player;
 Player::Player()  {
 	//setup rectangles from spritesheet. For now im just initializing 
 	//the very first one to get the character moving around
-	displayRect.x = 0;
-	displayRect.y = 0;
-	displayRect.w = PLAYER_WIDTH;
-	displayRect.h = PLAYER_HEIGHT;
-	entityWidth = PLAYER_WIDTH;
-	entityHeight = PLAYER_HEIGHT;
+	displayRect.x = 0; displayRect.y = 0;
+	displayRect.w = PLAYER_WIDTH; displayRect.h = PLAYER_HEIGHT;
+	entityWidth = PLAYER_WIDTH; entityHeight = PLAYER_HEIGHT;
 	inAir = true;
 	animCycleComplete = false;
 	curAnim = IDLE_ANIM;
@@ -40,8 +37,31 @@ Player::Player()  {
 	soul = 100;
 	entityWidth = PLAYER_WIDTH;
 	entityHeight = PLAYER_HEIGHT;
+	initializePlayerAnim();
 }
 
+void Player::initializeSpriteTexture(SDL_Renderer* renderer){	
+	/*create surface from spriteSheet and turn it into a texture*/
+	SDL_Surface* spriteSheetSurface = SDL_LoadBMP("./resources/mushBoyJ.bmp");
+	if (!spriteSheetSurface) {
+		fprintf(stderr, "could not find spritesheet");
+		return;
+	}
+	player.spriteTexture = SDL_CreateTextureFromSurface(renderer, spriteSheetSurface);
+	SDL_FreeSurface(spriteSheetSurface);
+}
+
+void Player::initializePlayerAnim(){	
+	//create a grid of rectangles representing the animations from player spritesheet
+	for (unsigned int i = 0; i < 15; i++) {
+		for (unsigned int j = 0; j < 4; j++) {
+			playerAnim[j][i].x = i * 32;
+			playerAnim[j][i].y = j*48;
+			playerAnim[j][i].w = 32;
+			playerAnim[j][i].h = 48;
+		}		
+	}	
+}
 void Player::jump() {
 	//adjust player velocity to initiate jump
 	velY -= playerJumpAcc;
@@ -65,6 +85,7 @@ void Player::moveLeft(bool key) {
 		playFrame = -1;
 	}
 }
+
 void Player::moveRight(bool key) {
 	if (key) {
 		velX += entitySpeedX;
@@ -78,6 +99,13 @@ void Player::moveRight(bool key) {
 	}
 
 }
+void Player::render(SDL_Renderer* renderer){
+	//render player
+	if (!player.inMech) {
+		SDL_RenderCopy(renderer, spriteTexture, &playerAnim[curAnim][player.playFrame], &player.displayRect);
+	}
+}
+
 void Player::updateEntity(float dt) {
 	//updateEntity in the parent does physics
 	Entity::updateEntity(dt);

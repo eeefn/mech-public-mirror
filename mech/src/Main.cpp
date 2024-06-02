@@ -44,10 +44,8 @@ SDL_Rect renTile;
 vector<Entity*> entityList;
 //textures for 
 SDL_Texture* tile_texture;
-SDL_Texture* spriteTexture;
 SDL_Texture* gameObjectTexture;
 //this is the spriteSelect for animations. Currently 1*15 because only jump exists
-SDL_Rect playerAnim[4][15];
 
 
 int initializeWindow() {
@@ -94,15 +92,6 @@ void setup() {
 	tile_texture = SDL_CreateTextureFromSurface(renderer, tileMapSurface);
 	SDL_FreeSurface(tileMapSurface);
 	
-	/*create surface from spriteSheet and turn it into a texture*/
-	SDL_Surface* spriteSheetSurface = SDL_LoadBMP("./resources/mushBoyJ.bmp");
-	if (!spriteSheetSurface) {
-		fprintf(stderr, "could not find spritesheet");
-		return;
-	}
-	spriteTexture = SDL_CreateTextureFromSurface(renderer, spriteSheetSurface);
-	SDL_FreeSurface(spriteSheetSurface);
-	
 	/*create surface from gameObjects and give it to renderer*/
 	SDL_Surface* gameObjectSurface = SDL_LoadBMP("./resources/objSheetv1.bmp");
 	if (!gameObjectSurface) {
@@ -111,6 +100,7 @@ void setup() {
 	}
 	gameObjectTexture = SDL_CreateTextureFromSurface(renderer, gameObjectSurface);
 	camera.initializeCamera(dm.h,dm.w,renderer,tile_texture,gameObjectTexture);
+	player.initializeSpriteTexture(renderer);
 	/*create surface from gui and give it to renderer*/
 	SDL_Surface* guiSurface = SDL_LoadBMP("./resources/gui.bmp");
 	if (!guiSurface) {
@@ -140,20 +130,7 @@ void setup() {
 
 	//this is probably important
 	srand(time(NULL));
-	//populate the tiles from map data
-	
-	//create a grid of rectangles representing the animations from player spritesheet
-	for (unsigned int i = 0; i < 15; i++) {
-		for (unsigned int j = 0; j < 4; j++) {
-			playerAnim[j][i].x = i * 32;
-			playerAnim[j][i].y = j*48;
-			playerAnim[j][i].w = 32;
-			playerAnim[j][i].h = 48;
-		}
-		
-	}	
-
-	//setup our entitys
+	//setup our entities
 	Entity* pptr = &player;
 	Entity* mptr = &mech;
 	entityList.push_back(pptr);
@@ -216,11 +193,8 @@ void render() {
 		SDL_RenderDrawRect(renderer, &gui.selWindowRen);
 	}
 	else {
-		mech.renderMech(renderer);
-		//render player
-		if (player.isPlayer) {
-			SDL_RenderCopy(renderer, spriteTexture, &playerAnim[player.curAnim][player.playFrame], &player.displayRect);
-		}
+		mech.render(renderer);
+		player.render(renderer);
 		//render gui
 		gui.renderSoul(renderer);
 	}
