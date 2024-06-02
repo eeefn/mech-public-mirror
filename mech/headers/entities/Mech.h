@@ -27,7 +27,7 @@ class Mech : public Entity
 		void moveLeft(bool key);
 		void moveRight(bool key);
 		void attackRight(int xClick);
-		void renderMech(SDL_Renderer* rend);
+		void render(SDL_Renderer* rend);
 		void processCollision(bool collisions[4]);
 };
 extern Mech mech;

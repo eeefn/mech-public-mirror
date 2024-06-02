@@ -44,20 +44,20 @@ Mech::Mech() {
 	entitySpeedX = 70;
 }
 
-void Mech::renderMech(SDL_Renderer* rend) {
+void Mech::render(SDL_Renderer* renderer) {
 	if (!mech.isPlayer) {
-		SDL_RenderCopy(rend, mechTex, &mechArr[2][0], &displayRect);
-		SDL_RenderCopy(rend, mechTex, &mechArr[3][0], &displayRect);
+		SDL_RenderCopy(renderer, mechTex, &mechArr[2][0], &displayRect);
+		SDL_RenderCopy(renderer, mechTex, &mechArr[3][0], &displayRect);
 		
 		if (highlighted) {
-			SDL_RenderCopy(rend, mechTex, &mechArr[1][30], &displayRect);
+			SDL_RenderCopy(renderer, mechTex, &mechArr[1][30], &displayRect);
 		}
 	}
 	else {
 		if (!poweredUp) {
 			playFrame = currFrame / 4;
-			SDL_RenderCopy(rend, mechTex, &mechArr[2][playFrame], &displayRect);
-			SDL_RenderCopy(rend, mechTex, &mechArr[3][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, mechTex, &mechArr[2][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, mechTex, &mechArr[3][playFrame], &displayRect);
 			cout << "powering up at frame: " << currFrame << '\n';
 			currFrame++;
 			if (currFrame >= 240) {
@@ -68,8 +68,8 @@ void Mech::renderMech(SDL_Renderer* rend) {
 		else if(!stood) {
 			playFrame = currFrame / 2;
 			cout << "standing up at frame: " << currFrame << '\n';
-			SDL_RenderCopy(rend, mechTex, &mechArr[0][playFrame], &displayRect);
-			SDL_RenderCopy(rend, mechTex, &mechArr[1][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, mechTex, &mechArr[0][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, mechTex, &mechArr[1][playFrame], &displayRect);
 			currFrame++;
 			if (currFrame >= 59) {
 				stood = true;
@@ -77,28 +77,28 @@ void Mech::renderMech(SDL_Renderer* rend) {
 			}
 		}
 		else {
-			SDL_RenderCopy(rend, mechTex, &mechArr[0][playFrame], &displayRect);
-			SDL_RenderCopy(rend, mechTex, &mechArr[1][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, mechTex, &mechArr[0][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, mechTex, &mechArr[1][playFrame], &displayRect);
 			//render grapple
 			if (grappling) {
 				for (int i = handRect[3].x-20; i >= handRect[0].x; i-=28) {
 					handRect[2].x = i;
 					handRect[2].y = posY + 142;
-					SDL_RenderCopy(rend,mechAttatchmentTex,&mechHandArr[2],&handRect[2]);
+					SDL_RenderCopy(renderer,mechAttatchmentTex,&mechHandArr[2],&handRect[2]);
 					
 				}
-				SDL_RenderCopy(rend, mechAttatchmentTex, &mechHandArr[3], &handRect[3]);
+				SDL_RenderCopy(renderer, mechAttatchmentTex, &mechHandArr[3], &handRect[3]);
 				for (int i = handRect[3].x-8; i >= handRect[0].x;i-=28) {
 					handRect[1].x = i;
 					handRect[1].y = posY + 144;
-					SDL_RenderCopy(rend, mechAttatchmentTex, &mechHandArr[1], &handRect[1]);
+					SDL_RenderCopy(renderer, mechAttatchmentTex, &mechHandArr[1], &handRect[1]);
 				}
 			}
 			else {
-				SDL_RenderCopy(rend, mechAttatchmentTex, &mechHandArr[3], &handRect[3]);
+				SDL_RenderCopy(renderer, mechAttatchmentTex, &mechHandArr[3], &handRect[3]);
 			}
 			
-			SDL_RenderCopy(rend, mechAttatchmentTex, &mechHandArr[0], &handRect[0]);
+			SDL_RenderCopy(renderer, mechAttatchmentTex, &mechHandArr[0], &handRect[0]);
 		}
 		
 	}

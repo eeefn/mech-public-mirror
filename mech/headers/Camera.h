@@ -13,6 +13,7 @@ class Camera{
         SDL_Rect objTex;
         SDL_Texture *tileTexture;
         SDL_Texture *objectTexture;
+        
         Entity *cameraTarget;
         void renderMap(Entity *cameraTarget);
         int getXPosWithinFrame(int xPos);

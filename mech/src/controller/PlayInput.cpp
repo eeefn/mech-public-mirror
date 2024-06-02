@@ -86,6 +86,7 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityLi
 			if (mech.highlighted) {
 				mech.isPlayer = true;
 				player.isPlayer = false;
+				player.inMech = true;
 				mech.highlighted = false;
 				//swap the position of mech and player.
 				std::iter_swap(entityList->begin(), entityList->end() - 1);
