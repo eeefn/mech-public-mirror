@@ -193,8 +193,10 @@ void render() {
 		SDL_RenderDrawRect(renderer, &gui.selWindowRen);
 	}
 	else {
-		mech.render(renderer);
-		player.render(renderer);
+		//Iterate through the entity list, rendering every entity
+		for(auto & entity : entityList){
+			entity->render(renderer);
+		}	
 		//render gui
 		gui.renderSoul(renderer);
 	}
