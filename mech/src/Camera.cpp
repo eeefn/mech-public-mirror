@@ -39,6 +39,16 @@ int Camera::getXPosWithinFrame(int xPos){
 	}
 }
 
+int Camera::getYPosWithinFrame(int yPos){
+	int cameraOffset = this->cameraTarget->posY - (WINDOW_HEIGHT / 2 - 56);
+	if (cameraOffset > 0){
+		return yPos - cameraOffset;
+	}
+	else{
+		return yPos;
+	}
+}
+
 void Camera::initializeTileSelect(){
     for (unsigned int i = 0; i < TILE_WIDTH_IN_TILE_MAP; i++) {
 		for (unsigned int j = 0; j < TILE_WIDTH_IN_TILE_MAP; j++) {

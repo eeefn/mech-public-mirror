@@ -158,7 +158,7 @@ void update() {
 	//update player physics if we are not editing the map
 	if (gameMode == PLAY) {
 		player.updateEntity(deltaTime);
-		mech.updateEntity(deltaTime,camera.yOffset,camera.xOffset,player.posX,player.posY);
+		mech.updateEntity(deltaTime,player.posX,player.posY);
 		if (collider.collisionCheck(mech.posX, mech.posY, MECH_WIDTH, MECH_HEIGHT, mech.velY, mech.velX, map.tileMap,camera.xOffset,camera.yOffset)) {
 			mech.processCollision(collider.colResults);
 		}
