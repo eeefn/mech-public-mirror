@@ -1,6 +1,8 @@
 #pragma once
 #include "./constants.h"
+#include "./entities/Entity.h"
 #include <SDL.h>
+
 class Collider
 {
 public:
@@ -8,7 +10,7 @@ public:
 	int xTilePos, yTilePos;
 	bool colResults[4];
 	Collider();
-	bool collisionCheck(int xPos, int yPos, int entityWidth, int entityHeight, float yVel, float xVel,short tileMap[][MAX_LVL_WIDTH], int xOffset, int yOffset);
+	bool collisionCheck(Entity* entity, short tileMap[][MAX_LVL_WIDTH]);
 
 };
 

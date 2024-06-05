@@ -1,10 +1,10 @@
-#include "../headers/Collider.h"
 #include <SDL.h>
+#include "../headers/Collider.h"
+#include "../headers/Camera.h"
 #include "../headers/constants.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-using std::cout;
 
 Collider collider;
 
@@ -18,30 +18,20 @@ Collider::Collider() {
 	}
 }
 
-bool Collider::collisionCheck(int xPos, int yPos, int entityWidth, int entityHeight, float yVel, float xVel, short tileMap[][MAX_LVL_WIDTH],int xOffset, int yOffset) {
+bool Collider::collisionCheck(Entity* entity, short tileMap[][MAX_LVL_WIDTH]) {
 	bool colOccur = false;
 	//reset collision results
 	for (unsigned int i = 0; i < 4; i++) {
 		colResults[i] = false;
 	}
 	//assign the number of tiles tall the collison box is. same for width of collision box
-	//cout << "x,y:" << '\n';
-	//cout << xPos << " " << yPos << '\n';
-	xTilePos = xPos / TILE_DIM;
-	yTilePos = yPos / TILE_DIM;
-	//cout << "tile x, y:" << '\n';
-	//cout << xTilePos << " " << yTilePos << '\n';
-	yLen = (entityHeight) / TILE_DIM;
-	xLen = (entityWidth) / TILE_DIM;
-	//cout << "len x, y:" << '\n';
-	//cout << xLen << " " << yLen << '\n';
-	//grab the x pos in tilemap. This will need to include offset in a sec.//i think these operations need to be floored
-	
+	xTilePos = entity->posX / TILE_DIM;
+	yTilePos = entity->posY / TILE_DIM;
+	yLen = (entity->entityHeight) / TILE_DIM;
+	xLen =  (entity->entityWidth) / TILE_DIM;
 	//if going down
-	if (yVel > 0) {
+	if (entity->velY > 0) {
 		//iterate through the bottom  x tiles to check for collision
-		//cout << "checking " << xTilePos << " through " << xTilePos + xLen << " at "<< yTilePos + yLen << '\n';
-		
 		for (short i = xTilePos; i < (xTilePos + xLen); i++) {
 			if (tileMap[yTilePos + yLen][i] > 0) {
 				//cout << "collison down at " << xTilePos << ", " << yLen << '\n';
@@ -58,8 +48,7 @@ bool Collider::collisionCheck(int xPos, int yPos, int entityWidth, int entityHei
 			}
 		}
 	}
-	if (xVel > 0) {
-		//cout << "MR";
+	if (entity->velX > 0) {
 		//moving right
 		for (unsigned int i = yTilePos; i < (yTilePos + yLen); i++) {
 			if (tileMap[i][xTilePos + xLen] > 0) {
@@ -68,7 +57,7 @@ bool Collider::collisionCheck(int xPos, int yPos, int entityWidth, int entityHei
 			}
 		}
 	}
-	else if (xVel < 0){
+	else if (entity->velX < 0){
 		//moving left
 		for (unsigned int i = yTilePos; i < (yTilePos + yLen); i++) {
 			if (tileMap[i][xTilePos] > 0) {
