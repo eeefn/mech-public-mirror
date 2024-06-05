@@ -22,6 +22,9 @@ void Entity::render(SDL_Renderer* renderer){
 void Entity::stop(){
 	velX = 0;
 }
+void Entity::processCollision(bool collisions[4]){
+	
+}
 
 void Entity::updateEntity(float dt) {
 	if (accY > GRAVITY) {
