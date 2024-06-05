@@ -20,6 +20,7 @@ Mech::Mech() {
 			mechArr[i][j].h = 144;
 		}
 	}
+	entityTransition = false;
 	mechHandArr[0].x = 0; mechHandArr[0].y = 0; mechHandArr[0].w = 7; mechHandArr[0].h = 13;
 	handRect[0].x = 0; handRect[0].y = 0; handRect[0].w = 14; handRect[0].h = 26;
 	mechHandArr[1].x = 9; mechHandArr[1].y = 0; mechHandArr[1].w = 10; mechHandArr[1].h = 5;

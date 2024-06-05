@@ -19,9 +19,11 @@ void Entity::attackRight(int xClick) {
 void Entity::render(SDL_Renderer* renderer){
 		
 }
+void Entity::stop(){
+	velX = 0;
+}
 
 void Entity::updateEntity(float dt) {
-	//cout << "hello from entity :)" << '\n';
 	if (accY > GRAVITY) {
 		accY = GRAVITY;
 	}
