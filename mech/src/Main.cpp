@@ -157,8 +157,11 @@ void update() {
 	lastFrameTime = SDL_GetTicks();
 	//update player physics if we are not editing the map
 	if (gameMode == PLAY) {
-		player.updateEntity(deltaTime);
-		mech.updateEntity(deltaTime,camera.yOffset,camera.xOffset,player.posX,player.posY);
+		for(auto & entity : entityList){
+			entity->updateEntity(deltaTime);
+		}
+		//player.updateEntity(deltaTime);
+		//mech.updateEntity(deltaTime);
 		if (collider.collisionCheck(mech.posX, mech.posY, MECH_WIDTH, MECH_HEIGHT, mech.velY, mech.velX, map.tileMap,camera.xOffset,camera.yOffset)) {
 			mech.processCollision(collider.colResults);
 		}
@@ -194,8 +197,8 @@ void render() {
 	}
 	else {
 		//Iterate through the entity list, rendering every entity
-		for(auto & entity : entityList){
-			entity->render(renderer);
+		for(auto entity = entityList.rbegin(); entity != entityList.rend(); ++entity){
+			(*entity)->render(renderer);
 		}	
 		//render gui
 		gui.renderSoul(renderer);

@@ -17,6 +17,7 @@ class Camera{
         Entity *cameraTarget;
         void renderMap(Entity *cameraTarget);
         int getXPosWithinFrame(int xPos);
+        int getYPosWithinFrame(int yPos);
         void initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_Texture *tileTexture,SDL_Texture *objectTexture);
         void update();
         void setCameraTarget(Entity *newCameraTarget);

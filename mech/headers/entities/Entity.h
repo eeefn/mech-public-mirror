@@ -10,7 +10,7 @@ public:
 	bool isPlayer, inAir;
 	int entitySpeedX;
 	SDL_Rect displayRect;
-	void updateEntity(float dt);
+	virtual void updateEntity(float dt);
 
 	virtual void jump();
 	virtual void moveLeft(bool key);

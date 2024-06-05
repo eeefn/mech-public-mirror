@@ -11,11 +11,9 @@ class Mech : public Entity
 {
 	//size of the sheet
 	public:
-		// 
 		bool highlighted;
 		Mech();
 		SDL_Rect mechArr[4][60];
-		//SDL_Rect dispRect;
 		SDL_Rect handRect[5];
 		SDL_Texture* mechTex;
 		SDL_Texture* mechAttatchmentTex;
@@ -23,7 +21,7 @@ class Mech : public Entity
 		bool poweredUp, stood, grappling,reelOut;
 		int currFrame,playFrame;
 		int gDist;
-		void updateEntity(float dt, int yO,int xO,int pPosX,int pPosY);
+		void updateEntity(float dt);
 		void moveLeft(bool key);
 		void moveRight(bool key);
 		void attackRight(int xClick);
