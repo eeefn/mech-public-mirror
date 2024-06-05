@@ -36,10 +36,18 @@ void PlayInput::processKeyup(SDL_Event *keyupEvent, vector<Entity*> *entityList)
 	Entity *playerEntity = entityList->at(0);
 	switch (keyupEvent->key.keysym.sym) {
 		case SDLK_a:
-			playerEntity->moveLeft(false);
+			if(!playerEntity->entityTransition){
+				playerEntity->moveLeft(false);
+			}else{
+				playerEntity->entityTransition = false;
+			}
 			break;
 		case SDLK_d:
-			playerEntity->moveRight(false);
+			if(!playerEntity->entityTransition){
+				playerEntity->moveRight(false);
+			}else{
+				playerEntity->entityTransition = false;
+			}
 			break;
 	}
 }
@@ -88,6 +96,8 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityLi
 				player.isPlayer = false;
 				player.inMech = true;
 				mech.highlighted = false;
+				mech.entityTransition = true;
+				//player.stop();
 				//swap the position of mech and player.
 				std::iter_swap(entityList->begin(), entityList->end() - 1);
 				camera.setCameraTarget(entityList->at(0));
