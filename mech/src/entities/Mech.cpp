@@ -43,6 +43,8 @@ Mech::Mech() {
 	highlighted = true;
 	poweredUp, stood = false;
 	entitySpeedX = 70;
+	entityHeight = MECH_HEIGHT;
+	entityWidth = MECH_WIDTH;
 }
 
 void Mech::render(SDL_Renderer* renderer) {

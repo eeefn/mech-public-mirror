@@ -160,17 +160,17 @@ void update() {
 		for(auto & entity : entityList){
 			entity->updateEntity(deltaTime);
 		}
-		//player.updateEntity(deltaTime);
-		//mech.updateEntity(deltaTime);
-		if (collider.collisionCheck(mech.posX, mech.posY, MECH_WIDTH, MECH_HEIGHT, mech.velY, mech.velX, map.tileMap,camera.xOffset,camera.yOffset)) {
-			mech.processCollision(collider.colResults);
-		}
 		//update the offset of the camera based on the entity that the target is currently following. 
 		auto cameraTarget = entityList.at(0);
 
 		camera.update();
+		//player.updateEntity(deltaTime);
+		//mech.updateEntity(deltaTime);
+		if (collider.collisionCheck(&mech, map.tileMap)) {
+			mech.processCollision(collider.colResults);
+		}
 
-		if (collider.collisionCheck(player.posX, player.posY, PLAYER_WIDTH, PLAYER_HEIGHT, player.velY, player.velX, map.tileMap, camera.xOffset, camera.yOffset)) {
+		if (collider.collisionCheck(&player, map.tileMap)) {
 			player.processCollision(collider.colResults);
 		}
 		if (abs(player.posX - mech.posX) > 60) {
