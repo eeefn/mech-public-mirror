@@ -45,7 +45,6 @@ Mech::Mech() {
 }
 
 void Mech::render(SDL_Renderer* renderer) {
-	cout<< "rendering mech ";
 	if (!mech.isPlayer) {
 		SDL_RenderCopy(renderer, mechTex, &mechArr[2][0], &displayRect);
 		SDL_RenderCopy(renderer, mechTex, &mechArr[3][0], &displayRect);
@@ -59,7 +58,6 @@ void Mech::render(SDL_Renderer* renderer) {
 			playFrame = currFrame / 4;
 			SDL_RenderCopy(renderer, mechTex, &mechArr[2][playFrame], &displayRect);
 			SDL_RenderCopy(renderer, mechTex, &mechArr[3][playFrame], &displayRect);
-			cout << "powering up at frame: " << currFrame << '\n';
 			currFrame++;
 			if (currFrame >= 240) {
 				poweredUp = true;
@@ -143,22 +141,14 @@ void Mech::attackRight(int xClick) {
 	}
 }
 
-void Mech::updateEntity(float dt,int pPosX,int pPosY) {
+void Mech::updateEntity(float dt) {
 	Entity::updateEntity(dt);
 	//update the position of the display rectangle to indicate screen coords
 	//	handRect[0].x = posX - (pPosX - (WINDOW_WIDTH / 2 - 64 / 2)) + 160;
 		
 	displayRect.x = camera.getXPosWithinFrame(posX);
 	displayRect.y = camera.getYPosWithinFrame(posY);
-	
-	if (pPosY > (WINDOW_HEIGHT / 2 - 56)) {
-		//displayRect.y = posY - (pPosY - (WINDOW_HEIGHT / 2 - 56));
-		handRect[0].y = posY - (pPosY - (WINDOW_HEIGHT / 2 - 56)) + 150;
-	}
-	else {
-		//displayRect.y = posY;
-		handRect[0].y = posY + 150;
-	}
+	handRect[0].y = camera.getYPosWithinFrame(posY) + 150;	
 	handRect[3].y = handRect[0].y - 2;
 	//this whole section is extremely hacky and i feel shame in my heart
 	if (!grappling) {

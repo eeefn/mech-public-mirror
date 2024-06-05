@@ -100,7 +100,6 @@ void Player::moveRight(bool key) {
 
 }
 void Player::render(SDL_Renderer* renderer){
-	cout<< "rendering player ";
 	if (!player.inMech) {
 		SDL_RenderCopy(renderer, spriteTexture, &playerAnim[curAnim][player.playFrame], &player.displayRect);
 	}
