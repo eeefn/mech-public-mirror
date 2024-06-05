@@ -153,29 +153,19 @@ void update() {
 	}
 	
 	float deltaTime = (SDL_GetTicks() - lastFrameTime) / 1000.0f;
-
 	lastFrameTime = SDL_GetTicks();
+
 	//update player physics if we are not editing the map
 	if (gameMode == PLAY) {
 		for(auto & entity : entityList){
 			entity->updateEntity(deltaTime);
 		}
-		auto cameraTarget = entityList.at(0);
-
-		camera.update();
-		
 		for(auto & entity : entityList){
 			if (collider.collisionCheck(entity, map.tileMap)) {
 				entity->processCollision(collider.colResults);
 			}
 		}
-
-		if (abs(player.posX - mech.posX) > 60) {
-			mech.highlighted = false;
-		}
-		else {
-			mech.highlighted = true;
-		}
+		camera.update();
 	}
 }
 

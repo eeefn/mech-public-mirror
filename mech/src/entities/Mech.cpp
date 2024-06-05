@@ -171,12 +171,21 @@ void Mech::updateEntity(float dt) {
 		grappling = false;
 	}
 	
-	
+	isHighlighted();	
 }
 
 void Mech::processCollision(bool collisions[4]) {
 	if (collisions[0]) {
 		mech.posY = (mech.posY) / TILE_DIM * TILE_DIM;
 		mech.velY = 0;
+	}
+}
+
+void Mech::isHighlighted(){
+	if (abs(camera.cameraTarget->posX - posX - 2 * TILE_DIM) > 80) {
+		highlighted = false;
+	}
+	else {
+		highlighted = true;
 	}
 }
