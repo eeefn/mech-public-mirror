@@ -21,6 +21,7 @@ class Mech : public Entity
 		bool poweredUp, stood, grappling,reelOut;
 		int currFrame,playFrame;
 		int gDist;
+		void isHighlighted();
 		void updateEntity(float dt);
 		void moveLeft(bool key);
 		void moveRight(bool key);
