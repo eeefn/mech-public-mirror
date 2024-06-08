@@ -13,5 +13,5 @@ class InputFactory{
         SDL_Event *event;
         vector<Entity*> *entityList;
         bool processInput();
-        InputFactory(SDL_Event *event, int *gameMode, vector<Entity*> *entityList);
+        InputFactory(SDL_Event *event, int *gameMode);
 };

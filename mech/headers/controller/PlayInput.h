@@ -7,10 +7,10 @@ using std::vector;
 
 class PlayInput{
     public:
-        bool processInput(SDL_Event *keyEvent, vector<Entity*> *entityList, int *gameMode);
-        int processKeydown(SDL_Event *keyEvent,vector<Entity*> *entityList, int *gameMode);
-        void processMousedown(SDL_Event *keydownEvent, vector<Entity*> *entityList);
-        void processKeyup(SDL_Event *keyupEvent, vector<Entity*> *entityList);
+        bool processInput(SDL_Event *keyEvent, int *gameMode);
+        int processKeydown(SDL_Event *keyEvent, int *gameMode);
+        void processMousedown(SDL_Event *keydownEvent);
+        void processKeyup(SDL_Event *keyupEvent);
         PlayInput();
 };
 

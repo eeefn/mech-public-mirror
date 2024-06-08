@@ -1,6 +1,7 @@
 #include "../../headers/controller/PlayInput.h"
 #include "../../headers/entities/Player.h"
 #include "../../headers/entities/Mech.h"
+#include "../../headers/entities/EntityManager.h"
 #include "../../headers/Gui.h"
 #include "../../headers/Camera.h"
 
@@ -16,24 +17,24 @@ PlayInput::PlayInput(){
     std::cout << "input constructed";
 }
 
-bool PlayInput::processInput(SDL_Event *keyEvent, vector<Entity*> *entityList, int *gameMode){
+bool PlayInput::processInput(SDL_Event *keyEvent, int *gameMode){
 	bool gameIsRunning = true;
 	if (keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat == 0) {
-		gameIsRunning = playInput.processKeydown(keyEvent, entityList, gameMode);
+		gameIsRunning = playInput.processKeydown(keyEvent, gameMode);
 	}
 	if (keyEvent->type == SDL_MOUSEBUTTONDOWN) {
-		playInput.processMousedown(keyEvent,entityList);
+		playInput.processMousedown(keyEvent);
 	}
 	if (keyEvent->type == SDL_KEYUP && keyEvent->key.repeat == 0) {
-		playInput.processKeyup(keyEvent, entityList);
+		playInput.processKeyup(keyEvent);
 	}
 	else if (keyEvent->type == SDL_QUIT) {
 			gameIsRunning = false;
 	}
 	return gameIsRunning;
 }
-void PlayInput::processKeyup(SDL_Event *keyupEvent, vector<Entity*> *entityList){
-	Entity *playerEntity = entityList->at(0);
+void PlayInput::processKeyup(SDL_Event *keyupEvent){
+	Entity *playerEntity = camera.cameraTarget;
 	switch (keyupEvent->key.keysym.sym) {
 		case SDLK_a:
 			if(!playerEntity->entityTransition){
@@ -52,8 +53,8 @@ void PlayInput::processKeyup(SDL_Event *keyupEvent, vector<Entity*> *entityList)
 	}
 }
 
-void PlayInput::processMousedown(SDL_Event *keydownEvent, vector<Entity*> *entityList){
-	Entity *playerEntity = entityList->at(0);
+void PlayInput::processMousedown(SDL_Event *keydownEvent){
+	Entity *playerEntity = camera.cameraTarget;
 	switch (keydownEvent->button.button) {
 		case SDL_BUTTON_RIGHT:
 			playerEntity->attackRight(keydownEvent->button.x);
@@ -61,9 +62,9 @@ void PlayInput::processMousedown(SDL_Event *keydownEvent, vector<Entity*> *entit
 	}
 }
 
-int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityList, int *gameMode){
+int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
     bool gameIsRunning = true;
-    Entity *playerEntity = entityList->at(0);
+    Entity *playerEntity = camera.cameraTarget;
     switch (keydownEvent->key.keysym.sym) {
 		case SDLK_DOWN:
 			player.soul = player.soul - 5;
@@ -99,8 +100,8 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, vector<Entity*> *entityLi
 				mech.entityTransition = true;
 				//player.stop();
 				//swap the position of mech and player.
-				std::iter_swap(entityList->begin(), entityList->end() - 1);
-				camera.setCameraTarget(entityList->at(0));
+				
+				camera.setCameraTarget(entityManager.swapEntityList());
 			}
 			break;
 		case SDLK_ESCAPE: gameIsRunning = false; break;
