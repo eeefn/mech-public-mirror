@@ -1,5 +1,6 @@
 #include "../../headers/entities/Mech.h"
 #include "../../headers/Camera.h"
+#include "../../headers/TextureManager.h"
 #include "stdio.h"
 #include <iostream>
 
@@ -49,18 +50,18 @@ Mech::Mech() {
 
 void Mech::render(SDL_Renderer* renderer) {
 	if (!mech.isPlayer) {
-		SDL_RenderCopy(renderer, mechTex, &mechArr[2][0], &displayRect);
-		SDL_RenderCopy(renderer, mechTex, &mechArr[3][0], &displayRect);
+		SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[2][0], &displayRect);
+		SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[3][0], &displayRect);
 		
 		if (highlighted) {
-			SDL_RenderCopy(renderer, mechTex, &mechArr[1][30], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[1][30], &displayRect);
 		}
 	}
 	else {
 		if (!poweredUp) {
 			playFrame = currFrame / 4;
-			SDL_RenderCopy(renderer, mechTex, &mechArr[2][playFrame], &displayRect);
-			SDL_RenderCopy(renderer, mechTex, &mechArr[3][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[2][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[3][playFrame], &displayRect);
 			currFrame++;
 			if (currFrame >= 240) {
 				poweredUp = true;
@@ -69,8 +70,8 @@ void Mech::render(SDL_Renderer* renderer) {
 		}
 		else if(!stood) {
 			playFrame = currFrame / 2;
-			SDL_RenderCopy(renderer, mechTex, &mechArr[0][playFrame], &displayRect);
-			SDL_RenderCopy(renderer, mechTex, &mechArr[1][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[0][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[1][playFrame], &displayRect);
 			currFrame++;
 			if (currFrame >= 59) {
 				stood = true;
@@ -78,28 +79,28 @@ void Mech::render(SDL_Renderer* renderer) {
 			}
 		}
 		else {
-			SDL_RenderCopy(renderer, mechTex, &mechArr[0][playFrame], &displayRect);
-			SDL_RenderCopy(renderer, mechTex, &mechArr[1][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[0][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[1][playFrame], &displayRect);
 			//render grapple
 			if (grappling) {
 				for (int i = handRect[3].x-20; i >= handRect[0].x; i-=28) {
 					handRect[2].x = i;
 					handRect[2].y = posY + 142;
-					SDL_RenderCopy(renderer,mechAttatchmentTex,&mechHandArr[2],&handRect[2]);
+					SDL_RenderCopy(renderer,textureManager.mechAtTexture,&mechHandArr[2],&handRect[2]);
 					
 				}
-				SDL_RenderCopy(renderer, mechAttatchmentTex, &mechHandArr[3], &handRect[3]);
+				SDL_RenderCopy(renderer, textureManager.mechAtTexture, &mechHandArr[3], &handRect[3]);
 				for (int i = handRect[3].x-8; i >= handRect[0].x;i-=28) {
 					handRect[1].x = i;
 					handRect[1].y = posY + 144;
-					SDL_RenderCopy(renderer, mechAttatchmentTex, &mechHandArr[1], &handRect[1]);
+					SDL_RenderCopy(renderer, textureManager.mechAtTexture, &mechHandArr[1], &handRect[1]);
 				}
 			}
 			else {
-				SDL_RenderCopy(renderer, mechAttatchmentTex, &mechHandArr[3], &handRect[3]);
+				SDL_RenderCopy(renderer, textureManager.mechAtTexture, &mechHandArr[3], &handRect[3]);
 			}
 			
-			SDL_RenderCopy(renderer, mechAttatchmentTex, &mechHandArr[0], &handRect[0]);
+			SDL_RenderCopy(renderer, textureManager.mechAtTexture, &mechHandArr[0], &handRect[0]);
 		}
 		
 	}

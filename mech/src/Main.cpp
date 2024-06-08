@@ -6,7 +6,7 @@
 #include "../headers/entities/Mech.h"
 #include "../headers/entities/Player.h"
 #include "../headers/entities/EntityManager.h"
-
+#include "../headers/TextureManager.h"
 #include "../headers/Collider.h"
 #include "../headers/constants.h"
 #include "../headers/GameObject.h"
@@ -39,10 +39,6 @@ SDL_Renderer* renderer = NULL;
 //Rects for rendering tiles, objects and the player to
 SDL_Rect renTile;
 
-//textures for 
-SDL_Texture* tile_texture;
-SDL_Texture* gameObjectTexture;
-
 int initializeWindow() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		fprintf(stderr, "Error initializing SDL\n");
@@ -69,9 +65,6 @@ int initializeWindow() {
 }
 
 void setup() {
-	/*setting up the display of our tiles. Find the height and width of current display. 
-	use that to determine how many tiles should go in the width and the height by doing ceiling of integer division.
-	tilesPerWindowWidth is ceiling((pixels of width)/(width of tile)) */
 	SDL_DisplayMode dm;
 	SDL_GetCurrentDisplayMode(0,&dm);
 
@@ -79,43 +72,10 @@ void setup() {
 	//eventually these three will be merged into an atlas
 	/*create surface  for tilemap and give it to the renderer
 	----------------------------------------------------------*/
-	SDL_Surface* tileMapSurface = SDL_LoadBMP("./resources/tile4.bmp");
-	if (!tileMapSurface) {
-		fprintf(stderr, "could not find tile images");
-		return;
-	}
-	tile_texture = SDL_CreateTextureFromSurface(renderer, tileMapSurface);
-	SDL_FreeSurface(tileMapSurface);
-	
+	textureManager.initPermanentTextures(renderer);
 	/*create surface from gameObjects and give it to renderer*/
-	SDL_Surface* gameObjectSurface = SDL_LoadBMP("./resources/objSheetv1.bmp");
-	if (!gameObjectSurface) {
-		fprintf(stderr, "could not find gameObject texture");
-		return;
-	}
-	gameObjectTexture = SDL_CreateTextureFromSurface(renderer, gameObjectSurface);
-	camera.initializeCamera(dm.h,dm.w,renderer,tile_texture,gameObjectTexture);
+	camera.initializeCamera(dm.h,dm.w,renderer,textureManager.tileTexture,textureManager.gameObjectTexture);
 	player.initializeSpriteTexture(renderer);
-	/*create surface from gui and give it to renderer*/
-	SDL_Surface* guiSurface = SDL_LoadBMP("./resources/gui.bmp");
-	if (!guiSurface) {
-		fprintf(stderr, "could not find gui image");
-		return;
-	}
-	gui.guiTex = SDL_CreateTextureFromSurface(renderer, guiSurface);
-	/*create surface from mech and give it to renderer*/
-	SDL_Surface* mechSurface = SDL_LoadBMP("./resources/mech.bmp");
-	if (!mechSurface) {
-		fprintf(stderr, "could not find mech image");
-		return;
-	}
-	mech.mechTex = SDL_CreateTextureFromSurface(renderer, mechSurface);
-	SDL_Surface* mechAtSurface = SDL_LoadBMP("./resources/handAt.bmp");
-	if (!mechAtSurface) {
-		fprintf(stderr, "could not find hands");
-		return;
-	}
-	mech.mechAttatchmentTex = SDL_CreateTextureFromSurface(renderer, mechAtSurface);
 
 	//instantiate the map
 	map.read("lvl1Test.bin");

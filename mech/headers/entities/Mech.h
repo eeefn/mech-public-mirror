@@ -15,8 +15,6 @@ class Mech : public Entity
 		Mech();
 		SDL_Rect mechArr[4][60];
 		SDL_Rect handRect[5];
-		SDL_Texture* mechTex;
-		SDL_Texture* mechAttatchmentTex;
 		SDL_Rect mechHandArr[5];
 		bool poweredUp, stood, grappling,reelOut;
 		int currFrame,playFrame;
