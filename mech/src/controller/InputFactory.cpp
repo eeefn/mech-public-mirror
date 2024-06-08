@@ -8,10 +8,9 @@
 #include <stdio.h>
 #include <iostream>
 
-InputFactory::InputFactory(SDL_Event *event, int *gameMode,vector<Entity*> *entityList){
+InputFactory::InputFactory(SDL_Event *event, int *gameMode){
     this->gameMode = gameMode;
     this->event = event;
-    this->entityList = entityList;
     return;
 }
 
@@ -21,7 +20,7 @@ bool InputFactory::processInput(){
         gameIsRunning = editInput.processInput(this->event,this->gameMode);
     }
     else if(*this->gameMode == PLAY){
-        gameIsRunning = playInput.processInput(this->event,this->entityList,this->gameMode);
+        gameIsRunning = playInput.processInput(this->event, this->gameMode);
     }
     return gameIsRunning;
 }

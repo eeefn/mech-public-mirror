@@ -60,7 +60,7 @@ void Camera::initializeTileSelect(){
 	}
 }
 
-void Camera::renderMap(Entity *cameraTarget){
+void Camera::renderMap(){
 	this->cameraTarget = cameraTarget;
     for (int y = yOffset; y <= tilesPerWindowHeight + yOffset; y++) {
 		for (int x = xOffset; x <= tilesPerWindowWidth + xOffset; x++) {

@@ -5,6 +5,7 @@
 
 #include "../headers/entities/Mech.h"
 #include "../headers/entities/Player.h"
+#include "../headers/entities/EntityManager.h"
 
 #include "../headers/Collider.h"
 #include "../headers/constants.h"
@@ -18,11 +19,9 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <vector>
 #include <algorithm>
 
 using std::cout;
-using std::vector;
 
 //int selOffY, selOffX = 0;
 short texSelX, texSelY = 0;
@@ -38,15 +37,11 @@ SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 
 //Rects for rendering tiles, objects and the player to
-
 SDL_Rect renTile;
 
-vector<Entity*> entityList;
 //textures for 
 SDL_Texture* tile_texture;
 SDL_Texture* gameObjectTexture;
-//this is the spriteSelect for animations. Currently 1*15 because only jump exists
-
 
 int initializeWindow() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -126,22 +121,16 @@ void setup() {
 	map.read("lvl1Test.bin");
 	map.tileMap[24][20] = -1;
 	map.initGameObject();
-	//cout << map.gameObjList.at(0)->xTile << '\n';
 
 	//this is probably important
 	srand(time(NULL));
-	//setup our entities
-	Entity* pptr = &player;
-	Entity* mptr = &mech;
-	entityList.push_back(pptr);
-	entityList.push_back(mptr);
 
 }
 
 void processInput() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	InputFactory inputFactory = InputFactory(&event, &gameMode, &entityList);
+	InputFactory inputFactory = InputFactory(&event, &gameMode);
 	gameIsRunning = inputFactory.processInput();
 }
 
@@ -157,14 +146,7 @@ void update() {
 
 	//update player physics if we are not editing the map
 	if (gameMode == PLAY) {
-		for(auto & entity : entityList){
-			entity->updateEntity(deltaTime);
-		}
-		for(auto & entity : entityList){
-			if (collider.collisionCheck(entity, map.tileMap)) {
-				entity->processCollision(collider.colResults);
-			}
-		}
+		entityManager.update(deltaTime);
 		camera.update();
 	}
 }
@@ -174,7 +156,7 @@ void render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	
-	camera.renderMap(entityList.at(0));
+	camera.renderMap();
 
 	//editor and gameplay
 	if (gameMode == EDIT) {
@@ -183,11 +165,8 @@ void render() {
 		SDL_RenderDrawRect(renderer, &gui.selWindowRen);
 	}
 	else {
-		//Iterate through the entity list, rendering every entity
-		for(auto entity = entityList.rbegin(); entity != entityList.rend(); ++entity){
-			(*entity)->render(renderer);
-		}	
-		//render gui
+		//render all entities
+		entityManager.render(renderer);
 		gui.renderSoul(renderer);
 	}
 	SDL_RenderPresent(renderer);
