@@ -32,7 +32,6 @@ int tilesPerWindowHeight;
 int lastFrameTime = 0;
 bool gameIsRunning = false;
 
-const Uint8* keyPtr;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 
@@ -68,19 +67,11 @@ void setup() {
 	SDL_DisplayMode dm;
 	SDL_GetCurrentDisplayMode(0,&dm);
 
-	keyPtr = SDL_GetKeyboardState(NULL);
 	textureManager.initPermanentTextures(renderer);
-	/*create surface from gameObjects and give it to renderer*/
 	camera.initializeCamera(dm.h,dm.w,renderer,textureManager.tileTexture,textureManager.gameObjectTexture);
+	map.initialize();
 
-	//instantiate the map
-	map.read("lvl1Test.bin");
-	map.tileMap[24][20] = -1;
-	map.initGameObject();
-
-	//this is probably important
 	srand(time(NULL));
-
 }
 
 void processInput() {
