@@ -1,9 +1,11 @@
 #include "../headers/Gui.h"
+#include "../headers/entities/Player.h"
+#include "../headers/TextureManager.h"
+#include "../headers/WindowManager.h"
+#include "../headers/constants.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-#include "../headers/entities/Player.h"
-#include "../headers/TextureManager.h"
 Gui gui;
 
 Gui::Gui() {
@@ -26,17 +28,15 @@ Gui::Gui() {
 	gui.guiComponent.h = 48;
 }
 
-void Gui::renderEditorSelection(SDL_Renderer* rend){
-	SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
-	SDL_RenderDrawRect(rend, &gui.selWindowRen);
+void Gui::renderEditorSelection(){
+	SDL_SetRenderDrawColor(windowManager.renderer, 255, 255, 255, 255);
+	SDL_RenderDrawRect(windowManager.renderer, &gui.selWindowRen);
 }
 
-void Gui::renderSoul(SDL_Renderer* rend) {
+void Gui::renderSoul() {
 	pulseCount++;
 	int fullness = player.soul / 5;
-	//std::cout << "soul " << player.soul << '\n';
 	fullness = (fullness - 20) * -1;
-	//std::cout << "fullness " << fullness << '\n';
 	if (fullness > 21) {
 		fullness = 21;
 	}
@@ -49,5 +49,13 @@ void Gui::renderSoul(SDL_Renderer* rend) {
 	if (pulseCount > 75) {
 		pulseCount = 0;
 	}
-	SDL_RenderCopy(rend, textureManager.guiTexture, &gui.guiArr[soulColor][fullness], &gui.guiComponent);
+	SDL_RenderCopy(windowManager.renderer, textureManager.guiTexture, &gui.guiArr[soulColor][fullness], &gui.guiComponent);
+}
+void Gui::render(int gameMode){
+	if(gameMode == PLAY){
+		renderSoul();
+	}
+	else{
+		renderEditorSelection();
+	}
 }

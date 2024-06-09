@@ -2,6 +2,7 @@
 #include "../../headers/entities/EntityManager.h"
 #include "../../headers/entities/Player.h"
 #include "../../headers/entities/Mech.h"
+#include "../../headers/WindowManager.h"
 #include "../../headers/Map.h"
 #include "../../headers/Collider.h"
 
@@ -25,11 +26,14 @@ void EntityManager::update(float dt){
 	}
 }
 
-void EntityManager::render(SDL_Renderer* renderer){
-		//Iterate through the entity list, rendering every entity
+void EntityManager::render(int gameMode){
+	//Iterate through the entity list, rendering every entity
+	//Iteration is done in reverse to ensure that the player is rendered in front of other entities
+	if(gameMode == PLAY){
 		for(auto entity = entityList.rbegin(); entity != entityList.rend(); ++entity){
-			(*entity)->render(renderer);
+			(*entity)->render(windowManager.renderer);
 		}	
+	}
 }
 
 Entity* EntityManager::swapEntityList(){

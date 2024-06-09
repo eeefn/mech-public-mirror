@@ -62,17 +62,9 @@ void render() {
 	SDL_RenderClear(windowManager.renderer);
 	
 	camera.renderMap();
+	gui.render(gameMode);		
+	entityManager.render(gameMode);
 
-	//editor and gameplay
-	if (gameMode == EDIT) {
-		//render selection window for editor.
-		gui.renderEditorSelection(windowManager.renderer);
-	}
-	else {
-		//render all entities
-		entityManager.render(windowManager.renderer);
-		gui.renderSoul(windowManager.renderer);
-	}
 	SDL_RenderPresent(windowManager.renderer);
 }
 

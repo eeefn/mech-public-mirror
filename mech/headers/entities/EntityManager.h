@@ -9,7 +9,7 @@ class EntityManager{
     public:
         EntityManager();
         void update(float dt);
-        void render(SDL_Renderer* renderer);
+        void render(int gameMode);
         Entity* swapEntityList(); 
     private:
         vector<Entity*> entityList;
