@@ -6,7 +6,7 @@
 #include <cmath>
 #include "../../headers/constants.h"
 #include "../../headers/entities/Player.h"
-
+#include "../../headers/TextureManager.h"
 
 using std::cout;
 
@@ -40,16 +40,6 @@ Player::Player()  {
 	initializePlayerAnim();
 }
 
-void Player::initializeSpriteTexture(SDL_Renderer* renderer){	
-	/*create surface from spriteSheet and turn it into a texture*/
-	SDL_Surface* spriteSheetSurface = SDL_LoadBMP("./resources/mushBoyJ.bmp");
-	if (!spriteSheetSurface) {
-		fprintf(stderr, "could not find spritesheet");
-		return;
-	}
-	player.spriteTexture = SDL_CreateTextureFromSurface(renderer, spriteSheetSurface);
-	SDL_FreeSurface(spriteSheetSurface);
-}
 
 void Player::initializePlayerAnim(){	
 	//create a grid of rectangles representing the animations from player spritesheet
@@ -101,7 +91,7 @@ void Player::moveRight(bool key) {
 }
 void Player::render(SDL_Renderer* renderer){
 	if (!player.inMech) {
-		SDL_RenderCopy(renderer, spriteTexture, &playerAnim[curAnim][player.playFrame], &player.displayRect);
+		SDL_RenderCopy(renderer, textureManager.spriteTexture, &playerAnim[curAnim][player.playFrame], &player.displayRect);
 	}
 }
 
