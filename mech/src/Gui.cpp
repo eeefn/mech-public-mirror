@@ -26,7 +26,7 @@ Gui::Gui() {
 	gui.guiComponent.h = 48;
 }
 
-void renderEditorSelection(SDL_Renderer* rend){
+void Gui::renderEditorSelection(SDL_Renderer* rend){
 	SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
 	SDL_RenderDrawRect(rend, &gui.selWindowRen);
 }
