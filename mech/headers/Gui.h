@@ -11,6 +11,7 @@ public:
 	SDL_Rect guiArr[8][22];
 	SDL_Rect guiComponent;
 	SDL_Rect selWindowRen;
+	void renderEditorSelection(SDL_Renderer* rend);
 	void renderSoul(SDL_Renderer* rend);
 	Gui();
 };
