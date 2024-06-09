@@ -3,13 +3,9 @@
 #include <SDL.h>
 #include <time.h>
 
-#include "../headers/entities/Mech.h"
-#include "../headers/entities/Player.h"
 #include "../headers/entities/EntityManager.h"
 #include "../headers/TextureManager.h"
-#include "../headers/Collider.h"
 #include "../headers/constants.h"
-#include "../headers/GameObject.h"
 #include "../headers/Map.h"
 #include "../headers/Gui.h"
 #include "../headers/Camera.h"
@@ -23,12 +19,7 @@
 
 using std::cout;
 
-//int selOffY, selOffX = 0;
-short texSelX, texSelY = 0;
 int gameMode = PLAY;
-int debug = 0;
-int tilesPerWindowWidth;
-int tilesPerWindowHeight;
 int lastFrameTime = 0;
 bool gameIsRunning = false;
 
@@ -38,10 +29,10 @@ SDL_Renderer* renderer = NULL;
 //Rects for rendering tiles, objects and the player to
 SDL_Rect renTile;
 
-int initializeWindow() {
+bool initializeWindow() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		fprintf(stderr, "Error initializing SDL\n");
-		return FALSE;
+		return false;
 	}
 	window = SDL_CreateWindow(
 		NULL,
@@ -53,14 +44,14 @@ int initializeWindow() {
 	);
 	if (!window) {
 		fprintf(stderr, "Error initializing window\n");
-		return FALSE;
+		return false;
 	}
 	renderer = SDL_CreateRenderer(window, -1, 0);
 	if (!renderer) {
 		fprintf(stderr, "Error initializing renderer\n");
-		return FALSE;
+		return false;
 	}
-	return TRUE;
+	return true;
 }
 
 void setup() {
@@ -99,7 +90,7 @@ void update() {
 }
 
 void render() {
-
+	//reset renderer
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	
@@ -108,8 +99,7 @@ void render() {
 	//editor and gameplay
 	if (gameMode == EDIT) {
 		//render selection window for editor.
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_RenderDrawRect(renderer, &gui.selWindowRen);
+		gui.renderEditorSelection(renderer)
 	}
 	else {
 		//render all entities
