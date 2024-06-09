@@ -99,7 +99,7 @@ void render() {
 	//editor and gameplay
 	if (gameMode == EDIT) {
 		//render selection window for editor.
-		gui.renderEditorSelection(renderer)
+		gui.renderEditorSelection(renderer);
 	}
 	else {
 		//render all entities
