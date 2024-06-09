@@ -19,6 +19,12 @@ Map::Map() {
 
 }
 
+void Map::initialize(){
+	tileMap[24][20] = -1;
+	initGameObject();
+	read("lvl1Test.bin");
+}
+
 bool Map::read(std::string mapIn) {
 	std::ifstream mapStream(mapIn, std::ios::in | std::ios::binary);
 	if (mapStream.good()) {
@@ -38,7 +44,6 @@ bool Map::read(std::string mapIn) {
 bool Map::fill(SDL_Rect selWindowRen, int xOffset, int yOffset, int selectColor) {
 	for (int i = selWindowRen.y / TILE_DIM + yOffset; i < (selWindowRen.h / TILE_DIM) + (selWindowRen.y / TILE_DIM + yOffset); i++) {
 		for (int j = selWindowRen.x / TILE_DIM + xOffset; j < (selWindowRen.w / TILE_DIM) + (selWindowRen.x / TILE_DIM + xOffset); j++) {
-			//cout << "i is: " << i << ". j is: " << j << '\n';
 			this->tileMap[i][j] = selectColor;
 		}
 	}
