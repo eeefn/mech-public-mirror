@@ -5,6 +5,7 @@
 
 #include "../headers/entities/EntityManager.h"
 #include "../headers/TextureManager.h"
+#include "../headers/WindowManager.h"
 #include "../headers/constants.h"
 #include "../headers/Map.h"
 #include "../headers/Gui.h"
@@ -12,10 +13,7 @@
 
 #include "../headers/controller/InputFactory.h"
 
-#include <fstream>
 #include <iostream>
-#include <string>
-#include <algorithm>
 
 using std::cout;
 
@@ -23,43 +21,12 @@ int gameMode = PLAY;
 int lastFrameTime = 0;
 bool gameIsRunning = false;
 
-SDL_Window* window = NULL;
-SDL_Renderer* renderer = NULL;
-
-//Rects for rendering tiles, objects and the player to
-SDL_Rect renTile;
-
-bool initializeWindow() {
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		fprintf(stderr, "Error initializing SDL\n");
-		return false;
-	}
-	window = SDL_CreateWindow(
-		NULL,
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
-		WINDOW_WIDTH,
-		WINDOW_HEIGHT,
-		SDL_WINDOW_BORDERLESS
-	);
-	if (!window) {
-		fprintf(stderr, "Error initializing window\n");
-		return false;
-	}
-	renderer = SDL_CreateRenderer(window, -1, 0);
-	if (!renderer) {
-		fprintf(stderr, "Error initializing renderer\n");
-		return false;
-	}
-	return true;
-}
-
 void setup() {
 	SDL_DisplayMode dm;
 	SDL_GetCurrentDisplayMode(0,&dm);
 
-	textureManager.initPermanentTextures(renderer);
-	camera.initializeCamera(dm.h,dm.w,renderer,textureManager.tileTexture,textureManager.gameObjectTexture);
+	textureManager.initPermanentTextures(windowManager.renderer);
+	camera.initializeCamera(dm.h,dm.w,windowManager.renderer,textureManager.tileTexture,textureManager.gameObjectTexture);
 	map.initialize();
 
 	srand(time(NULL));
@@ -91,32 +58,27 @@ void update() {
 
 void render() {
 	//reset renderer
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(windowManager.renderer, 0, 0, 0, 255);
+	SDL_RenderClear(windowManager.renderer);
 	
 	camera.renderMap();
 
 	//editor and gameplay
 	if (gameMode == EDIT) {
 		//render selection window for editor.
-		gui.renderEditorSelection(renderer);
+		gui.renderEditorSelection(windowManager.renderer);
 	}
 	else {
 		//render all entities
-		entityManager.render(renderer);
-		gui.renderSoul(renderer);
+		entityManager.render(windowManager.renderer);
+		gui.renderSoul(windowManager.renderer);
 	}
-	SDL_RenderPresent(renderer);
+	SDL_RenderPresent(windowManager.renderer);
 }
 
-void destroyWindow() {
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-}
 
 int main(int argc, char* argv[]) {
-	gameIsRunning = initializeWindow();
+	gameIsRunning = windowManager.initializeWindow();
 	
 	setup(); 
 	
@@ -126,7 +88,7 @@ int main(int argc, char* argv[]) {
 		render();
 	}
 
-	destroyWindow();
+	windowManager.destroyWindow();
 	std::cout << "Goodbye";
 	return 0;
 }
