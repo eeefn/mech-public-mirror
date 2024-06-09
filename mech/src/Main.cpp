@@ -69,13 +69,9 @@ void setup() {
 	SDL_GetCurrentDisplayMode(0,&dm);
 
 	keyPtr = SDL_GetKeyboardState(NULL);
-	//eventually these three will be merged into an atlas
-	/*create surface  for tilemap and give it to the renderer
-	----------------------------------------------------------*/
 	textureManager.initPermanentTextures(renderer);
 	/*create surface from gameObjects and give it to renderer*/
 	camera.initializeCamera(dm.h,dm.w,renderer,textureManager.tileTexture,textureManager.gameObjectTexture);
-	player.initializeSpriteTexture(renderer);
 
 	//instantiate the map
 	map.read("lvl1Test.bin");

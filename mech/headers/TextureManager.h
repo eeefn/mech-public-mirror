@@ -8,6 +8,7 @@ class TextureManager{
         SDL_Texture* guiTexture;
         SDL_Texture* mechTexture;
         SDL_Texture* mechAtTexture;
+        SDL_Texture* spriteTexture;
         void initPermanentTextures(SDL_Renderer* renderer);
 };
 

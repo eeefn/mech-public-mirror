@@ -29,4 +29,8 @@ void TextureManager::initPermanentTextures(SDL_Renderer* renderer){
 	mechAtTexture = SDL_CreateTextureFromSurface(renderer, mechAtSurface);
     SDL_FreeSurface(mechAtSurface);
 
+	SDL_Surface* spriteSheetSurface = SDL_LoadBMP("./resources/mushBoyJ.bmp");
+	if (!spriteSheetSurface) { fprintf(stderr, "could not find spritesheet"); return; }
+	spriteTexture = SDL_CreateTextureFromSurface(renderer, spriteSheetSurface);
+	SDL_FreeSurface(spriteSheetSurface);
 }

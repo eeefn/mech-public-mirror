@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "../headers/entities/Player.h"
+#include "../headers/TextureManager.h"
 Gui gui;
 
 Gui::Gui() {
@@ -43,5 +44,5 @@ void Gui::renderSoul(SDL_Renderer* rend) {
 	if (pulseCount > 75) {
 		pulseCount = 0;
 	}
-	SDL_RenderCopy(rend, gui.guiTex, &gui.guiArr[soulColor][fullness], &gui.guiComponent);
+	SDL_RenderCopy(rend, textureManager.guiTexture, &gui.guiArr[soulColor][fullness], &gui.guiComponent);
 }
