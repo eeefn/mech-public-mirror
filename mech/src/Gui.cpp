@@ -28,6 +28,58 @@ Gui::Gui() {
 	gui.guiComponent.h = 48;
 }
 
+void Gui::expandSelWindowLeft(){
+	selWindowRen.w -= TILE_DIM;
+	if (selWindowRen.w < TILE_DIM) {
+		selWindowRen.w = TILE_DIM;
+	}
+}
+
+void Gui::expandSelWindowRight(){
+	gui.selWindowRen.w += TILE_DIM;
+}
+
+void Gui::expandSelWindowDown(){
+	gui.selWindowRen.h += TILE_DIM;
+}
+
+void Gui::moveSelWindowRight(){
+	gui.selWindowRen.x += TILE_DIM;
+}
+
+void Gui::moveSelWindowLeft(){
+	gui.selWindowRen.x -= TILE_DIM;
+	if (gui.selWindowRen.x <= 0) {
+		gui.selWindowRen.x = 0;
+	}
+
+}
+
+void Gui::expandSelWindowUp(){
+	gui.selWindowRen.h -= TILE_DIM;
+	if (gui.selWindowRen.h < TILE_DIM) {
+		gui.selWindowRen.h = TILE_DIM;
+	}
+}
+
+void Gui::moveSelWindowDown(){
+	gui.selWindowRen.y += TILE_DIM;
+}
+
+void moveSelWindowUp(){
+	gui.selWindowRen.y -= TILE_DIM;
+	if (gui.selWindowRen.y <= 0) {
+		gui.selWindowRen.y = 0;
+	}
+}
+
+void Gui::setupSelector(Entity* playerEntity){
+	selWindowRen.h = TILE_DIM;
+	selWindowRen.w = TILE_DIM;
+	selWindowRen.x = (playerEntity->displayRect.x % TILE_DIM);
+	selWindowRen.y = /*selOffY - */(playerEntity->displayRect.y % TILE_DIM);
+
+}
 void Gui::renderEditorSelection(){
 	SDL_SetRenderDrawColor(windowManager.renderer, 255, 255, 255, 255);
 	SDL_RenderDrawRect(windowManager.renderer, &gui.selWindowRen);

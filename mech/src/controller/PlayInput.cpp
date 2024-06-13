@@ -84,12 +84,9 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			playerEntity->moveRight(true);
 			break;
 		case SDLK_e:
-			*gameMode = 1;
+			*gameMode = 1; //something should be responsible for setting gamestate.
 			//setup selector
-			gui.selWindowRen.h = TILE_DIM;
-			gui.selWindowRen.w = TILE_DIM;
-			gui.selWindowRen.x = (playerEntity->displayRect.x % TILE_DIM);
-			gui.selWindowRen.y = /*selOffY - */(playerEntity->displayRect.y % TILE_DIM);
+			gui.setupSelector(playerEntity);
 			break;
 		case SDLK_q:
 			if (mech.highlighted) {
