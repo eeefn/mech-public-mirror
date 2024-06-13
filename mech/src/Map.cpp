@@ -9,14 +9,8 @@
 
 Map map;
 
-Map::Map(std::string mapIn) {
-	if (!this->read(mapIn)) {
-		std::cout << "map read failiure" << '\n';
-	}
-}
-
 Map::Map() {
-
+	initialize();
 }
 
 void Map::initialize(){
