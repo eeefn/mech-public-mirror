@@ -16,7 +16,7 @@ Map::Map() {
 void Map::initialize(){
 	tileMap[24][20] = -1;
 	initGameObject();
-	read("lvl1Test.bin");
+	read("../lvl1Test.bin");
 }
 
 bool Map::read(std::string mapIn) {
