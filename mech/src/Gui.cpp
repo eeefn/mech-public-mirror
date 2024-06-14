@@ -66,11 +66,15 @@ void Gui::moveSelWindowDown(){
 	gui.selWindowRen.y += TILE_DIM;
 }
 
-void moveSelWindowUp(){
-	gui.selWindowRen.y -= TILE_DIM;
+void Gui::moveSelWindowUp(){
+	selWindowRen.y -= TILE_DIM;
 	if (gui.selWindowRen.y <= 0) {
 		gui.selWindowRen.y = 0;
 	}
+}
+
+SDL_Rect* Gui::getSelWindowRen(){
+	return &gui.selWindowRen;
 }
 
 void Gui::setupSelector(Entity* playerEntity){

@@ -35,9 +35,10 @@ bool Map::read(std::string mapIn) {
 	}
 }
 
-bool Map::fill(SDL_Rect selWindowRen, int xOffset, int yOffset, int selectColor) {
-	for (int i = selWindowRen.y / TILE_DIM + yOffset; i < (selWindowRen.h / TILE_DIM) + (selWindowRen.y / TILE_DIM + yOffset); i++) {
-		for (int j = selWindowRen.x / TILE_DIM + xOffset; j < (selWindowRen.w / TILE_DIM) + (selWindowRen.x / TILE_DIM + xOffset); j++) {
+
+bool Map::fill(SDL_Rect* selWindowRen, int xOffset, int yOffset, int selectColor) {
+	for (int i = selWindowRen->y / TILE_DIM + yOffset; i < (selWindowRen->h / TILE_DIM) + (selWindowRen->y / TILE_DIM + yOffset); i++) {
+		for (int j = selWindowRen->x / TILE_DIM + xOffset; j < (selWindowRen->w / TILE_DIM) + (selWindowRen->x / TILE_DIM + xOffset); j++) {
 			this->tileMap[i][j] = selectColor;
 		}
 	}

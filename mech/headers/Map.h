@@ -15,7 +15,7 @@ class Map {
 		std::vector<std::shared_ptr<GameObject>> gameObjList;
 		//read the map
 		bool read(std::string mapIn);
-		bool fill(SDL_Rect selWindowRen, int xOffset,int yOffset, int selectColor);
+		bool fill(SDL_Rect* selWindowRen, int xOffset,int yOffset, int selectColor);
 		bool save(std::string mapIn);
 		Map();
 	private:

@@ -18,6 +18,7 @@ class Gui
 		void moveSelWindowRight();
 		void moveSelWindowDown();
 		void moveSelWindowUp();
+		SDL_Rect* getSelWindowRen();
 		int soulColor;
 		int pulseCount;
 		short selectColor;
