@@ -4,6 +4,7 @@
 #include "../../headers/entities/EntityManager.h"
 #include "../../headers/Gui.h"
 #include "../../headers/Camera.h"
+#include "../../headers/Editor.h"
 
 
 #include <stdlib.h>
@@ -86,7 +87,7 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 		case SDLK_e:
 			*gameMode = 1; //something should be responsible for setting gamestate.
 			//setup selector
-			gui.setupSelector(playerEntity);
+			editor.setupSelector(playerEntity);
 			break;
 		case SDLK_q:
 			if (mech.highlighted) {
