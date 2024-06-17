@@ -2,6 +2,8 @@
 #include "../headers/Map.h"
 #include "../headers/constants.h"
 #include "../headers/entities/Player.h"
+#include "../headers/WindowManager.h"
+#include "../headers/TextureManager.h"
 #include <iostream>
 
 Camera camera;
@@ -19,12 +21,9 @@ void Camera::setCameraTarget(Entity *newCameraTarget){
 	camera.cameraTarget = newCameraTarget;
 }
 
-void Camera::initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_Texture *tileTexture,SDL_Texture *objectTexture){
+void Camera::initializeCamera(int height,int width){
     this->tilesPerWindowHeight = (height + TILE_DIM - 1) / TILE_DIM;
     this->tilesPerWindowWidth = (width + TILE_DIM - 1) / TILE_DIM;
-    this->tileTexture = tileTexture;
-    this->objectTexture = objectTexture;
-    this->renderer = renderer;
 	this->cameraTarget = &player;
 }
 
@@ -77,7 +76,7 @@ void Camera::renderMap(){
 			if (texSel > 0) {
 				textureSelect(texSel);
 				//handle offsets in the left corner. I havent handled the right corner 0.0
-				SDL_RenderCopy(renderer, tileTexture, &tileSelect[texSelY][texSelX], &renTile);
+				SDL_RenderCopy(windowManager.renderer, textureManager.tileTexture, &tileSelect[texSelY][texSelX], &renTile);
 			}
 			else {
 				//find the object at the location
@@ -90,14 +89,11 @@ void Camera::renderMap(){
 						objTex.w = obj->width;
 						objTex.x = obj->spriteSheetXPos;
 						objTex.y = obj->spriteSheetYPos;
-						SDL_RenderCopy(renderer, objectTexture,NULL,&renTile);
+						SDL_RenderCopy(windowManager.renderer, textureManager.gameObjectTexture,NULL,&renTile);
 					}
 				}
 				renTile.w = TILE_DIM;
 				renTile.h = TILE_DIM;
-				//find object based on id
-				//lookup in vector
-				//get properties and change rentile
 			}
 
 		}

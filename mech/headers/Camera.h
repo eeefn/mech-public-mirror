@@ -11,18 +11,15 @@ class Camera{
         SDL_Rect tileSelect[TILE_WIDTH_IN_TILE_MAP][TILE_WIDTH_IN_TILE_MAP];
         SDL_Rect renTile;
         SDL_Rect objTex;
-        SDL_Texture *tileTexture;
-        SDL_Texture *objectTexture;
         
         Entity *cameraTarget;
         void renderMap();
         int getXPosWithinFrame(int xPos);
         int getYPosWithinFrame(int yPos);
-        void initializeCamera(int height,int width, SDL_Renderer *renderer,SDL_Texture *tileTexture,SDL_Texture *objectTexture);
+        void initializeCamera(int height,int width);
         void update();
         void setCameraTarget(Entity *newCameraTarget);
         Camera();
-        SDL_Renderer *renderer;
     private:
         void textureSelect(short select);
         void initializeTileSelect();
