@@ -5,7 +5,6 @@
 class Camera{
     public:
         int yOffset, xOffset;
-        int texSelY, texSelX;
         int tilesPerWindowHeight, tilesPerWindowWidth;
         
         SDL_Rect tileSelect[TILE_WIDTH_IN_TILE_MAP][TILE_WIDTH_IN_TILE_MAP];
@@ -21,7 +20,8 @@ class Camera{
         void setCameraTarget(Entity *newCameraTarget);
         Camera();
     private:
-        void textureSelect(short select);
+        int xFrameOffset;
+        SDL_Rect* textureSelect(short select);
         void initializeTileSelect();
         void updateTargetDisplayPos();
         void updateCameraOffsets();
