@@ -6,10 +6,10 @@
 #include "../headers/TextureManager.h"
 #include <iostream>
 
+
 Camera camera;
 Camera::Camera(){
     xOffset = 0; yOffset = 0;
-    texSelX = 0; texSelY = 0;
     renTile.x = 0; renTile.y = 0;
 	renTile.w = TILE_DIM; renTile.h = TILE_DIM;
     objTex.x = 0; objTex.y = 0;
@@ -28,14 +28,7 @@ void Camera::initializeCamera(int height,int width){
 }
 
 int Camera::getXPosWithinFrame(int xPos){	
-	int cameraOffset = this->cameraTarget->posX - (WINDOW_WIDTH /2) + (cameraTarget->entityWidth /2);
-
-	if (cameraOffset > 0){
-		return xPos - cameraOffset;
-	}
-	else{
-		return xPos;
-	}
+	return xPos - xFrameOffset;
 }
 
 int Camera::getYPosWithinFrame(int yPos){
@@ -60,23 +53,23 @@ void Camera::initializeTileSelect(){
 }
 
 void Camera::renderMap(){
-	this->cameraTarget = cameraTarget;
+	int xOffsetCameraTarget = 0;
+	if (xFrameOffset > 0) {
+		xOffsetCameraTarget = (cameraTarget->posX % TILE_DIM);
+	}
+	int yOffsetCameraTarget = 0;
+	if (cameraTarget->posY > (WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2 - 8)) {
+		yOffsetCameraTarget = (cameraTarget->posY % TILE_DIM);
+	}
+	//Iterate through every tile in the frame
     for (int y = yOffset; y <= tilesPerWindowHeight + yOffset; y++) {
 		for (int x = xOffset; x <= tilesPerWindowWidth + xOffset; x++) {
-			//grab the texture we should have for the given tile from the map
+			renTile.x = ((x - xOffset) * TILE_DIM) - xOffsetCameraTarget;
+			renTile.y = ((y - yOffset) * TILE_DIM) - yOffsetCameraTarget;
+			//grab the number representing the texture we should have for the given tile from the map
 			short texSel = map.tileMap[y][x];
-			renTile.x = ((x - xOffset) * TILE_DIM);
-			if (cameraTarget->posX > (WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2)) {
-				renTile.x -= (cameraTarget->posX % TILE_DIM);
-			}
-			renTile.y = ((y - yOffset) * TILE_DIM);
-			if (cameraTarget->posY > (WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2 - 8)) {
-				renTile.y -= (cameraTarget->posY % TILE_DIM);
-			}
 			if (texSel > 0) {
-				textureSelect(texSel);
-				//handle offsets in the left corner. I havent handled the right corner 0.0
-				SDL_RenderCopy(windowManager.renderer, textureManager.tileTexture, &tileSelect[texSelY][texSelX], &renTile);
+				SDL_RenderCopy(windowManager.renderer, textureManager.tileTexture, textureSelect(texSel), &renTile);
 			}
 			else {
 				//find the object at the location
@@ -101,15 +94,15 @@ void Camera::renderMap(){
     return;
 }
 
-void Camera::textureSelect(short select) {
+/*Return a reference to a rect that has the location of the correct tile texture*/
+SDL_Rect* Camera::textureSelect(short select) {
+	int texSelX = select;
+	int texSelY = 0;
 	if (select > (TILE_WIDTH_IN_TILE_MAP - 1)) {
 		texSelX = ((select + 1) % TILE_WIDTH_IN_TILE_MAP) - 1;
 		texSelY = ((select + 1) / TILE_WIDTH_IN_TILE_MAP);
 	}
-	else {
-		texSelX = select;
-		texSelY = 0;
-	}
+	return &tileSelect[texSelY][texSelX];
 }
 
 void Camera::update(){	
@@ -118,6 +111,10 @@ void Camera::update(){
 }
 
 void Camera::updateCameraOffsets(){
+	xFrameOffset = cameraTarget->posX - (WINDOW_WIDTH / 2 ) + (cameraTarget->entityWidth / 2);
+	if(xFrameOffset < 0 ){
+		xFrameOffset = 0;
+	}
 	camera.xOffset = (cameraTarget->posX) / TILE_DIM - (WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2) / TILE_DIM;
 	camera.yOffset = (cameraTarget->posY) / TILE_DIM - (WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2) / TILE_DIM;
 }
