@@ -37,3 +37,43 @@ void Entity::updateEntity(float dt) {
 	posX += round(velX * dt);
 	posY += round(velY * dt);
 }
+
+void Entity::updateAnimationFrame(){
+	curFrame = (curFrame + 1) % totalFrame;
+	playFrame = curFrame / ANIM_SPEED;
+	if(playFrame == 14){
+		if(!loopCurrentAnimation){
+			animCycleComplete = true;
+			if(velX < 0){
+				setAnimation(RUN_L_ANIM,true);
+			}
+			else if(velX > 0){
+				setAnimation(RUN_R_ANIM,true);
+			}
+			else{
+				setAnimation(IDLE_ANIM,true);
+			}
+		}
+	}	
+}
+
+void Entity::setAnimation(int animation,bool loop){
+	if(curAnim == JUMP_ANIM && (animation == RUN_L_ANIM || animation == RUN_R_ANIM)){
+		if(animCycleComplete){
+			loopCurrentAnimation = loop;
+			curAnim = animation;
+			curFrame = -1;
+			animCycleComplete = false;
+		}
+	}
+	else{
+		loopCurrentAnimation = loop;
+		curAnim = animation;
+		curFrame = -1;
+		animCycleComplete = false;
+	}
+}
+
+short Entity::getCurrentAnimation(){
+	return curAnim;
+}
