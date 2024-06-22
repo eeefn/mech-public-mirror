@@ -19,7 +19,7 @@ Player::Player()  {
 	displayRect.w = PLAYER_WIDTH; displayRect.h = PLAYER_HEIGHT;
 	entityWidth = PLAYER_WIDTH; entityHeight = PLAYER_HEIGHT;
 	inAir = true;
-	Entity::setAnimation(IDLE_ANIM,false);
+	Entity::setAnimation(animationCodes.IDLE_ANIM,false);
 	isPlayer = true;
 	totalFrame = 15 * ANIM_SPEED;
 	posX = WINDOW_WIDTH/2 - PLAYER_WIDTH/2;
@@ -50,29 +50,29 @@ void Player::jump() {
 	//change animation to jumping. The reason frame is set to -1 is 
 	//player update increments current frame right after this assignment, resulting
 	//in the 0th frame being played
-	Entity::setAnimation(JUMP_ANIM,false);
+	Entity::setAnimation(animationCodes.JUMP_ANIM,false);
 	this->inAir = true;
 }
 
 void Player::moveLeft(bool key) {
 	if (key) {
 		velX -= entitySpeedX;
-		Entity::setAnimation(RUN_L_ANIM,true);
+		Entity::setAnimation(animationCodes.RUN_L_ANIM,true);
 	}
 	else {
 		velX += entitySpeedX;
-		Entity::setAnimation(IDLE_ANIM,true);
+		Entity::setAnimation(animationCodes.IDLE_ANIM,true);
 	}
 }
 
 void Player::moveRight(bool key) {
 	if (key) {
 		velX += entitySpeedX;
-		Entity::setAnimation(RUN_R_ANIM,true);
+		Entity::setAnimation(animationCodes.RUN_R_ANIM,true);
 	}
 	else {
 		velX -= entitySpeedX;
-		Entity::setAnimation(IDLE_ANIM, true);
+		Entity::setAnimation(animationCodes.IDLE_ANIM, true);
 	}
 
 }

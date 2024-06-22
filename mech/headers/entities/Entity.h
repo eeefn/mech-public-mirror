@@ -1,12 +1,14 @@
 #pragma once
 #include <SDL.h>
 #define GRAVITY 250
-#define IDLE_ANIM 2
-#define JUMP_ANIM 0
-#define RUN_R_ANIM 1
-#define UPAIR_ANIM 0
-#define RUN_L_ANIM 3
 #define ANIM_SPEED 2
+
+extern struct AnimationCodes {
+	constexpr static int JUMP_ANIM = 0;
+	constexpr static int RUN_R_ANIM = 1;
+	constexpr static int IDLE_ANIM = 2;
+	constexpr static int RUN_L_ANIM = 3;
+}animationCodes;
 
 class Entity
 {

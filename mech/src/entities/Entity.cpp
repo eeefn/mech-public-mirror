@@ -45,20 +45,20 @@ void Entity::updateAnimationFrame(){
 		if(!loopCurrentAnimation){
 			animCycleComplete = true;
 			if(velX < 0){
-				setAnimation(RUN_L_ANIM,true);
+				setAnimation(animationCodes.RUN_L_ANIM,true);
 			}
 			else if(velX > 0){
-				setAnimation(RUN_R_ANIM,true);
+				setAnimation(animationCodes.RUN_R_ANIM,true);
 			}
 			else{
-				setAnimation(IDLE_ANIM,true);
+				setAnimation(animationCodes.IDLE_ANIM,true);
 			}
 		}
 	}	
 }
 
 void Entity::setAnimation(int animation,bool loop){
-	if(curAnim == JUMP_ANIM && (animation == RUN_L_ANIM || animation == RUN_R_ANIM)){
+	if(curAnim == animationCodes.JUMP_ANIM && (animation == animationCodes.RUN_L_ANIM || animation == animationCodes.RUN_R_ANIM)){
 		if(animCycleComplete){
 			loopCurrentAnimation = loop;
 			curAnim = animation;
