@@ -10,27 +10,20 @@
 Gui gui;
 
 Gui::Gui() {
-
-	soulColor = 0;
-	pulseCount = 0;
-	selectColor = 0;
 	//initialize our gui rectangles
 	for (unsigned int i = 0; i < 8; i++) {
 		for (unsigned int j = 0; j < 22; j++) {
-			gui.guiArr[i][j].x = j * 16;
-			gui.guiArr[i][j].y = i * 16;
-			gui.guiArr[i][j].w = 16;
-			gui.guiArr[i][j].h = 16;
+			guiArr[i][j].x = j * 16;
+			guiArr[i][j].y = i * 16;
+			guiArr[i][j].w = 16;
+			guiArr[i][j].h = 16;
 		}
 	}
-	gui.guiComponent.x = 16;
-	gui.guiComponent.y = 16;
-	gui.guiComponent.w = 48;
-	gui.guiComponent.h = 48;
 }
 
 
 void Gui::renderSoul() {
+	//render the soul, with small pulse effect
 	pulseCount++;
 	int fullness = player.soul / 5;
 	fullness = (fullness - 20) * -1;

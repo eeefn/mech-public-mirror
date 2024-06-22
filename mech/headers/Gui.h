@@ -4,16 +4,15 @@
 class Gui
 {
 	public:
-		//array of rects for displaying the right tile from gui
 		void render(int gameMode);
 		void renderSoul();
-		int soulColor;
-		int pulseCount;
-		short selectColor;
+		int soulColor = 0;
+		int pulseCount = 0;
+		short selectColor = 0;
 		Gui();
 	private:
 		SDL_Rect guiArr[8][22];
-		SDL_Rect guiComponent;
+		SDL_Rect guiComponent = {16, 16, 48, 48};
 		SDL_Rect selWindowRen;
 
 };
