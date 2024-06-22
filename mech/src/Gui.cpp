@@ -41,11 +41,18 @@ void Gui::renderSoul() {
 	}
 	SDL_RenderCopy(windowManager.renderer, textureManager.guiTexture, &gui.guiArr[soulColor][fullness], &gui.guiComponent);
 }
+
 void Gui::render(int gameMode){
 	if(gameMode == PLAY){
 		renderSoul();
 	}
 	else{
 		editor.renderEditorSelection();
+	}
+}
+
+void Gui::setSoulColor(int color){
+	if(color >= 0 && color <= 7){
+		soulColor = color;
 	}
 }
