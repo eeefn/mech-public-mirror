@@ -71,7 +71,7 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			player.soul = player.soul - 5;
 			break;
 		case SDLK_UP:
-			gui.soulColor++;
+			gui.setSoulColor(gui.soulColors.RED);
 			break;
 		case SDLK_w:
 			if (!playerEntity->inAir) {
@@ -96,7 +96,6 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 				player.inMech = true;
 				mech.highlighted = false;
 				mech.entityTransition = true;
-				//player.stop();
 				//swap the position of mech and player.
 				
 				camera.setCameraTarget(entityManager.swapEntityList());
