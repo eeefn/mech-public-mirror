@@ -71,7 +71,7 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			player.soul = player.soul - 5;
 			break;
 		case SDLK_UP:
-			gui.soulColor = gui.soulColor++;
+			gui.soulColor++;
 			break;
 		case SDLK_w:
 			if (!playerEntity->inAir) {
