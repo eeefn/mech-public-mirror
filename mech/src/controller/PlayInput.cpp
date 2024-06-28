@@ -18,6 +18,15 @@ PlayInput::PlayInput(){
     std::cout << "input constructed";
 }
 
+void PlayInput::processHeldKeys(SDL_Event *keyEvent){
+	switch (keyEvent->key.keysym.sym){
+		case SDLK_LSHIFT:
+			//TODO spawn soulSprite entity
+			//TODO switch camera to soulsprite entity
+			break;
+	}
+}
+
 bool PlayInput::processInput(SDL_Event *keyEvent, int *gameMode){
 	bool gameIsRunning = true;
 	if (keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat == 0) {
@@ -25,6 +34,9 @@ bool PlayInput::processInput(SDL_Event *keyEvent, int *gameMode){
 	}
 	if (keyEvent->type == SDL_MOUSEBUTTONDOWN) {
 		playInput.processMousedown(keyEvent);
+	}
+	if(keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat != 0){
+		playInput.processHeldKeys(keyEvent);
 	}
 	if (keyEvent->type == SDL_KEYUP && keyEvent->key.repeat == 0) {
 		playInput.processKeyup(keyEvent);
@@ -50,6 +62,10 @@ void PlayInput::processKeyup(SDL_Event *keyupEvent){
 			}else{
 				playerEntity->entityTransition = false;
 			}
+			break;
+		case SDLK_LSHIFT:
+			//TODO despawn soulSprite entity
+			//TODO switch camera back to player entity
 			break;
 	}
 }
