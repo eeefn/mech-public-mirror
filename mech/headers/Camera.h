@@ -22,6 +22,7 @@ class Camera{
         Camera();
     private:
         int xFrameOffset;
+        int yFrameOffset;
         SDL_Rect* textureSelect(short select);
         void initializeTileSelect();
         void updateTargetDisplayPos();
