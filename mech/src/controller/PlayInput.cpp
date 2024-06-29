@@ -21,8 +21,11 @@ PlayInput::PlayInput(){
 void PlayInput::processHeldKeys(SDL_Event *keyEvent){
 	switch (keyEvent->key.keysym.sym){
 		case SDLK_LSHIFT:
-			//TODO spawn soulSprite entity
-			//TODO switch camera to soulsprite entity
+			if(!soulSpriteSpawned){
+				entityManager.spawnSoulSprite();
+				camera.setCameraTarget(entityManager.swapEntityList());
+				soulSpriteSpawned = true;
+			}
 			break;
 	}
 }
