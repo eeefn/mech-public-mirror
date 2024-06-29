@@ -31,10 +31,10 @@ void SoulSpriteInput::processKeyup(SDL_Event *keyupEvent){
             playerEntity->moveRight(false);
 			break;
         case SDLK_w:
-            //playerEntity->moveUp(false);
+            playerEntity->moveUp(false);
             break;
         case SDLK_s:
-            //playerEntity->moveDown(false);
+            playerEntity->moveDown(false);
             break;
 		case SDLK_LSHIFT:
 			//TODO despawn soulSprite entity
@@ -48,7 +48,7 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
     Entity *playerEntity = camera.cameraTarget;
     switch (keydownEvent->key.keysym.sym) {
 		case SDLK_w:
-            //playerEntity->moveUp(true);
+            playerEntity->moveUp(true);
 			break;
 		case SDLK_a:
 			playerEntity->moveLeft(true);
@@ -57,7 +57,7 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			playerEntity->moveRight(true);
 			break;
         case SDLK_s:
-            //playerEntity->moveDown(true);
+            playerEntity->moveDown(true);
             break;
         case SDLK_q:
             //this is where the player would switch entites

@@ -12,5 +12,7 @@ class SoulSprite : public Entity{
         void processCollision(bool collisions[4]);
         void moveLeft(bool key);
         void moveRight(bool key);
+        void moveUp(bool key);
+        void moveDown(bool key);
         void render(SDL_Renderer *renderer);
 };
