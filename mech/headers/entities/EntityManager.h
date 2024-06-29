@@ -11,6 +11,7 @@ class EntityManager{
         void update(float dt);
         void render(int gameMode);
         Entity* swapEntityList(); 
+        void spawnSoulSprite();
     private:
         vector<Entity*> entityList;
                         

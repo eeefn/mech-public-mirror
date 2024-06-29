@@ -2,10 +2,13 @@
 #include "../../headers/entities/EntityManager.h"
 #include "../../headers/entities/Player.h"
 #include "../../headers/entities/Mech.h"
+#include "../../headers/entities/SoulSprite.h"
 #include "../../headers/WindowManager.h"
 #include "../../headers/Map.h"
 #include "../../headers/Collider.h"
-
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
 EntityManager entityManager;
 
 EntityManager::EntityManager(){
@@ -35,8 +38,13 @@ void EntityManager::render(int gameMode){
 		}	
 	}
 }
-
+void EntityManager::spawnSoulSprite(){
+	Entity* soulSprite = new SoulSprite(entityList.at(0));
+	entityList.push_back(soulSprite);
+}
 Entity* EntityManager::swapEntityList(){
 	std::iter_swap(entityList.begin(), entityList.end() - 1);
+	std::cout << "swapped entity list" << std::endl;
+	std::cout << entityList.size() << std::endl;
 	return entityList.at(0);
 }

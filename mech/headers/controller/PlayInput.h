@@ -10,6 +10,7 @@ class PlayInput{
         bool processInput(SDL_Event *keyEvent, int *gameMode);
         PlayInput();
     private:
+        bool soulSpriteSpawned = false;
         int processKeydown(SDL_Event *keyEvent, int *gameMode);
         void processMousedown(SDL_Event *keydownEvent);
         void processKeyup(SDL_Event *keyupEvent);
