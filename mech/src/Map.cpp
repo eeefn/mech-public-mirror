@@ -22,8 +22,8 @@ void Map::initialize(){
 bool Map::read(std::string mapIn) {
 	std::ifstream mapStream(mapIn, std::ios::in | std::ios::binary);
 	if (mapStream.good()) {
-		for (unsigned int i = 0; i < MAX_LVL_HEIGHT; i++) {
-			for (unsigned int j = 0; j < MAX_LVL_WIDTH; j++) {
+		for (unsigned int i = 0; i < mapInfo.MAX_LVL_HEIGHT; i++) {
+			for (unsigned int j = 0; j < mapInfo.MAX_LVL_WIDTH; j++) {
 				mapStream.read((char*)&this->tileMap[i][j], sizeof(short));
 			}
 		}
@@ -37,8 +37,8 @@ bool Map::read(std::string mapIn) {
 
 
 bool Map::fill(SDL_Rect* selWindowRen, int xOffset, int yOffset, int selectColor) {
-	for (int i = selWindowRen->y / TILE_DIM + yOffset; i < (selWindowRen->h / TILE_DIM) + (selWindowRen->y / TILE_DIM + yOffset); i++) {
-		for (int j = selWindowRen->x / TILE_DIM + xOffset; j < (selWindowRen->w / TILE_DIM) + (selWindowRen->x / TILE_DIM + xOffset); j++) {
+	for (int i = selWindowRen->y / mapInfo.TILE_DIM + yOffset; i < (selWindowRen->h / mapInfo.TILE_DIM) + (selWindowRen->y / mapInfo.TILE_DIM + yOffset); i++) {
+		for (int j = selWindowRen->x / mapInfo.TILE_DIM + xOffset; j < (selWindowRen->w / mapInfo.TILE_DIM) + (selWindowRen->x / mapInfo.TILE_DIM + xOffset); j++) {
 			this->tileMap[i][j] = selectColor;
 		}
 	}
@@ -47,8 +47,8 @@ bool Map::fill(SDL_Rect* selWindowRen, int xOffset, int yOffset, int selectColor
 
 bool Map::save(std::string mapIn) {
 	std::ofstream file(mapIn, std::ios::trunc | std::ios::out | std::ios::binary);
-	for (unsigned int i = 0; i < MAX_LVL_HEIGHT; i++) {
-		for (unsigned int j = 0; j < MAX_LVL_WIDTH; j++) {
+	for (unsigned int i = 0; i < mapInfo.MAX_LVL_HEIGHT; i++) {
+		for (unsigned int j = 0; j < mapInfo.MAX_LVL_WIDTH; j++) {
 			file.write((char*)&this->tileMap[i][j], sizeof(short));
 		}
 	}
@@ -57,8 +57,8 @@ bool Map::save(std::string mapIn) {
 }
 
 bool Map::initGameObject() {
-	for (unsigned int i = 0; i < MAX_LVL_HEIGHT; i++) {
-		for (unsigned int j = 0; j < MAX_LVL_WIDTH; j++) {
+	for (unsigned int i = 0; i < mapInfo.MAX_LVL_HEIGHT; i++) {
+		for (unsigned int j = 0; j < mapInfo.MAX_LVL_WIDTH; j++) {
 			//check to see if the tile is an object.
 			if (this->tileMap[i][j] < 0) {
 				short obj = this->tileMap[i][j] * -1;

@@ -17,7 +17,7 @@
 
 using std::cout;
 
-int gameMode = PLAY;
+int gameMode = gamemodes.PLAY;
 int lastFrameTime = 0;
 bool gameIsRunning = false;
 
@@ -49,7 +49,7 @@ void update() {
 	lastFrameTime = SDL_GetTicks();
 
 	//update player physics if we are not editing the map
-	if (gameMode == PLAY) {
+	if (gameMode == gamemodes.PLAY) {
 		entityManager.update(deltaTime);
 		camera.update();
 	}

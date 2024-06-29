@@ -16,10 +16,10 @@ InputFactory::InputFactory(SDL_Event *event, int *gameMode){
 
 bool InputFactory::processInput(){
     bool gameIsRunning = true;
-    if(*this->gameMode == EDIT){
+    if(*this->gameMode == gamemodes.EDIT){
         gameIsRunning = editInput.processInput(this->event,this->gameMode);
     }
-    else if(*this->gameMode == PLAY){
+    else if(*this->gameMode == gamemodes.PLAY){
         gameIsRunning = playInput.processInput(this->event, this->gameMode);
     }
     return gameIsRunning;

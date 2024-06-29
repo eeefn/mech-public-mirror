@@ -32,7 +32,7 @@ void EntityManager::update(float dt){
 void EntityManager::render(int gameMode){
 	//Iterate through the entity list, rendering every entity
 	//Iteration is done in reverse to ensure that the player is rendered in front of other entities
-	if(gameMode == PLAY){
+	if(gameMode == gamemodes.PLAY){
 		for(auto entity = entityList.rbegin(); entity != entityList.rend(); ++entity){
 			(*entity)->render(windowManager.renderer);
 		}	

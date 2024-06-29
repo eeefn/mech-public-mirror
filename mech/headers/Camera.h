@@ -2,12 +2,13 @@
 #include <SDL.h>
 #include "../headers/constants.h"
 #include "../headers/entities/Entity.h"
+
 class Camera{
     public:
         int yOffset, xOffset;
         int tilesPerWindowHeight, tilesPerWindowWidth;
         
-        SDL_Rect tileSelect[TILE_WIDTH_IN_TILE_MAP][TILE_WIDTH_IN_TILE_MAP];
+        SDL_Rect tileSelect[mapInfo.TILE_WIDTH_IN_TILE_MAP][mapInfo.TILE_WIDTH_IN_TILE_MAP];
         SDL_Rect renTile;
         SDL_Rect objTex;
         

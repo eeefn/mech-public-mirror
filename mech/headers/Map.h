@@ -11,7 +11,7 @@
 
 class Map {
 	public:
-		short tileMap[MAX_LVL_HEIGHT][MAX_LVL_WIDTH];
+		short tileMap[mapInfo.MAX_LVL_HEIGHT][mapInfo.MAX_LVL_WIDTH];
 		std::vector<std::shared_ptr<GameObject>> gameObjList;
 		//read the map
 		bool read(std::string mapIn);

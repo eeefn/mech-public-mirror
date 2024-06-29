@@ -29,7 +29,7 @@ int EditInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
     bool gameIsRunning = true;
     switch (keydownEvent->key.keysym.sym) {
 		case SDLK_e: 
-            *gameMode = PLAY;
+            *gameMode = gamemodes.PLAY;
             break;
 		case SDLK_RIGHT: editor.expandSelWindowRight(); break;
 		case SDLK_LEFT:

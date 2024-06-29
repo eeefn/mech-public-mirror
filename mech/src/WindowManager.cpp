@@ -12,8 +12,8 @@ bool WindowManager::initializeWindow() {
 		NULL,
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		WINDOW_WIDTH,
-		WINDOW_HEIGHT,
+		windowSize.WINDOW_WIDTH,
+		windowSize.WINDOW_HEIGHT,
 		SDL_WINDOW_BORDERLESS
 	);
 	if (!window) {
