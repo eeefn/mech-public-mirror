@@ -1,14 +1,10 @@
 
 #include <SDL.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
 #include <cmath>
 #include "../../headers/constants.h"
 #include "../../headers/entities/Player.h"
 #include "../../headers/TextureManager.h"
 
-using std::cout;
 
 Player player;
 
