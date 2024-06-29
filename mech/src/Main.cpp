@@ -34,8 +34,7 @@ void setup() {
 void processInput() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	InputFactory inputFactory = InputFactory(&event, &gameMode);
-	gameIsRunning = inputFactory.processInput();
+	gameIsRunning = inputFactory.processInput(&event, &gameMode);
 }
 
 void update() {

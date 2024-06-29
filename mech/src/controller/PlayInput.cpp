@@ -5,7 +5,7 @@
 #include "../../headers/Gui.h"
 #include "../../headers/Camera.h"
 #include "../../headers/Editor.h"
-
+#include "../../headers/controller/InputFactory.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -25,6 +25,7 @@ void PlayInput::processHeldKeys(SDL_Event *keyEvent){
 				entityManager.spawnSoulSprite();
 				camera.setCameraTarget(entityManager.swapEntityList());
 				soulSpriteSpawned = true;
+				inputFactory.setControlMode(controlModes.SOUL_SPRITE);
 			}
 			break;
 	}
