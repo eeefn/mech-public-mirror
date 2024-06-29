@@ -54,18 +54,10 @@ void PlayInput::processKeyup(SDL_Event *keyupEvent){
 	Entity *playerEntity = camera.cameraTarget;
 	switch (keyupEvent->key.keysym.sym) {
 		case SDLK_a:
-			if(!playerEntity->entityTransition){
-				playerEntity->moveLeft(false);
-			}else{
-				playerEntity->entityTransition = false;
-			}
+			playerEntity->moveLeft(false);
 			break;
 		case SDLK_d:
-			if(!playerEntity->entityTransition){
-				playerEntity->moveRight(false);
-			}else{
-				playerEntity->entityTransition = false;
-			}
+			playerEntity->moveRight(false);
 			break;
 		case SDLK_LSHIFT:
 			//TODO despawn soulSprite entity
@@ -115,9 +107,12 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 				player.isPlayer = false;
 				player.inMech = true;
 				mech.highlighted = false;
-				mech.entityTransition = true;
-				//swap the position of mech and player.
-				
+				if(player.velX > 0){
+					mech.velX += mech.entitySpeedX;
+				}
+				else if(player.velX < 0){
+					mech.velX -= mech.entitySpeedX;
+				}
 				camera.setCameraTarget(entityManager.swapEntityList());
 			}
 			break;
