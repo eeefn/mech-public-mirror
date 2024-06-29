@@ -1,4 +1,5 @@
 #include "../../headers/entities/Entity.h"
+#include "../../headers/Camera.h"
 #include "stdio.h"
 #include <iostream>
 #include <math.h>
@@ -64,6 +65,9 @@ void Entity::updateEntity(float dt) {
 	}
 	posX += round(velX * dt);
 	posY += round(velY * dt);
+
+	displayRect.x = camera.getXPosWithinFrame(posX);
+	displayRect.y = camera.getYPosWithinFrame(posY);
 }
 
 void Entity::updateAnimationFrame(){

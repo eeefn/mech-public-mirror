@@ -139,8 +139,6 @@ void Mech::updateEntity(float dt) {
 	//update the position of the display rectangle to indicate screen coords
 	//	handRect[0].x = posX - (pPosX - (WINDOW_WIDTH / 2 - 64 / 2)) + 160;
 		
-	displayRect.x = camera.getXPosWithinFrame(posX);
-	displayRect.y = camera.getYPosWithinFrame(posY);
 	handRect[0].y = camera.getYPosWithinFrame(posY) + 150;	
 	handRect[3].y = handRect[0].y - 2;
 	//this whole section is extremely hacky and i feel shame in my heart

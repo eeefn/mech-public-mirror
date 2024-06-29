@@ -4,6 +4,7 @@
 #include "../../headers/constants.h"
 #include "../../headers/entities/Player.h"
 #include "../../headers/TextureManager.h"
+#include "../../headers/Camera.h"
 
 
 Player player;
