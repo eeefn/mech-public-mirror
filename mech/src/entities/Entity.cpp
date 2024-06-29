@@ -8,17 +8,45 @@ void Entity::jump() {
 	cout << "called base jump function" << '\n';
 }
 void Entity::moveLeft(bool key) {
-
+	if(key){
+		velX -= entitySpeedX;
+	}
+	else{
+		velX += entitySpeedX;
+	}
 }
 void Entity::moveRight(bool key) {
-
+	if (key) {
+		velX += entitySpeedX;
+	}
+	else {
+		velX -= entitySpeedX;
+	}
 }
 void Entity::attackRight(int xClick) {
 
 }
+void Entity::moveUp(bool key){
+	if (key) {
+		velY -= entitySpeedY;
+	}
+	else{
+		velY += entitySpeedY;
+	}
+}
+
+void Entity::moveDown(bool key){
+	if (key) {
+		velY += entitySpeedY;
+	}
+	else{
+		velY -= entitySpeedY;
+	}
+}
 void Entity::render(SDL_Renderer* renderer){
 		
 }
+
 void Entity::stop(){
 	velX = 0;
 }

@@ -9,6 +9,7 @@ SoulSprite::SoulSprite(Entity *entity){
     entityWidth = 32;
     entityHeight = 32;
     entitySpeedX = 100;
+    entitySpeedY = 100;
     this->displayRect.x = entity->displayRect.x;
     this->displayRect.y = entity->displayRect.y;
     this->displayRect.w = 32;
@@ -26,21 +27,17 @@ void SoulSprite::updateEntity(float dt){
 }
 
 void SoulSprite::moveLeft(bool key) {
-	if (key) {
-		velX -= entitySpeedX;
-	}
-	else {
-		velX += entitySpeedX;
-	}
+    Entity::moveLeft(key);
 }
 
+void SoulSprite::moveUp(bool key) {
+    Entity::moveUp(key);
+}
 void SoulSprite::moveRight(bool key) {
-	if (key) {
-		velX += entitySpeedX;
-	}
-	else {
-		velX -= entitySpeedX;
-	}
+	Entity::moveRight(key);
+}
+void SoulSprite::moveDown(bool key) {
+	Entity::moveDown(key);
 }
 
 void SoulSprite::processCollision(bool collisions[4]){

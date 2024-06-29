@@ -18,13 +18,15 @@ public:
 	int posX, posY, velX, velY;
 	float accY, accX;
 	bool isPlayer, inAir, entityTransition;
-	int entitySpeedX;
+	int entitySpeedX, entitySpeedY = 0;
 	SDL_Rect displayRect;
 	void stop();
 	virtual void updateEntity(float dt);
 	virtual void jump();
 	virtual void moveLeft(bool key);
 	virtual void moveRight(bool key);
+	virtual void moveUp(bool key);
+	virtual void moveDown(bool key);
 	virtual void attackRight(int xClick);
 	virtual void render(SDL_Renderer* renderer);	
 	virtual void processCollision(bool collisions[4]);
