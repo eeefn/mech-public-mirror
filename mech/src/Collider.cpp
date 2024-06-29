@@ -18,17 +18,17 @@ Collider::Collider() {
 	}
 }
 
-bool Collider::collisionCheck(Entity* entity, short tileMap[][MAX_LVL_WIDTH]) {
+bool Collider::collisionCheck(Entity* entity, short tileMap[][mapInfo.MAX_LVL_WIDTH]) {
 	bool colOccur = false;
 	//reset collision results
 	for (unsigned int i = 0; i < 4; i++) {
 		colResults[i] = false;
 	}
 	//assign the number of tiles tall the collison box is. same for width of collision box
-	xTilePos = entity->posX / TILE_DIM;
-	yTilePos = entity->posY / TILE_DIM;
-	yLen = (entity->entityHeight) / TILE_DIM;
-	xLen =  (entity->entityWidth) / TILE_DIM;
+	xTilePos = entity->posX / mapInfo.TILE_DIM;
+	yTilePos = entity->posY / mapInfo.TILE_DIM;
+	yLen = (entity->entityHeight) / mapInfo.TILE_DIM;
+	xLen =  (entity->entityWidth) / mapInfo.TILE_DIM;
 	//if going down
 	if (entity->velY > 0) {
 		//iterate through the bottom  x tiles to check for collision

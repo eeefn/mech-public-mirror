@@ -22,8 +22,8 @@ Player::Player()  {
 	Entity::setAnimation(animationCodes.IDLE_ANIM,false);
 	isPlayer = true;
 	totalFrame = 15 * ANIM_SPEED;
-	posX = WINDOW_WIDTH/2 - PLAYER_WIDTH/2;
-	posY = WINDOW_HEIGHT/2 - PLAYER_HEIGHT/2;
+	posX = 1280/2 - PLAYER_WIDTH/2;
+	posY = 720/2 - PLAYER_HEIGHT/2;
 	velX = 0; velY = 0;
 	accX = 0; accY = GRAVITY;
 	entitySpeedX = 100;
@@ -47,9 +47,6 @@ void Player::initializePlayerAnim(){
 void Player::jump() {
 	//adjust player velocity to initiate jump
 	velY -= playerJumpAcc;
-	//change animation to jumping. The reason frame is set to -1 is 
-	//player update increments current frame right after this assignment, resulting
-	//in the 0th frame being played
 	Entity::setAnimation(animationCodes.JUMP_ANIM,false);
 	this->inAir = true;
 }
@@ -94,20 +91,20 @@ void Player::processCollision(bool collisions[4]) {
 	if (collisions[0]) {
 		//hit ground. This works because of integer division, break the pos into discrete tiles, the re multiply to 
 		//get a pos that snaps to grid
-		player.posY = (player.posY)/TILE_DIM * TILE_DIM;
+		player.posY = (player.posY)/mapInfo.TILE_DIM * mapInfo.TILE_DIM;
 		player.inAir = false;
 		player.velY = 0;
 	}
 	else if (collisions[1]) {
-		player.posY = (player.posY + TILE_DIM - 1) / TILE_DIM * TILE_DIM;
+		player.posY = (player.posY + mapInfo.TILE_DIM - 1) / mapInfo.TILE_DIM * mapInfo.TILE_DIM;
 	}
 	//check x collsions
 	if (collisions[2]) {
 		//
-		player.posX = (player.posX) / TILE_DIM * TILE_DIM;
+		player.posX = (player.posX) / mapInfo.TILE_DIM * mapInfo.TILE_DIM;
 	}
 	else if(collisions[3]){
 		//moving left
-		player.posX = ((player.posX + TILE_DIM - 1) / TILE_DIM) * TILE_DIM;
+		player.posX = ((player.posX + mapInfo.TILE_DIM - 1) / mapInfo.TILE_DIM) * mapInfo.TILE_DIM;
 	}
 }

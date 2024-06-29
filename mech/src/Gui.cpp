@@ -43,7 +43,7 @@ void Gui::renderSoul() {
 }
 
 void Gui::render(int gameMode){
-	if(gameMode == PLAY){
+	if(gameMode == gamemodes.PLAY){
 		renderSoul();
 	}
 	else{

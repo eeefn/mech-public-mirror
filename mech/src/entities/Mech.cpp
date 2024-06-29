@@ -177,13 +177,13 @@ void Mech::updateEntity(float dt) {
 
 void Mech::processCollision(bool collisions[4]) {
 	if (collisions[0]) {
-		mech.posY = (mech.posY) / TILE_DIM * TILE_DIM;
+		mech.posY = (mech.posY) / mapInfo.TILE_DIM * mapInfo.TILE_DIM;
 		mech.velY = 0;
 	}
 }
 
 void Mech::isHighlighted(){
-	if (abs(camera.cameraTarget->posX - posX - 2 * TILE_DIM) > 80) {
+	if (abs(camera.cameraTarget->posX - posX - 2 * mapInfo.TILE_DIM) > 80) {
 		highlighted = false;
 	}
 	else {
