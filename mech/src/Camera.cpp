@@ -32,13 +32,7 @@ int Camera::getXPosWithinFrame(int xPos){
 }
 
 int Camera::getYPosWithinFrame(int yPos){
-	int cameraOffset = this->cameraTarget->posY - (windowSize.WINDOW_HEIGHT / 2 - 56);
-	if (cameraOffset > 0){
-		return yPos - cameraOffset;
-	}
-	else{
-		return yPos;
-	}
+	return yPos - yFrameOffset;
 }
 
 void Camera::initializeTileSelect(){
@@ -58,7 +52,7 @@ void Camera::renderMap(){
 		xOffsetCameraTarget = (cameraTarget->posX % mapInfo.TILE_DIM);
 	}
 	int yOffsetCameraTarget = 0;
-	if (cameraTarget->posY > (windowSize.WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2 - 8)) {
+	if (cameraTarget->posY > (windowSize.WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2 - 8 )) {
 		yOffsetCameraTarget = (cameraTarget->posY % mapInfo.TILE_DIM);
 	}
 	//Iterate through every tile in the frame
@@ -114,6 +108,11 @@ void Camera::updateCameraOffsets(){
 	xFrameOffset = cameraTarget->posX - (windowSize.WINDOW_WIDTH / 2 ) + (cameraTarget->entityWidth / 2);
 	if(xFrameOffset < 0 ){
 		xFrameOffset = 0;
+	}
+
+	yFrameOffset = cameraTarget->posY - (windowSize.WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2 - 8);
+	if(yFrameOffset < 0){
+		yFrameOffset = 0;
 	}
 	camera.xOffset = (cameraTarget->posX) / mapInfo.TILE_DIM - (windowSize.WINDOW_WIDTH / 2 - cameraTarget->entityWidth / 2) / mapInfo.TILE_DIM;
 	camera.yOffset = (cameraTarget->posY) / mapInfo.TILE_DIM - (windowSize.WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2) / mapInfo.TILE_DIM;
