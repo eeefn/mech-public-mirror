@@ -108,22 +108,11 @@ void Mech::render(SDL_Renderer* renderer) {
 }
 
 void Mech::moveLeft(bool key) {
-	if (key) {
-		velX -= entitySpeedX;
-	}
-	else {
-		velX += entitySpeedX;
-	}
-
+	Entity::moveLeft(key);
 }
 
 void Mech::moveRight(bool key) {
-	if (key) {
-		velX += entitySpeedX;
-	}
-	else {
-		velX -= entitySpeedX;
-	}
+	Entity::moveRight(key);
 }
 
 void Mech::attackRight(int xClick) {
