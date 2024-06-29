@@ -48,3 +48,22 @@ Entity* EntityManager::swapEntityList(){
 	std::cout << entityList.size() << std::endl;
 	return entityList.at(0);
 }
+
+Entity* EntityManager::moveEntityToFront(Entity* entityToGoToFront){
+	auto toSwapIterator = std::find(entityList.begin(),entityList.end(),entityToGoToFront);
+	if(toSwapIterator != entityList.end()){
+		std::iter_swap(entityList.begin(),toSwapIterator);
+	}
+	return entityList.at(0);
+}
+ 
+void EntityManager::despawnEntity(Entity* entityToDespawn){
+	auto entity = std::find(entityList.begin(),entityList.end(),entityToDespawn);
+	if(entity != entityList.end()){
+		entityList.erase(entity);
+	}
+	else{
+		std::cout << "entity to erase does not exist" << std::endl;
+	}
+	delete entityToDespawn;
+}

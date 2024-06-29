@@ -1,5 +1,7 @@
 #include "../../headers/controller/SoulSpriteInput.h"
 #include "../../headers/entities/Entity.h"
+#include "../../headers/entities/EntityManager.h"
+#include "../../headers/controller/InputFactory.h"
 #include "../../headers/Camera.h"
 SoulSpriteInput soulSpriteInput;
 
@@ -37,8 +39,10 @@ void SoulSpriteInput::processKeyup(SDL_Event *keyupEvent){
             playerEntity->moveDown(false);
             break;
 		case SDLK_LSHIFT:
-			//TODO despawn soulSprite entity
-			//TODO switch camera back to player entity
+		 	entityManager.moveEntityToFront(playerEntity->hostEntity);
+			camera.setCameraTarget(playerEntity->hostEntity);
+			entityManager.despawnEntity(playerEntity);
+			inputFactory.setControlMode(controlModes.PLAYER);
 			break;
 	}
 }

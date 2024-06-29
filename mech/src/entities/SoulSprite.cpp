@@ -4,6 +4,7 @@
 #include "../../headers/TextureManager.h"
 #include <math.h>
 SoulSprite::SoulSprite(Entity *entity){
+    hostEntity = entity;
     posX = entity->posX;
     posY = entity->posY;
     entityWidth = 32;
@@ -18,7 +19,9 @@ SoulSprite::SoulSprite(Entity *entity){
     accX =0; accY = 0;
     return;
 }
-
+SoulSprite::~SoulSprite(){
+    return;
+}
 
 void SoulSprite::updateEntity(float dt){
 	posX += round(velX * dt);

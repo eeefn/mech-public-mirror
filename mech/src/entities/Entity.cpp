@@ -47,7 +47,9 @@ void Entity::moveDown(bool key){
 void Entity::render(SDL_Renderer* renderer){
 		
 }
+Entity::~Entity(){
 
+}
 void Entity::stop(){
 	velX = 0;
 }

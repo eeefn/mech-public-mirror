@@ -13,6 +13,7 @@ extern struct AnimationCodes {
 class Entity
 {
 public:
+	Entity* hostEntity;
 	int entityWidth, entityHeight;
 	short totalFrame, playFrame;
 	int posX, posY, velX, velY;
@@ -30,6 +31,7 @@ public:
 	virtual void attackRight(int xClick);
 	virtual void render(SDL_Renderer* renderer);	
 	virtual void processCollision(bool collisions[4]);
+	virtual ~Entity();
 protected:
 	short getCurrentAnimation();	
 	void updateAnimationFrame();
