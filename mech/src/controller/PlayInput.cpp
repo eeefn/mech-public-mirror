@@ -21,12 +21,12 @@ PlayInput::PlayInput(){
 void PlayInput::processHeldKeys(SDL_Event *keyEvent){
 	switch (keyEvent->key.keysym.sym){
 		case SDLK_LSHIFT:
-			if(!soulSpriteSpawned){
-				entityManager.spawnSoulSprite();
-				camera.setCameraTarget(entityManager.swapEntityList());
-				soulSpriteSpawned = true;
-				inputFactory.setControlMode(controlModes.SOUL_SPRITE);
-			}
+			//if(!soulSpriteSpawned){
+			entityManager.spawnSoulSprite();
+			camera.setCameraTarget(entityManager.swapEntityList());
+			soulSpriteSpawned = true;
+			inputFactory.setControlMode(controlModes.SOUL_SPRITE);
+		//	}
 			break;
 	}
 }

@@ -15,4 +15,5 @@ class SoulSprite : public Entity{
         void moveUp(bool key);
         void moveDown(bool key);
         void render(SDL_Renderer *renderer);
+        virtual ~SoulSprite();
 };
