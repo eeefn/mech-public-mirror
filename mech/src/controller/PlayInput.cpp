@@ -109,16 +109,7 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 				}
 				camera.setCameraTarget(entityManager.moveEntityToFront(&mech));
 			}
-			/*if(playerEntity)
-			if (mech.highlighted) {
-				mech.isPlayer = true;
-				player.isPlayer = false;
-				player.inMech = true;
-				mech.highlighted = false;
-				if(player.velX > 0){
-				}
-				camera.setCameraTarget(entityManager.swapEntityList());
-			}*/
+			//player.isPlayer = false;
 			break;
 		case SDLK_ESCAPE: gameIsRunning = false; break;
 	}
