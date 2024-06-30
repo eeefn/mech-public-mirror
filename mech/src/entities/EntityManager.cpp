@@ -12,10 +12,14 @@
 EntityManager entityManager;
 
 EntityManager::EntityManager(){
-	Entity* pptr = &player;
+	Entity* pptr = new Player();
 	Entity* mptr = &mech;
 	entityList.push_back(pptr);
 	entityList.push_back(mptr);
+}
+
+Entity* EntityManager::getFrontEntity(){
+	return entityList.at(0);
 }
 
 void EntityManager::update(float dt){

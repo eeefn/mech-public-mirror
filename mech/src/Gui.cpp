@@ -25,7 +25,8 @@ Gui::Gui() {
 void Gui::renderSoul() {
 	//render the soul, with small pulse effect
 	pulseCount++;
-	int fullness = player.soul / 5;
+	//TODO reintegrate player soul and gui soul effect
+	int fullness = /*player.soul*/100 / 5;
 	fullness = (fullness - 20) * -1;
 	if (fullness > 21) {
 		fullness = 21;

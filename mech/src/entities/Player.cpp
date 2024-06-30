@@ -6,9 +6,6 @@
 #include "../../headers/TextureManager.h"
 #include "../../headers/Camera.h"
 
-
-Player player;
-
 Player::Player()  {
 	//setup rectangles from spritesheet. For now im just initializing 
 	//the very first one to get the character moving around
@@ -17,7 +14,7 @@ Player::Player()  {
 	entityWidth = PLAYER_WIDTH; entityHeight = PLAYER_HEIGHT;
 	inAir = true;
 	Entity::setAnimation(animationCodes.IDLE_ANIM,false);
-	isPlayer = true;
+	isPlayer = true; inMech = false;
 	totalFrame = 15 * ANIM_SPEED;
 	posX = 1280/2 - PLAYER_WIDTH/2;
 	posY = 720/2 - PLAYER_HEIGHT/2;
@@ -71,8 +68,8 @@ void Player::moveRight(bool key) {
 
 }
 void Player::render(SDL_Renderer* renderer){
-	if (!player.inMech) {
-		SDL_RenderCopy(renderer, textureManager.spriteTexture, &playerAnim[Entity::getCurrentAnimation()][player.playFrame], &player.displayRect);
+	if (!inMech) {
+		SDL_RenderCopy(renderer, textureManager.spriteTexture, &playerAnim[Entity::getCurrentAnimation()][playFrame], &displayRect);
 	}
 }
 
@@ -88,20 +85,20 @@ void Player::processCollision(bool collisions[4]) {
 	if (collisions[0]) {
 		//hit ground. This works because of integer division, break the pos into discrete tiles, the re multiply to 
 		//get a pos that snaps to grid
-		player.posY = (player.posY)/mapInfo.TILE_DIM * mapInfo.TILE_DIM;
-		player.inAir = false;
-		player.velY = 0;
+		posY = (posY)/mapInfo.TILE_DIM * mapInfo.TILE_DIM;
+		inAir = false;
+		velY = 0;
 	}
 	else if (collisions[1]) {
-		player.posY = (player.posY + mapInfo.TILE_DIM - 1) / mapInfo.TILE_DIM * mapInfo.TILE_DIM;
+		posY = (posY + mapInfo.TILE_DIM - 1) / mapInfo.TILE_DIM * mapInfo.TILE_DIM;
 	}
 	//check x collsions
 	if (collisions[2]) {
 		//
-		player.posX = (player.posX) / mapInfo.TILE_DIM * mapInfo.TILE_DIM;
+		posX = (posX) / mapInfo.TILE_DIM * mapInfo.TILE_DIM;
 	}
 	else if(collisions[3]){
 		//moving left
-		player.posX = ((player.posX + mapInfo.TILE_DIM - 1) / mapInfo.TILE_DIM) * mapInfo.TILE_DIM;
+		posX = ((posX + mapInfo.TILE_DIM - 1) / mapInfo.TILE_DIM) * mapInfo.TILE_DIM;
 	}
 }

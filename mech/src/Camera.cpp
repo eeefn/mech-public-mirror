@@ -21,10 +21,10 @@ void Camera::setCameraTarget(Entity *newCameraTarget){
 	camera.cameraTarget = newCameraTarget;
 }
 
-void Camera::initializeCamera(int height,int width){
+void Camera::initializeCamera(int height,int width, Entity* initialCameraTarget){
     this->tilesPerWindowHeight = (height + mapInfo.TILE_DIM - 1) / mapInfo.TILE_DIM;
     this->tilesPerWindowWidth = (width + mapInfo.TILE_DIM - 1) / mapInfo.TILE_DIM;
-	this->cameraTarget = &player;
+	setCameraTarget(initialCameraTarget);
 }
 
 int Camera::getXPosWithinFrame(int xPos){	
