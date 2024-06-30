@@ -26,7 +26,7 @@ void setup() {
 	SDL_GetCurrentDisplayMode(0,&dm);
 
 	textureManager.initPermanentTextures(windowManager.renderer);
-	camera.initializeCamera(dm.h,dm.w);
+	camera.initializeCamera(dm.h,dm.w,entityManager.getFrontEntity());
 
 	srand(time(NULL));
 }

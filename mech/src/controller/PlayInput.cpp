@@ -76,9 +76,6 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
     bool gameIsRunning = true;
     Entity *playerEntity = camera.cameraTarget;
     switch (keydownEvent->key.keysym.sym) {
-		case SDLK_DOWN:
-			player.soul = player.soul - 5;
-			break;
 		case SDLK_UP:
 			gui.setSoulColor(gui.soulColors.RED);
 			break;
@@ -99,19 +96,29 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			editor.setupSelector(playerEntity);
 			break;
 		case SDLK_q:
+			if(playerEntity->inMech == false && mech.highlighted){
+				mech.hostEntity = playerEntity;
+				playerEntity->inMech = true;
+				mech.isPlayer = true;
+				mech.highlighted = false;
+				if(playerEntity->velX >0){
+					mech.velX += mech.entitySpeedX;
+				}
+				else if(playerEntity->velX < 0){
+					mech.velX -= mech.entitySpeedX;
+				}
+				camera.setCameraTarget(entityManager.moveEntityToFront(&mech));
+			}
+			/*if(playerEntity)
 			if (mech.highlighted) {
 				mech.isPlayer = true;
 				player.isPlayer = false;
 				player.inMech = true;
 				mech.highlighted = false;
 				if(player.velX > 0){
-					mech.velX += mech.entitySpeedX;
-				}
-				else if(player.velX < 0){
-					mech.velX -= mech.entitySpeedX;
 				}
 				camera.setCameraTarget(entityManager.swapEntityList());
-			}
+			}*/
 			break;
 		case SDLK_ESCAPE: gameIsRunning = false; break;
 	}

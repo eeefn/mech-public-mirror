@@ -15,7 +15,6 @@ public:
 	bool animCycleComplete;
 	int playerJumpAcc, playerSpeedX;
 	int soul;
-	bool inMech = false;
 	SDL_Texture* spriteTexture;
 	SDL_Rect playerAnim[4][15];
 	Player();
@@ -28,4 +27,3 @@ public:
 protected:
 	void initializePlayerAnim();
 };
-extern Player player;

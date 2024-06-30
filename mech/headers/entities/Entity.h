@@ -18,7 +18,7 @@ public:
 	short totalFrame, playFrame;
 	int posX, posY, velX, velY;
 	float accY, accX;
-	bool isPlayer, inAir, entityTransition;
+	bool isPlayer, inAir, entityTransition, inMech;
 	int entitySpeedX, entitySpeedY = 0;
 	SDL_Rect displayRect;
 	void stop();
