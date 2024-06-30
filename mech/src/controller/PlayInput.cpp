@@ -24,6 +24,13 @@ void PlayInput::processHeldKeys(SDL_Event *keyEvent){
 			entityManager.spawnSoulSprite();
 			camera.setCameraTarget(entityManager.swapEntityList());
 			inputFactory.setControlMode(controlModes.SOUL_SPRITE);
+			if (camera.cameraTarget->hostEntity->velX > 0){
+				camera.cameraTarget->velX += camera.cameraTarget->entitySpeedX;
+			}
+			else if(camera.cameraTarget->hostEntity->velX < 0){
+				camera.cameraTarget->velX -= camera.cameraTarget->entitySpeedX;
+			}
+			camera.cameraTarget->hostEntity->stop();
 			break;
 	}
 }
