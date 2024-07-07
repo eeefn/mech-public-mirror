@@ -24,10 +24,10 @@ public:
 	void render(SDL_Renderer* renderer);
 protected:
 	void initializePlayerAnim();
-	short curHeadAnim, curHeadFrame;
-	short curTorsoAnim, curTorsoFrame;
-	short curLegsAnim, curLegsFrame;
-	short curFullAnim;
+	AnimSelect headSelect {2,0};
+	AnimSelect torsoSelect {0,0};
+	AnimSelect legsSelect {1,0};
+	AnimSelect fullSelect {0,0};
 	SDL_Rect headDisplayRect;
 	SDL_Rect torsoDisplayRect;
 	SDL_Rect legsDisplayRect;
@@ -35,4 +35,7 @@ protected:
 	SDL_Rect headAnim[4][3];
 	SDL_Rect torsoAnim[2][1];
 	SDL_Rect legsAnim[4][15];
+private:
+	void setHeadAnimR();
+	void setHeadAnimL();
 };

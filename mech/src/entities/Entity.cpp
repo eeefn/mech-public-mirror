@@ -85,38 +85,21 @@ void Entity::updateAnimationFrame(){
 			}
 		}
 	}
-	/*
-	curFrame = (curFrame + 1) % totalFrame;
-	playFrame = curFrame / ANIM_SPEED;
-	if(playFrame == 14){
-		if(!loopCurrentAnimation){
-			animCycleComplete = true;
-			if(velX < 0){
-				setAnimation(animationCodes.RUN_L_ANIM,true);
-			}
-			else if(velX > 0){
-				setAnimation(animationCodes.RUN_R_ANIM,true);
-			}
-			else{
-				setAnimation(animationCodes.IDLE_ANIM,true);
-			}
-		}
-	}*/
 }
 
-void Entity::setAnimation(short animationRequested, bool loop, short* curAnimation, short* playFrame, short maxFrames,short animationType){
-	if((animationRequested != *curAnimation) || (!loop)){
-		*curAnimation = animationRequested;
+void Entity::setAnimation(short animationRequested, bool loop, AnimSelect* animSelect, short maxFrames,short animationType){
+	if((animationRequested != animSelect->curAnim) || (!loop)){
+		animSelect->curAnim = animationRequested;
 		//update exisiting animation of same type
 		for (auto animation : animationsInProgress) {
 			if((animationType == animation->animationType)){
-				*animation = {loop, maxFrames, playFrame, false,animationType,0};
+				*animation = {loop, maxFrames, &animSelect->curFrame, false,animationType,0};
 				return;
 			}
 		}
-		*playFrame = 0;
+		animSelect->curFrame = 0;
 		AnimationInProgress *newAnimPtr = new AnimationInProgress;
-		*newAnimPtr = {loop,maxFrames, playFrame, false,animationType,0};
+		*newAnimPtr = {loop,maxFrames, &animSelect->curFrame, false,animationType,0};
 		animationsInProgress.push_back(newAnimPtr);
 	}
 }

@@ -33,9 +33,13 @@ public:
 	virtual void processCollision(bool collisions[4]);
 	virtual ~Entity();
 protected:
+	struct AnimSelect{
+		short curAnim;
+		short curFrame;
+	};
 	short getCurrentAnimation();	
 	void updateAnimationFrame();
-	void setAnimation(short animationRequested, bool loop, short* currentAnimation, short* playFrame, short maxFrames,short animationType);
+	void setAnimation(short animationRequested, bool loop, AnimSelect* animSelect, short maxFrames,short animationType);
 private:
 	short curAnim = 0;
 	struct AnimationInProgress{

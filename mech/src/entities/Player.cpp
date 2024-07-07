@@ -18,10 +18,6 @@ Player::Player()  {
 	entityWidth = PLAYER_WIDTH; entityHeight = PLAYER_HEIGHT;
 	inAir = true;
 	//Entity::setAnimation(animationCodes.IDLE_ANIM,false);
-	curHeadAnim = 2; curHeadFrame = 0;
-	curTorsoAnim = 0; curTorsoFrame = 0;
-	curLegsAnim = 1, curLegsFrame = 0;
-	curFullAnim = 0;
 	isPlayer = true; inMech = false; fullBodyAnimation = false;
 	//totalFrame = 15 * ANIM_SPEED;
 	posX = 1280/2 - PLAYER_WIDTH/2;
@@ -90,11 +86,11 @@ void Player::moveRight(bool key) {
 void Player::render(SDL_Renderer* renderer){
 	if (!inMech) {
 		if (fullBodyAnimation){
-			SDL_RenderCopy(renderer, textureManager.spriteTexture, &playerAnim[Entity::getCurrentAnimation()][curFullAnim], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.spriteTexture, &playerAnim[fullSelect.curAnim][fullSelect.curFrame], &displayRect);
 		}else{
-			SDL_RenderCopy(renderer, textureManager.headTexture, &headAnim[curHeadAnim][curHeadFrame], &headDisplayRect);
-			SDL_RenderCopy(renderer,textureManager.torsoTexture,&torsoAnim[curTorsoAnim][curTorsoFrame],&torsoDisplayRect);
-			SDL_RenderCopy(renderer, textureManager.legsTexture, &legsAnim[curLegsAnim][curLegsFrame], &legsDisplayRect);
+			SDL_RenderCopy(renderer, textureManager.headTexture, &headAnim[headSelect.curAnim][headSelect.curFrame], &headDisplayRect);
+			SDL_RenderCopy(renderer,textureManager.torsoTexture,&torsoAnim[torsoSelect.curAnim][torsoSelect.curFrame],&torsoDisplayRect);
+			SDL_RenderCopy(renderer, textureManager.legsTexture, &legsAnim[legsSelect.curAnim][legsSelect.curFrame], &legsDisplayRect);
 		}
 
 	}
@@ -108,48 +104,44 @@ void Player::updateEntity(float dt) {
 	torsoDisplayRect.x = displayRect.x; torsoDisplayRect.y = displayRect.y + 16 * PLAYER_SCALE;
 	legsDisplayRect.x = displayRect.x; legsDisplayRect.y = displayRect.y + 32 * PLAYER_SCALE;
 	if (velX < 0){
-		Entity::setAnimation(playerAnimationCodes.WALK_L_ANIM,true,&curLegsAnim,&curLegsFrame,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
-		Entity::setAnimation(playerAnimationCodes.TORSO_L_ANIM,true,&curTorsoAnim,&curTorsoFrame,playerAnimationCodes.TORSO_MAX_LOOP,animationTypes.TORSO_ANIM);
-		if(velY > 50){
-			Entity::setAnimation(playerAnimationCodes.HEAD_L_FALL_ANIM,true,&curHeadAnim,&curHeadFrame,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
-		}
-		else{
-			Entity::setAnimation(playerAnimationCodes.HEAD_L_ANIM,true,&curHeadAnim,&curHeadFrame,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
-		}
+		Entity::setAnimation(playerAnimationCodes.WALK_L_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
+		Entity::setAnimation(playerAnimationCodes.TORSO_L_ANIM,true,&torsoSelect,playerAnimationCodes.TORSO_MAX_LOOP,animationTypes.TORSO_ANIM);
+		setHeadAnimL();
 	}else if(velX > 0){
-		Entity::setAnimation(playerAnimationCodes.WALK_R_ANIM,true,&curLegsAnim,&curLegsFrame,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
-		Entity::setAnimation(playerAnimationCodes.TORSO_R_ANIM,true,&curTorsoAnim,&curTorsoFrame,playerAnimationCodes.TORSO_MAX_LOOP,animationTypes.TORSO_ANIM);
-		if(velY > 50){
-			Entity::setAnimation(playerAnimationCodes.HEAD_R_FALL_ANIM,true,&curHeadAnim,&curHeadFrame,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
-		}
-		else{
-			Entity::setAnimation(playerAnimationCodes.HEAD_R_ANIM,true,&curHeadAnim,&curHeadFrame,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
-		}
+		Entity::setAnimation(playerAnimationCodes.WALK_R_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
+		Entity::setAnimation(playerAnimationCodes.TORSO_R_ANIM,true,&torsoSelect,playerAnimationCodes.TORSO_MAX_LOOP,animationTypes.TORSO_ANIM);
+		setHeadAnimR();
 	}
 	else{
-		if((curLegsAnim == playerAnimationCodes.WALK_L_ANIM) || (curLegsAnim == playerAnimationCodes.IDLE_L_ANIM)){
-			Entity::setAnimation(playerAnimationCodes.IDLE_L_ANIM,true,&curLegsAnim,&curLegsFrame,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
-			if(velY > 50){
-				Entity::setAnimation(playerAnimationCodes.HEAD_L_FALL_ANIM,true,&curHeadAnim,&curHeadFrame,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
-			}
-			else{
-				Entity::setAnimation(playerAnimationCodes.HEAD_L_ANIM,true,&curHeadAnim,&curHeadFrame,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
-			}
+		if((legsSelect.curAnim == playerAnimationCodes.WALK_L_ANIM) || (legsSelect.curAnim == playerAnimationCodes.IDLE_L_ANIM)){
+			Entity::setAnimation(playerAnimationCodes.IDLE_L_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
+			setHeadAnimL();
 		}
 	  	else{
-			Entity::setAnimation(playerAnimationCodes.IDLE_R_ANIM,true,&curLegsAnim,&curLegsFrame,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
-			if(velY > 50){
-				Entity::setAnimation(playerAnimationCodes.HEAD_R_FALL_ANIM,true,&curHeadAnim,&curHeadFrame,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
-			}
-			else{
-				Entity::setAnimation(playerAnimationCodes.HEAD_R_ANIM,true,&curHeadAnim,&curHeadFrame,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
-			}
+			Entity::setAnimation(playerAnimationCodes.IDLE_R_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
+			setHeadAnimR();
 		}
 	}
 	Entity::updateAnimationFrame();
 }
 
+void Player::setHeadAnimL(){
+	if(velY > 50){
+		Entity::setAnimation(playerAnimationCodes.HEAD_L_FALL_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
+	}
+	else{
+		Entity::setAnimation(playerAnimationCodes.HEAD_L_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
+	}
+}
 
+void Player::setHeadAnimR(){
+	if(velY > 50){
+		Entity::setAnimation(playerAnimationCodes.HEAD_R_FALL_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
+	}
+	else{
+		Entity::setAnimation(playerAnimationCodes.HEAD_R_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
+	}
+}
 void Player::processCollision(bool collisions[4]) {
 	//check y collisions
 	if (collisions[0]) {
