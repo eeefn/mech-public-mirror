@@ -2,7 +2,10 @@
 #include "../../headers/constants.h"
 #include "../../headers/entities/SoulSprite.h"
 #include "../../headers/TextureManager.h"
+#include "../../headers/Map.h"
+#include "../../headers/GameObject.h"
 #include <math.h>
+
 SoulSprite::SoulSprite(Entity *entity){
     hostEntity = entity;
     posX = entity->posX;
@@ -11,10 +14,7 @@ SoulSprite::SoulSprite(Entity *entity){
     entityHeight = 32;
     entitySpeedX = 100;
     entitySpeedY = 100;
-    this->displayRect.x = entity->displayRect.x;
-    this->displayRect.y = entity->displayRect.y;
-    this->displayRect.w = 32;
-    this->displayRect.h = 32; 
+    displayRect = {entity->displayRect.x,entity->displayRect.y,32,32};
     velY = 0; velX = 0;
     accX =0; accY = 0;
     return;
@@ -26,6 +26,7 @@ SoulSprite::~SoulSprite(){
 void SoulSprite::updateEntity(float dt){
 	posX += round(velX * dt);
 	posY += round(velY * dt);
+    map.manageHighlightedObjects(&displayRect);
     return;
 }
 

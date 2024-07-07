@@ -1,12 +1,13 @@
 #include "../headers/Mushroom.h"
 
 Mushroom::Mushroom(short mType, short id, int xT, int yT) {
-	this->mushType = mType;
+	mushType = mType;
+	objectScale = 2;
 	xTile = xT;
 	yTile = yT;
-	height = MUSH_HEIGHT;
-	width = MUSH_WIDTH;
+	spriteSheetPos = {0,0,16,16};
 	ID = id;
-	spriteSheetXPos = SPRITESHEET_X_POS;
-	spriteSheetYPos = SPRITESHEET_Y_POS;
+	width = objectScale * spriteSheetPos.w;
+	height = objectScale * spriteSheetPos.h;
+	renObj = {0,0,width,height};
 }
