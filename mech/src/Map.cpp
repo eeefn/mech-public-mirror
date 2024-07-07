@@ -1,6 +1,7 @@
 #include "../headers/Map.h"
 #include "../headers/constants.h"
 #include "../headers/Mushroom.h"
+#include "../headers/Camera.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -75,4 +76,30 @@ bool Map::initGameObject() {
 }
 
 
+void Map::manageHighlightedObjects(SDL_Rect* hitBox){
+	for (auto gameObject : gameObjList){
+		if (checkObjectCollision(hitBox, &gameObject->renObj)){
+			highlightedList.push_back(gameObject);
+			gameObject->highlight(true);
+		}else{
+			gameObject->highlight(false);
+			for (auto highlightObject = highlightedList.begin(); highlightObject != highlightedList.end();){
+				auto& hObj = *highlightObject;
+				if (hObj->highlighted == false){
+					highlightedList.erase(highlightObject);
+					break;
+				}
+			}	
+		}
+	}	
+}
+
+bool Map::checkObjectCollision(SDL_Rect* hitBox1,SDL_Rect* hitBox2) const{
+	if ((hitBox1->x < hitBox2->x + hitBox2->w) && (hitBox1->x + hitBox1->w > hitBox2->x)){
+		if ((hitBox1->y < hitBox2->y + hitBox2->h) && (hitBox1->y + hitBox1->h > hitBox2->y)){
+			return true;
+		}
+	}
+	return false;
+}
 

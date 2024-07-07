@@ -17,3 +17,7 @@ bool GameObject::activate() {
 bool GameObject::deactivate(){
 	return false;
 }
+
+void GameObject::highlight(bool highlight){
+	highlighted = highlight;
+}

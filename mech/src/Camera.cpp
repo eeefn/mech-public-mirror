@@ -70,13 +70,14 @@ void Camera::renderMap(){
 				for (auto &obj:map.gameObjList) {
 					if ((obj->xTile == x) && (obj->yTile == y)) {
 						//change the rendering tile size to render our object
-						renTile.h = obj->height;
-						renTile.w = obj->width;
-						objTex.h = obj->height;
-						objTex.w = obj->width;
-						objTex.x = obj->spriteSheetXPos;
-						objTex.y = obj->spriteSheetYPos;
-						SDL_RenderCopy(windowManager.renderer, textureManager.gameObjectTexture,NULL,&renTile);
+						obj->renObj.x = renTile.x;
+						obj->renObj.y = renTile.y;
+						SDL_RenderCopy(windowManager.renderer, textureManager.gameObjectTexture,&obj->spriteSheetPos,&obj->renObj);
+						if (obj->highlighted){
+							obj->spriteSheetPos.x += obj->spriteSheetPos.w;
+							SDL_RenderCopy(windowManager.renderer, textureManager.gameObjectTexture,&obj->spriteSheetPos,&obj->renObj);
+							obj->spriteSheetPos.x -= obj->spriteSheetPos.w;
+						}
 					}
 				}
 				renTile.w = mapInfo.TILE_DIM;
