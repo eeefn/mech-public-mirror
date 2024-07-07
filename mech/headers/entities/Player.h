@@ -15,8 +15,6 @@ public:
 	bool animCycleComplete;
 	int playerJumpAcc, playerSpeedX;
 	int soul;
-	SDL_Texture* spriteTexture;
-	SDL_Rect playerAnim[4][15];
 	Player();
 	void jump();
 	void moveLeft(bool key);
@@ -26,4 +24,18 @@ public:
 	void render(SDL_Renderer* renderer);
 protected:
 	void initializePlayerAnim();
+	AnimSelect headSelect {2,0};
+	AnimSelect torsoSelect {0,0};
+	AnimSelect legsSelect {1,0};
+	AnimSelect fullSelect {0,0};
+	SDL_Rect headDisplayRect;
+	SDL_Rect torsoDisplayRect;
+	SDL_Rect legsDisplayRect;
+	SDL_Rect playerAnim[4][15];
+	SDL_Rect headAnim[4][3];
+	SDL_Rect torsoAnim[2][1];
+	SDL_Rect legsAnim[4][15];
+private:
+	void setHeadAnimR();
+	void setHeadAnimL();
 };

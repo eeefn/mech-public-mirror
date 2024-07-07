@@ -1,8 +1,9 @@
 #pragma once
 #include <SDL.h>
+#include <vector>
 #define GRAVITY 250
 #define ANIM_SPEED 2
-
+using std::vector;
 extern struct AnimationCodes {
 	constexpr static int JUMP_ANIM = 0;
 	constexpr static int RUN_R_ANIM = 1;
@@ -15,10 +16,9 @@ class Entity
 public:
 	Entity* hostEntity;
 	int entityWidth, entityHeight;
-	short totalFrame, playFrame;
 	int posX, posY, velX, velY;
 	float accY, accX;
-	bool isPlayer, inAir, entityTransition, inMech;
+	bool isPlayer, inAir, entityTransition, inMech, fullBodyAnimation;
 	int entitySpeedX, entitySpeedY = 0;
 	SDL_Rect displayRect;
 	void stop();
@@ -33,11 +33,23 @@ public:
 	virtual void processCollision(bool collisions[4]);
 	virtual ~Entity();
 protected:
+	struct AnimSelect{
+		short curAnim;
+		short curFrame;
+	};
 	short getCurrentAnimation();	
 	void updateAnimationFrame();
-	void setAnimation(int animation, bool loop);
+	void setAnimation(short animationRequested, bool loop, AnimSelect* animSelect, short maxFrames,short animationType);
 private:
-	bool animCycleComplete = false; bool loopCurrentAnimation;
-	short curAnim, curFrame = 0; 
+	short curAnim = 0;
+	struct AnimationInProgress{
+		bool loop;
+		short maxFrames;
+		short* playFrame;
+		bool animCycleComplete;
+		short animationType;
+		int curFrame;
+	};
+	vector<AnimationInProgress*> animationsInProgress;
 };
 

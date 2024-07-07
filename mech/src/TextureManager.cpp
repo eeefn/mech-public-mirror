@@ -33,4 +33,17 @@ void TextureManager::initPermanentTextures(SDL_Renderer* renderer){
 	if (!spriteSheetSurface) { fprintf(stderr, "could not find spritesheet"); return; }
 	spriteTexture = SDL_CreateTextureFromSurface(renderer, spriteSheetSurface);
 	SDL_FreeSurface(spriteSheetSurface);
+
+	SDL_Surface* headSurface = SDL_LoadBMP("../resources/headIsolated.bmp");
+	if (!headSurface) { fprintf(stderr, "could not find playerHead"); return; }
+	headTexture = SDL_CreateTextureFromSurface(renderer, headSurface);
+	SDL_FreeSurface(headSurface);
+
+	SDL_Surface* torsoSurface = SDL_LoadBMP("../resources/torsoIsolated.bmp");
+	if (!torsoSurface) { fprintf(stderr, "could not find playerTorso"); return; }
+	torsoTexture = SDL_CreateTextureFromSurface(renderer, torsoSurface);
+
+	SDL_Surface* legsSurface = SDL_LoadBMP("../resources/legsIsolated.bmp");
+	if (!legsSurface) { fprintf(stderr, "could not find playerLegs"); return; }
+	legsTexture = SDL_CreateTextureFromSurface(renderer, legsSurface);
 }

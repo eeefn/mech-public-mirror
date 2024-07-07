@@ -9,6 +9,9 @@ class TextureManager{
         SDL_Texture* mechTexture;
         SDL_Texture* mechAtTexture;
         SDL_Texture* spriteTexture;
+        SDL_Texture* headTexture;
+        SDL_Texture* torsoTexture;
+        SDL_Texture* legsTexture;
         void initPermanentTextures(SDL_Renderer* renderer);
 };
 

@@ -3,19 +3,21 @@
 #include <cmath>
 #include "../../headers/constants.h"
 #include "../../headers/entities/Player.h"
+#include "../../headers/entities/AnimationCodes.h"
 #include "../../headers/TextureManager.h"
 #include "../../headers/Camera.h"
 
+#include <iostream>
+
 Player::Player()  {
-	//setup rectangles from spritesheet. For now im just initializing 
-	//the very first one to get the character moving around
-	displayRect.x = 0; displayRect.y = 0;
-	displayRect.w = PLAYER_WIDTH; displayRect.h = PLAYER_HEIGHT;
+	displayRect = {0,0,PLAYER_WIDTH,PLAYER_HEIGHT};
+	headDisplayRect = {0,0,PLAYER_WIDTH, 20*PLAYER_SCALE};
+	torsoDisplayRect = {0,0,PLAYER_WIDTH, 16*PLAYER_SCALE};
+	legsDisplayRect = {0,0,PLAYER_WIDTH, 16*PLAYER_SCALE};
+	
 	entityWidth = PLAYER_WIDTH; entityHeight = PLAYER_HEIGHT;
 	inAir = true;
-	Entity::setAnimation(animationCodes.IDLE_ANIM,false);
-	isPlayer = true; inMech = false;
-	totalFrame = 15 * ANIM_SPEED;
+	isPlayer = true; inMech = false; fullBodyAnimation = false;
 	posX = 1280/2 - PLAYER_WIDTH/2;
 	posY = 720/2 - PLAYER_HEIGHT/2;
 	velX = 0; velY = 0;
@@ -29,56 +31,108 @@ Player::Player()  {
 
 void Player::initializePlayerAnim(){	
 	//create a grid of rectangles representing the animations from player spritesheet
-	for (unsigned int i = 0; i < 15; i++) {
-		for (unsigned int j = 0; j < 4; j++) {
-			playerAnim[j][i].x = i * 32;
-			playerAnim[j][i].y = j*48;
-			playerAnim[j][i].w = 32;
-			playerAnim[j][i].h = 48;
+	for (int i = 0; i < 15; i++) {
+		for (int j = 0; j < 4; j++) {
+			playerAnim[j][i] = {i * 32, j * 48, 32, 48};
 		}		
-	}	
+	}
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 4; j++) {
+			headAnim[j][i] = {i * 32, j * 20, 32, 20};
+		}
+	}
+	for (int i = 0; i < 1; i++) {
+		for (int j = 0; j < 2; j++) {
+			torsoAnim[j][i] = {i * 32, j * 16, 32, 16};
+		}
+	}
+	for (int i = 0; i < 15; i++) {
+		for (int j = 0; j < 4; j++) {
+			legsAnim[j][i] = {i * 32, j * 16, 32, 16};
+		}
+	}
 }
 void Player::jump() {
 	//adjust player velocity to initiate jump
 	velY -= playerJumpAcc;
-	Entity::setAnimation(animationCodes.JUMP_ANIM,false);
 	this->inAir = true;
 }
 
 void Player::moveLeft(bool key) {
 	if (key) {
 		velX -= entitySpeedX;
-		Entity::setAnimation(animationCodes.RUN_L_ANIM,true);
 	}
 	else {
 		velX += entitySpeedX;
-		Entity::setAnimation(animationCodes.IDLE_ANIM,true);
 	}
 }
 
 void Player::moveRight(bool key) {
 	if (key) {
 		velX += entitySpeedX;
-		Entity::setAnimation(animationCodes.RUN_R_ANIM,true);
 	}
 	else {
 		velX -= entitySpeedX;
-		Entity::setAnimation(animationCodes.IDLE_ANIM, true);
 	}
 
 }
 void Player::render(SDL_Renderer* renderer){
 	if (!inMech) {
-		SDL_RenderCopy(renderer, textureManager.spriteTexture, &playerAnim[Entity::getCurrentAnimation()][playFrame], &displayRect);
+		if (fullBodyAnimation){
+			SDL_RenderCopy(renderer, textureManager.spriteTexture, &playerAnim[fullSelect.curAnim][fullSelect.curFrame], &displayRect);
+		}else{
+			SDL_RenderCopy(renderer, textureManager.headTexture, &headAnim[headSelect.curAnim][headSelect.curFrame], &headDisplayRect);
+			SDL_RenderCopy(renderer,textureManager.torsoTexture,&torsoAnim[torsoSelect.curAnim][torsoSelect.curFrame],&torsoDisplayRect);
+			SDL_RenderCopy(renderer, textureManager.legsTexture, &legsAnim[legsSelect.curAnim][legsSelect.curFrame], &legsDisplayRect);
+		}
 	}
 }
 
 void Player::updateEntity(float dt) {
 	//updateEntity in the parent does physics
 	Entity::updateEntity(dt);
+	headDisplayRect.x = displayRect.x; headDisplayRect.y = displayRect.y;
+	torsoDisplayRect.x = displayRect.x; torsoDisplayRect.y = displayRect.y + 16 * PLAYER_SCALE;
+	legsDisplayRect.x = displayRect.x; legsDisplayRect.y = displayRect.y + 32 * PLAYER_SCALE;
+	if (velX < 0){
+		Entity::setAnimation(playerAnimationCodes.WALK_L_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
+		Entity::setAnimation(playerAnimationCodes.TORSO_L_ANIM,true,&torsoSelect,playerAnimationCodes.TORSO_MAX_LOOP,animationTypes.TORSO_ANIM);
+		setHeadAnimL();
+	}else if(velX > 0){
+		Entity::setAnimation(playerAnimationCodes.WALK_R_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
+		Entity::setAnimation(playerAnimationCodes.TORSO_R_ANIM,true,&torsoSelect,playerAnimationCodes.TORSO_MAX_LOOP,animationTypes.TORSO_ANIM);
+		setHeadAnimR();
+	}
+	else{
+		if((legsSelect.curAnim == playerAnimationCodes.WALK_L_ANIM) || (legsSelect.curAnim == playerAnimationCodes.IDLE_L_ANIM)){
+			Entity::setAnimation(playerAnimationCodes.IDLE_L_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
+			setHeadAnimL();
+		}
+	  	else{
+			Entity::setAnimation(playerAnimationCodes.IDLE_R_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,animationTypes.LEGS_ANIM);
+			setHeadAnimR();
+		}
+	}
 	Entity::updateAnimationFrame();
 }
 
+void Player::setHeadAnimL(){
+	if(velY > 50){
+		Entity::setAnimation(playerAnimationCodes.HEAD_L_FALL_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
+	}
+	else{
+		Entity::setAnimation(playerAnimationCodes.HEAD_L_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
+	}
+}
+
+void Player::setHeadAnimR(){
+	if(velY > 50){
+		Entity::setAnimation(playerAnimationCodes.HEAD_R_FALL_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
+	}
+	else{
+		Entity::setAnimation(playerAnimationCodes.HEAD_R_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
+	}
+}
 
 void Player::processCollision(bool collisions[4]) {
 	//check y collisions

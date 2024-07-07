@@ -1,4 +1,5 @@
 #include "../../headers/entities/Entity.h"
+#include "../../headers/entities/AnimationCodes.h"
 #include "../../headers/Camera.h"
 #include "stdio.h"
 #include <iostream>
@@ -73,38 +74,33 @@ void Entity::updateEntity(float dt) {
 }
 
 void Entity::updateAnimationFrame(){
-	curFrame = (curFrame + 1) % totalFrame;
-	playFrame = curFrame / ANIM_SPEED;
-	if(playFrame == 14){
-		if(!loopCurrentAnimation){
-			animCycleComplete = true;
-			if(velX < 0){
-				setAnimation(animationCodes.RUN_L_ANIM,true);
+	for(auto animation : animationsInProgress){
+		if(!animation->animCycleComplete){
+			animation->curFrame = (animation->curFrame + 1) % (animation->maxFrames * ANIM_SPEED);
+			*animation->playFrame = animation->curFrame / ANIM_SPEED;
+			if ((*animation->playFrame == (animation->maxFrames - 1)) && (animation->loop == false)){
+				*animation->playFrame = 0;
+				animation->animCycleComplete = true;
+				//mark animation for deletion
 			}
-			else if(velX > 0){
-				setAnimation(animationCodes.RUN_R_ANIM,true);
-			}
-			else{
-				setAnimation(animationCodes.IDLE_ANIM,true);
-			}
-		}
-	}	
-}
-
-void Entity::setAnimation(int animation,bool loop){
-	if(curAnim == animationCodes.JUMP_ANIM && (animation == animationCodes.RUN_L_ANIM || animation == animationCodes.RUN_R_ANIM)){
-		if(animCycleComplete){
-			loopCurrentAnimation = loop;
-			curAnim = animation;
-			curFrame = -1;
-			animCycleComplete = false;
 		}
 	}
-	else{
-		loopCurrentAnimation = loop;
-		curAnim = animation;
-		curFrame = -1;
-		animCycleComplete = false;
+}
+
+void Entity::setAnimation(short animationRequested, bool loop, AnimSelect* animSelect, short maxFrames,short animationType){
+	if((animationRequested != animSelect->curAnim) || (!loop)){
+		animSelect->curAnim = animationRequested;
+		//update exisiting animation of same type
+		for (auto animation : animationsInProgress) {
+			if((animationType == animation->animationType)){
+				*animation = {loop, maxFrames, &animSelect->curFrame, false,animationType,0};
+				return;
+			}
+		}
+		animSelect->curFrame = 0;
+		AnimationInProgress *newAnimPtr = new AnimationInProgress;
+		*newAnimPtr = {loop,maxFrames, &animSelect->curFrame, false,animationType,0};
+		animationsInProgress.push_back(newAnimPtr);
 	}
 }
 
