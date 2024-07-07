@@ -17,9 +17,7 @@ Player::Player()  {
 	
 	entityWidth = PLAYER_WIDTH; entityHeight = PLAYER_HEIGHT;
 	inAir = true;
-	//Entity::setAnimation(animationCodes.IDLE_ANIM,false);
 	isPlayer = true; inMech = false; fullBodyAnimation = false;
-	//totalFrame = 15 * ANIM_SPEED;
 	posX = 1280/2 - PLAYER_WIDTH/2;
 	posY = 720/2 - PLAYER_HEIGHT/2;
 	velX = 0; velY = 0;
@@ -57,29 +55,24 @@ void Player::initializePlayerAnim(){
 void Player::jump() {
 	//adjust player velocity to initiate jump
 	velY -= playerJumpAcc;
-	//Entity::setAnimation(animationCodes.JUMP_ANIM,false);
 	this->inAir = true;
 }
 
 void Player::moveLeft(bool key) {
 	if (key) {
 		velX -= entitySpeedX;
-	//	Entity::setAnimation(animationCodes.RUN_L_ANIM,true);
 	}
 	else {
 		velX += entitySpeedX;
-		//Entity::setAnimation(animationCodes.IDLE_ANIM,true);
 	}
 }
 
 void Player::moveRight(bool key) {
 	if (key) {
 		velX += entitySpeedX;
-//		Entity::setAnimation(animationCodes.RUN_R_ANIM,true);
 	}
 	else {
 		velX -= entitySpeedX;
-		//Entity::setAnimation(animationCodes.IDLE_ANIM, true);
 	}
 
 }
@@ -92,9 +85,7 @@ void Player::render(SDL_Renderer* renderer){
 			SDL_RenderCopy(renderer,textureManager.torsoTexture,&torsoAnim[torsoSelect.curAnim][torsoSelect.curFrame],&torsoDisplayRect);
 			SDL_RenderCopy(renderer, textureManager.legsTexture, &legsAnim[legsSelect.curAnim][legsSelect.curFrame], &legsDisplayRect);
 		}
-
 	}
-
 }
 
 void Player::updateEntity(float dt) {
@@ -142,6 +133,7 @@ void Player::setHeadAnimR(){
 		Entity::setAnimation(playerAnimationCodes.HEAD_R_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,animationTypes.HEAD_ANIM);
 	}
 }
+
 void Player::processCollision(bool collisions[4]) {
 	//check y collisions
 	if (collisions[0]) {
