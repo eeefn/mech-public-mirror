@@ -1,4 +1,5 @@
 #include "../../headers/entities/Entity.h"
+#include "../../headers/entities/AnimationCodes.h"
 #include "../../headers/Camera.h"
 #include "stdio.h"
 #include <iostream>
@@ -73,6 +74,18 @@ void Entity::updateEntity(float dt) {
 }
 
 void Entity::updateAnimationFrame(){
+	for(auto animation : animationsInProgress){
+		if(!animation->animCycleComplete){
+			animation->curFrame = (animation->curFrame + 1) % (animation->maxFrames * ANIM_SPEED);
+			*animation->playFrame = animation->curFrame / ANIM_SPEED;
+			if ((*animation->playFrame == (animation->maxFrames - 1)) && (animation->loop == false)){
+				*animation->playFrame = 0;
+				animation->animCycleComplete = true;
+				//mark animation for deletion
+			}
+		}
+	}
+	/*
 	curFrame = (curFrame + 1) % totalFrame;
 	playFrame = curFrame / ANIM_SPEED;
 	if(playFrame == 14){
@@ -88,23 +101,23 @@ void Entity::updateAnimationFrame(){
 				setAnimation(animationCodes.IDLE_ANIM,true);
 			}
 		}
-	}	
+	}*/
 }
 
-void Entity::setAnimation(int animation,bool loop){
-	if(curAnim == animationCodes.JUMP_ANIM && (animation == animationCodes.RUN_L_ANIM || animation == animationCodes.RUN_R_ANIM)){
-		if(animCycleComplete){
-			loopCurrentAnimation = loop;
-			curAnim = animation;
-			curFrame = -1;
-			animCycleComplete = false;
+void Entity::setAnimation(short animationRequested, bool loop, short* curAnimation, short* playFrame, short maxFrames,short animationType){
+	if((animationRequested != *curAnimation) || (!loop)){
+		*curAnimation = animationRequested;
+		//update exisiting animation of same type
+		for (auto animation : animationsInProgress) {
+			if((animationType == animation->animationType)){
+				*animation = {loop, maxFrames, playFrame, false,animationType,0};
+				return;
+			}
 		}
-	}
-	else{
-		loopCurrentAnimation = loop;
-		curAnim = animation;
-		curFrame = -1;
-		animCycleComplete = false;
+		*playFrame = 0;
+		AnimationInProgress *newAnimPtr = new AnimationInProgress;
+		*newAnimPtr = {loop,maxFrames, playFrame, false,animationType,0};
+		animationsInProgress.push_back(newAnimPtr);
 	}
 }
 
