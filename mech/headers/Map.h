@@ -17,7 +17,7 @@ class Map {
 		bool checkObjectCollision(SDL_Rect* hitBox1, SDL_Rect* hitBox2) const;
 		void manageHighlightedObjects(SDL_Rect* hitBox);
 		bool read(std::string mapIn);
-		bool fill(SDL_Rect* selWindowRen, int xOffset,int yOffset, int selectColor);
+		bool fill(SDL_Rect* selWindowRen, int selectColor);
 		bool save(std::string mapIn);
 		Map();
 	private:
