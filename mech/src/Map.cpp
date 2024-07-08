@@ -66,8 +66,8 @@ bool Map::initGameObject() {
 				//- values represent objects in the tilemap
 				if (obj > 0 &&  obj < 15) {
 					//construct a mushroom
-					std::cout << "constructed mushroom " << '\n';
-					gameObjList.push_back(std::make_shared<Mushroom>(obj,0,j,i));
+					Mushroom* mushPtr = new Mushroom(obj,0,j,i);
+					gameObjList.push_back(mushPtr);
 				}
 			}
 		}
