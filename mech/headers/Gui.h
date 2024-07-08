@@ -16,7 +16,6 @@ class Gui
 		}soulColors;
 
 		int pulseCount = 0;
-		short selectColor = 0;
 		void setSoulColor(int color);
 		void render(int gameMode);
 		void renderSoul();
