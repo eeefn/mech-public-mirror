@@ -42,8 +42,15 @@ void TextureManager::initPermanentTextures(SDL_Renderer* renderer){
 	SDL_Surface* torsoSurface = SDL_LoadBMP("../resources/torsoIsolated.bmp");
 	if (!torsoSurface) { fprintf(stderr, "could not find playerTorso"); return; }
 	torsoTexture = SDL_CreateTextureFromSurface(renderer, torsoSurface);
+	SDL_FreeSurface(torsoSurface);
 
 	SDL_Surface* legsSurface = SDL_LoadBMP("../resources/legsIsolated.bmp");
 	if (!legsSurface) { fprintf(stderr, "could not find playerLegs"); return; }
 	legsTexture = SDL_CreateTextureFromSurface(renderer, legsSurface);
+	SDL_FreeSurface(legsSurface);
+
+	SDL_Surface* mushGrowSurface = SDL_LoadBMP("../resources/mushroomGrow.bmp");
+	if (!mushGrowSurface) { fprintf(stderr, "could not find mushGrow"); return; }
+	mushGrowTexture = SDL_CreateTextureFromSurface(renderer, mushGrowSurface);
+	SDL_FreeSurface(mushGrowSurface);
 }
