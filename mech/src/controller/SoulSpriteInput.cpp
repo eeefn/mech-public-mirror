@@ -52,6 +52,7 @@ void SoulSpriteInput::processKeyup(SDL_Event *keyupEvent){
 			break;
 		case SDLK_q:
 		 //if object or entity highlighted
+		 	entityManager.spawnPlayer(playerEntity->posX,playerEntity->posY);
 		 //initiate transition
 			break;
 	}

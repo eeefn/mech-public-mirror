@@ -46,6 +46,13 @@ void EntityManager::spawnSoulSprite(){
 	Entity* soulSprite = new SoulSprite(entityList.at(0));
 	entityList.push_back(soulSprite);
 }
+
+void EntityManager::spawnPlayer(int xPos, int yPos){
+	Entity* player = new Player();
+	player->posX = xPos;
+	player->posY = yPos;
+	entityList.push_back(player);
+}
 Entity* EntityManager::swapEntityList(){
 	std::iter_swap(entityList.begin(), entityList.end() - 1);
 	std::cout << "swapped entity list" << std::endl;
