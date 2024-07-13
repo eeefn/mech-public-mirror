@@ -37,6 +37,14 @@ bool Map::read(std::string mapIn) {
 }
 
 
+GameObject* Map::getFirstHighlightedObject(){
+	if(!highlightedList.empty()){
+		return highlightedList.at(0);
+	}
+	else{
+		return nullptr;
+	}
+}
 bool Map::fill(SDL_Rect* selWindowRen) {
 	for (int i = selWindowRen->y / mapInfo.TILE_DIM + camera.yOffset; i < (selWindowRen->h / mapInfo.TILE_DIM) + (selWindowRen->y / mapInfo.TILE_DIM + camera.yOffset); i++) {
 		for (int j = selWindowRen->x / mapInfo.TILE_DIM + camera.xOffset; j < (selWindowRen->w / mapInfo.TILE_DIM) + (selWindowRen->x / mapInfo.TILE_DIM + camera.xOffset); j++) {

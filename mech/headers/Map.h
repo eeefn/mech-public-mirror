@@ -16,6 +16,7 @@ class Map {
 		//read the map
 		bool checkObjectCollision(SDL_Rect* hitBox1, SDL_Rect* hitBox2) const;
 		void manageHighlightedObjects(SDL_Rect* hitBox);
+		GameObject* getFirstHighlightedObject();
 		bool read(std::string mapIn);
 		bool fill(SDL_Rect* selWindowRen);
 		bool save(std::string mapIn);
