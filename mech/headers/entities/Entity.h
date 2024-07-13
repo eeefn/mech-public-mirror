@@ -30,7 +30,7 @@ public:
 	virtual void attackRight(int xClick);
 	virtual void render(SDL_Renderer* renderer);	
 	virtual void processCollision(bool collisions[4]);
-	virtual void requestAnimation(Entity* requestedBy);
+	virtual void requestAnimation(const AnimationCode* animationRequested);
 	virtual ~Entity();
 protected:
 	struct AnimSelect{

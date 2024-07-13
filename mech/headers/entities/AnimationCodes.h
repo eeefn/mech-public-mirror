@@ -22,5 +22,6 @@ namespace PlayerAnimationCodes{
     const AnimationCode HEAD_L_FALL_ANIM{"HEAD",1,3};
     
     const AnimationCode MUSH_GROW{"FULL",0,87};
+    const AnimationCode MUSH_KNEEL{"FULL",1,11};
 }
 

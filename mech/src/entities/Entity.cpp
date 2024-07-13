@@ -79,10 +79,10 @@ void Entity::updateAnimationFrame(){
 			animation->curFrame = (animation->curFrame + 1) % (animation->maxFrames * ANIM_SPEED);
 			animation->playFrame = animation->curFrame / ANIM_SPEED;
 			if ((animation->playFrame == (animation->maxFrames - 1)) && (animation->loop == false)){
-				animation->playFrame = animation->maxFrames;
+				animation->playFrame = animation->maxFrames - 1;
 				animation->animCycleComplete = true;
 				animation->animSel->curFrame = animation->playFrame;
-				if(animation->animationType == "FULL"){
+				if(animation->animationType == "FULL" && animation->animSel->curAnim != 1){
 					fullBodyAnimation = false;
 				}
 			}
@@ -91,7 +91,7 @@ void Entity::updateAnimationFrame(){
 	}
 }
 
-void Entity::requestAnimation(Entity* requestedBy){
+void Entity::requestAnimation(const AnimationCode* animationRequested){
 
 }
 void Entity::setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect){
