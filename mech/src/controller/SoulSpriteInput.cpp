@@ -6,6 +6,7 @@
 #include "../../headers/Map.h"
 #include "../../headers/GameObject.h"
 #include "../../headers/constants.h"
+#include "../../headers/entities/AnimationCodes.h"
 SoulSpriteInput soulSpriteInput;
 
 SoulSpriteInput::SoulSpriteInput(){
@@ -82,7 +83,7 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			int playerSpawnPosY = highlightedObjectPtr->yTile * mapInfo.TILE_DIM - 64/*this number is player height - size of object*/;
 			if(highlightedObjectPtr != nullptr){
 				Entity* player = entityManager.spawnPlayer(playerSpawnPosX,playerSpawnPosY);
-				player->requestAnimation(playerEntity);
+				player->requestAnimation(&PlayerAnimationCodes::MUSH_GROW);
 				entityManager.despawnEntity(playerEntity);
 				entityManager.moveEntityToFront(player);
 				camera.setCameraTarget(player);

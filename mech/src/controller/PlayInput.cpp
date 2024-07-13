@@ -6,7 +6,7 @@
 #include "../../headers/Camera.h"
 #include "../../headers/Editor.h"
 #include "../../headers/controller/InputFactory.h"
-
+#include "../../headers/entities/AnimationCodes.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -22,6 +22,7 @@ void PlayInput::processHeldKeys(SDL_Event *keyEvent){
 	switch (keyEvent->key.keysym.sym){
 		case SDLK_LSHIFT:
 			entityManager.spawnSoulSprite();
+			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL);
 			camera.setCameraTarget(entityManager.swapEntityList());
 			inputFactory.setControlMode(controlModes.SOUL_SPRITE);
 			if (camera.cameraTarget->hostEntity->velX > 0){

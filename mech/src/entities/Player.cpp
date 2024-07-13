@@ -52,7 +52,9 @@ void Player::initializePlayerAnim(){
 		}
 	}
 	for (int i = 0; i < 87; i++) {
-		mushGrowAnim[0][i] = {i * 32,0,32,96};
+		for(int j = 0; j < 2; j++){
+			mushFullAnim[j][i] = {i * 32,j * 48,32,48};
+		}
 	}
 }
 
@@ -83,7 +85,7 @@ void Player::moveRight(bool key) {
 void Player::render(SDL_Renderer* renderer){
 	if (!inMech) {
 		if (fullBodyAnimation){
-			SDL_RenderCopy(renderer, textureManager.mushGrowTexture, &mushGrowAnim[fullSelect.curAnim][fullSelect.curFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mushFullTexture, &mushFullAnim[fullSelect.curAnim][fullSelect.curFrame], &displayRect);
 		}
 		else{
 			SDL_RenderCopy(renderer, textureManager.headTexture, &headAnim[headSelect.curAnim][headSelect.curFrame], &headDisplayRect);
@@ -140,9 +142,15 @@ void Player::setHeadAnimR(){
 	}
 }
 
-void Player::requestAnimation(Entity* requestedBy){
+void Player::requestAnimation(const AnimationCode* animationRequested){
 	fullBodyAnimation = true;
-	Entity::setAnimation(&MUSH_GROW,false,&fullSelect);
+	Entity::setAnimation(animationRequested,false,&fullSelect);
+	if(animationRequested->CODE == MUSH_GROW.CODE){
+		std::cout << "mushGrow" << std::endl;
+		Entity::setAnimation(&HEAD_R_ANIM,true,&headSelect);
+		Entity::setAnimation(&IDLE_R_ANIM,true,&legsSelect);	
+		Entity::setAnimation(&TORSO_R_ANIM,true,&torsoSelect);
+	}
 }
 void Player::processCollision(bool collisions[4]) {
 	//check y collisions

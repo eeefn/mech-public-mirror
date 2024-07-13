@@ -12,7 +12,7 @@ class TextureManager{
         SDL_Texture* headTexture;
         SDL_Texture* torsoTexture;
         SDL_Texture* legsTexture;
-        SDL_Texture* mushGrowTexture;
+        SDL_Texture* mushFullTexture;
         void initPermanentTextures(SDL_Renderer* renderer);
 };
 
