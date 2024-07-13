@@ -7,6 +7,7 @@
 #include "../../headers/TextureManager.h"
 #include "../../headers/Camera.h"
 
+using namespace AnimationType;
 #include <iostream>
 
 Player::Player()  {
@@ -99,22 +100,22 @@ void Player::updateEntity(float dt) {
 	torsoDisplayRect.x = displayRect.x; torsoDisplayRect.y = displayRect.y + 16 * PLAYER_SCALE;
 	legsDisplayRect.x = displayRect.x; legsDisplayRect.y = displayRect.y + 32 * PLAYER_SCALE;
 	if (velX < 0){
-		Entity::setAnimation(playerAnimationCodes.WALK_L_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,/*animationTypes.LEGS*/"LEGS");
-		Entity::setAnimation(playerAnimationCodes.TORSO_L_ANIM,true,&torsoSelect,playerAnimationCodes.TORSO_MAX_LOOP,/*animationTypes.TORSO*/"TORSO");
+		Entity::setAnimation(playerAnimationCodes.WALK_L_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,LEGS);
+		Entity::setAnimation(playerAnimationCodes.TORSO_L_ANIM,true,&torsoSelect,playerAnimationCodes.TORSO_MAX_LOOP,TORSO);
 		setHeadAnimL();
 	}
 	else if(velX > 0){
-		Entity::setAnimation(playerAnimationCodes.WALK_R_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,/*animationTypes.LEGS*/"LEGS");
-		Entity::setAnimation(playerAnimationCodes.TORSO_R_ANIM,true,&torsoSelect,playerAnimationCodes.TORSO_MAX_LOOP,/*animationTypes.TORSO*/"TORSO");
+		Entity::setAnimation(playerAnimationCodes.WALK_R_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,LEGS);
+		Entity::setAnimation(playerAnimationCodes.TORSO_R_ANIM,true,&torsoSelect,playerAnimationCodes.TORSO_MAX_LOOP,TORSO);
 		setHeadAnimR();
 	}
 	else{
 		if((legsSelect.curAnim == playerAnimationCodes.WALK_L_ANIM) || (legsSelect.curAnim == playerAnimationCodes.IDLE_L_ANIM)){
-			Entity::setAnimation(playerAnimationCodes.IDLE_L_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,/*animationTypes.LEGS*/"LEGS");
+			Entity::setAnimation(playerAnimationCodes.IDLE_L_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,LEGS);
 			setHeadAnimL();
 		}
 	  	else{
-			Entity::setAnimation(playerAnimationCodes.IDLE_R_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,/*animationTypes.LEGS*/"LEGS");
+			Entity::setAnimation(playerAnimationCodes.IDLE_R_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,LEGS);
 			setHeadAnimR();
 		}
 	}
@@ -123,26 +124,25 @@ void Player::updateEntity(float dt) {
 
 void Player::setHeadAnimL(){
 	if(velY > 50){
-		Entity::setAnimation(playerAnimationCodes.HEAD_L_FALL_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,/*animationTypes.*/"HEAD");
+		Entity::setAnimation(playerAnimationCodes.HEAD_L_FALL_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,HEAD);
 	}
 	else{
-		Entity::setAnimation(playerAnimationCodes.HEAD_L_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,/*animationTypes.*/"HEAD");
+		Entity::setAnimation(playerAnimationCodes.HEAD_L_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,HEAD);
 	}
 }
 
 void Player::setHeadAnimR(){
 	if(velY > 50){
-		Entity::setAnimation(playerAnimationCodes.HEAD_R_FALL_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,/*animationTypes.HEAD*/"HEAD");
+		Entity::setAnimation(playerAnimationCodes.HEAD_R_FALL_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,HEAD);
 	}
 	else{
-		Entity::setAnimation(playerAnimationCodes.HEAD_R_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,/*animationTypes.HEAD*/"HEAD");
+		Entity::setAnimation(playerAnimationCodes.HEAD_R_ANIM,true,&headSelect,playerAnimationCodes.HEAD_MAX_LOOP,HEAD);
 	}
 }
 
 void Player::requestAnimation(Entity* requestedBy){
-	std::cout << "setting full animation" << std::endl;
 	fullBodyAnimation = true;
-	Entity::setAnimation(playerAnimationCodes.MUSH_GROW,false,&fullSelect,playerAnimationCodes.MUSH_GROW_MAX_LOOP,"FULL");
+	Entity::setAnimation(playerAnimationCodes.MUSH_GROW,false,&fullSelect,playerAnimationCodes.MUSH_GROW_MAX_LOOP,FULL_SPRITE);
 }
 void Player::processCollision(bool collisions[4]) {
 	//check y collisions

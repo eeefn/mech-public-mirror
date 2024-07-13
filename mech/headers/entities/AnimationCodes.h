@@ -21,13 +21,9 @@ extern struct PlayerAnimationCodes{
     constexpr static short MUSH_GROW = 0;
 } playerAnimationCodes;
 
-extern struct AnimationTypes{
-    //const std::string FULL_SPRITE = "FULL";
-    constexpr static short FULL_SPRITE_ANIM = 0;
-    //static std::string HEAD = "HEAD";
-    constexpr static short HEAD_ANIM = 1;
-    //const std::string TORSO = "TORSO";
-    constexpr static short TORSO_ANIM = 2;
-    //const std::string LEGS = "LEGS";
-    constexpr static short LEGS_ANIM = 3;
-} animationTypes;
+ namespace AnimationType{
+    const std::string FULL_SPRITE = "FULL";
+    const std::string HEAD = "HEAD";
+    const std::string TORSO = "TORSO";
+    const std::string LEGS = "LEGS";
+}
