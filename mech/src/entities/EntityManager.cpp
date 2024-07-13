@@ -42,9 +42,10 @@ void EntityManager::render(int gameMode){
 		}	
 	}
 }
-void EntityManager::spawnSoulSprite(){
+Entity* EntityManager::spawnSoulSprite(){
 	Entity* soulSprite = new SoulSprite(entityList.at(0));
 	entityList.push_back(soulSprite);
+	return soulSprite;
 }
 
 Entity* EntityManager::spawnPlayer(int xPos, int yPos){

@@ -21,7 +21,7 @@ PlayInput::PlayInput(){
 void PlayInput::processHeldKeys(SDL_Event *keyEvent){
 	switch (keyEvent->key.keysym.sym){
 		case SDLK_LSHIFT:
-			entityManager.spawnSoulSprite();
+			camera.cameraTarget->childEntity = entityManager.spawnSoulSprite();
 			camera.setCameraTarget(entityManager.swapEntityList());
 			inputFactory.setControlMode(controlModes.SOUL_SPRITE);
 			if (camera.cameraTarget->hostEntity->velX > 0){

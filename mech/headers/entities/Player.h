@@ -22,8 +22,9 @@ public:
 	void updateEntity(float dt);
 	void processCollision(bool collisions[4]);
 	void render(SDL_Renderer* renderer);
+	void requestAnimation(Entity* requestedBy);
 protected:
-	void initializePlayerAnim();
+	void static initializePlayerAnim();
 	AnimSelect headSelect {2,0};
 	AnimSelect torsoSelect {0,0};
 	AnimSelect legsSelect {1,0};
@@ -31,7 +32,8 @@ protected:
 	SDL_Rect headDisplayRect;
 	SDL_Rect torsoDisplayRect;
 	SDL_Rect legsDisplayRect;
-	SDL_Rect playerAnim[4][15];
+	static SDL_Rect playerAnim[4][15];
+	SDL_Rect mushGrowAnim[1][87];
 	SDL_Rect headAnim[4][3];
 	SDL_Rect torsoAnim[2][1];
 	SDL_Rect legsAnim[4][15];

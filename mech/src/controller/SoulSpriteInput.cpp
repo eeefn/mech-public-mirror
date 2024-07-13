@@ -59,6 +59,7 @@ void SoulSpriteInput::processKeyup(SDL_Event *keyupEvent){
 			int playerSpawnPosY = highlightedObjectPtr->yTile * mapInfo.TILE_DIM - 64/*this number is player height - size of object*/;
 			if(highlightedObjectPtr != nullptr){
 				Entity* player = entityManager.spawnPlayer(playerSpawnPosX,playerSpawnPosY);
+				player->requestAnimation(playerEntity);
 				entityManager.despawnEntity(playerEntity);
 				entityManager.moveEntityToFront(player);
 				camera.setCameraTarget(player);

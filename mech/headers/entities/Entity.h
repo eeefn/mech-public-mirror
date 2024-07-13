@@ -1,9 +1,14 @@
 #pragma once
 #include <SDL.h>
 #include <vector>
+#include <unordered_map>
+#include <string>
+
 #define GRAVITY 250
 #define ANIM_SPEED 2
 using std::vector;
+using std::string;
+
 extern struct AnimationCodes {
 	constexpr static int JUMP_ANIM = 0;
 	constexpr static int RUN_R_ANIM = 1;
@@ -15,6 +20,7 @@ class Entity
 {
 public:
 	Entity* hostEntity;
+	Entity* childEntity;
 	int entityWidth, entityHeight;
 	int posX, posY, velX, velY;
 	float accY, accX;
@@ -31,6 +37,7 @@ public:
 	virtual void attackRight(int xClick);
 	virtual void render(SDL_Renderer* renderer);	
 	virtual void processCollision(bool collisions[4]);
+	virtual void requestAnimation(Entity* requestedBy);
 	virtual ~Entity();
 protected:
 	struct AnimSelect{
@@ -39,17 +46,19 @@ protected:
 	};
 	short getCurrentAnimation();	
 	void updateAnimationFrame();
-	void setAnimation(short animationRequested, bool loop, AnimSelect* animSelect, short maxFrames,short animationType);
+	void setAnimation(short animationRequested, bool loop, AnimSelect* animSelect, short maxFrames,string animationType);
 private:
 	short curAnim = 0;
 	struct AnimationInProgress{
 		bool loop;
 		short maxFrames;
-		short* playFrame;
+		short playFrame;
 		bool animCycleComplete;
-		short animationType;
+		string animationType;
 		int curFrame;
+		AnimSelect* animSel;
 	};
+	std::unordered_map<std::string,int> animationTypesInProgress;
 	vector<AnimationInProgress*> animationsInProgress;
 };
 
