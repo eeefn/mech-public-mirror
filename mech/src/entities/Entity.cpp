@@ -76,11 +76,8 @@ void Entity::updateEntity(float dt) {
 void Entity::updateAnimationFrame(){
 	for(auto animation : animationsInProgress){
 		if(!animation->animCycleComplete){
-			animation->curFrame = (animation->curFrame + 1) % (animation->maxFrames * 4/*ANIM_SPEED*/);
-			animation->playFrame = animation->curFrame / 4/* ANIM_SPEED*/;
-			if(animation->animationType =="FULL"){
-				std::cout << animation->curFrame << " " << animation->playFrame << std::endl;
-			}
+			animation->curFrame = (animation->curFrame + 1) % (animation->maxFrames * ANIM_SPEED);
+			animation->playFrame = animation->curFrame / ANIM_SPEED;
 			if ((animation->playFrame == (animation->maxFrames - 1)) && (animation->loop == false)){
 				animation->playFrame = animation->maxFrames;
 				animation->animCycleComplete = true;
@@ -88,7 +85,6 @@ void Entity::updateAnimationFrame(){
 				if(animation->animationType == "FULL"){
 					fullBodyAnimation = false;
 				}
-				//mark animation for deletion
 			}
 			animation->animSel->curFrame = animation->playFrame;
 		}
@@ -100,7 +96,6 @@ void Entity::requestAnimation(Entity* requestedBy){
 }
 void Entity::setAnimation(short animationRequested, bool loop, AnimSelect* animSelect, short maxFrames,string animationType){
 	if(animationTypesInProgress.find(animationType) == animationTypesInProgress.end()){
-		std::cout << "animation " << animationType << " was not in list" << std::endl;
 		animSelect->curFrame = 0;
 		AnimationInProgress *newAnimPtr = new AnimationInProgress;
 		*newAnimPtr = {loop,maxFrames, animSelect->curFrame, false,animationType,0,animSelect};

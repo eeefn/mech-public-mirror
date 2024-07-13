@@ -24,7 +24,7 @@ public:
 	void render(SDL_Renderer* renderer);
 	void requestAnimation(Entity* requestedBy);
 protected:
-	void static initializePlayerAnim();
+	void initializePlayerAnim();
 	AnimSelect headSelect {2,0};
 	AnimSelect torsoSelect {0,0};
 	AnimSelect legsSelect {1,0};
@@ -32,7 +32,7 @@ protected:
 	SDL_Rect headDisplayRect;
 	SDL_Rect torsoDisplayRect;
 	SDL_Rect legsDisplayRect;
-	static SDL_Rect playerAnim[4][15];
+	SDL_Rect playerAnim[4][15];
 	SDL_Rect mushGrowAnim[1][87];
 	SDL_Rect headAnim[4][3];
 	SDL_Rect torsoAnim[2][1];

@@ -25,6 +25,7 @@ Player::Player()  {
 	playerJumpAcc = 200;
 	soul = 100;
 	initializePlayerAnim();
+
 }
 
 void Player::initializePlayerAnim(){	
@@ -82,8 +83,8 @@ void Player::render(SDL_Renderer* renderer){
 	if (!inMech) {
 		if (fullBodyAnimation){
 			SDL_RenderCopy(renderer, textureManager.mushGrowTexture, &mushGrowAnim[fullSelect.curAnim][fullSelect.curFrame], &displayRect);
-			std::cout << "A ";
-		}else{
+		}
+		else{
 			SDL_RenderCopy(renderer, textureManager.headTexture, &headAnim[headSelect.curAnim][headSelect.curFrame], &headDisplayRect);
 			SDL_RenderCopy(renderer,textureManager.torsoTexture,&torsoAnim[torsoSelect.curAnim][torsoSelect.curFrame],&torsoDisplayRect);
 			SDL_RenderCopy(renderer, textureManager.legsTexture, &legsAnim[legsSelect.curAnim][legsSelect.curFrame], &legsDisplayRect);
@@ -101,7 +102,8 @@ void Player::updateEntity(float dt) {
 		Entity::setAnimation(playerAnimationCodes.WALK_L_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,/*animationTypes.LEGS*/"LEGS");
 		Entity::setAnimation(playerAnimationCodes.TORSO_L_ANIM,true,&torsoSelect,playerAnimationCodes.TORSO_MAX_LOOP,/*animationTypes.TORSO*/"TORSO");
 		setHeadAnimL();
-	}else if(velX > 0){
+	}
+	else if(velX > 0){
 		Entity::setAnimation(playerAnimationCodes.WALK_R_ANIM,true,&legsSelect,playerAnimationCodes.LEGS_MAX_LOOP,/*animationTypes.LEGS*/"LEGS");
 		Entity::setAnimation(playerAnimationCodes.TORSO_R_ANIM,true,&torsoSelect,playerAnimationCodes.TORSO_MAX_LOOP,/*animationTypes.TORSO*/"TORSO");
 		setHeadAnimR();

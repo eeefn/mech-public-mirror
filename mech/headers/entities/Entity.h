@@ -9,18 +9,10 @@
 using std::vector;
 using std::string;
 
-extern struct AnimationCodes {
-	constexpr static int JUMP_ANIM = 0;
-	constexpr static int RUN_R_ANIM = 1;
-	constexpr static int IDLE_ANIM = 2;
-	constexpr static int RUN_L_ANIM = 3;
-}animationCodes;
-
 class Entity
 {
 public:
 	Entity* hostEntity;
-	Entity* childEntity;
 	int entityWidth, entityHeight;
 	int posX, posY, velX, velY;
 	float accY, accX;
