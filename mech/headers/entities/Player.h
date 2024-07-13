@@ -1,7 +1,8 @@
 #pragma once
 #include "../constants.h"
-#include "./Entity.h"
+#include "Entity.h"
 #include <SDL.h>
+#include "AnimationCodes.h"
 #define PLAYER_SCALE 2
 #define PLAYER_WIDTH 32*PLAYER_SCALE
 #define PLAYER_HEIGHT 48*PLAYER_SCALE
@@ -22,6 +23,7 @@ public:
 	void updateEntity(float dt);
 	void processCollision(bool collisions[4]);
 	void render(SDL_Renderer* renderer);
+	void requestAnimation(Entity* requestedBy);
 protected:
 	void initializePlayerAnim();
 	AnimSelect headSelect {2,0};
@@ -32,6 +34,7 @@ protected:
 	SDL_Rect torsoDisplayRect;
 	SDL_Rect legsDisplayRect;
 	SDL_Rect playerAnim[4][15];
+	SDL_Rect mushGrowAnim[1][87];
 	SDL_Rect headAnim[4][3];
 	SDL_Rect torsoAnim[2][1];
 	SDL_Rect legsAnim[4][15];
