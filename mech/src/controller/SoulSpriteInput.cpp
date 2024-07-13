@@ -3,6 +3,8 @@
 #include "../../headers/entities/EntityManager.h"
 #include "../../headers/controller/InputFactory.h"
 #include "../../headers/Camera.h"
+#include "../../headers/Map.h"
+#include "../../headers/GameObject.h"
 SoulSpriteInput soulSpriteInput;
 
 SoulSpriteInput::SoulSpriteInput(){
