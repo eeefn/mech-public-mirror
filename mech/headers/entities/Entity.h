@@ -43,13 +43,12 @@ protected:
 private:
 	short curAnim = 0;
 	struct AnimationInProgress{
-		bool loop;
-		short maxFrames;
-		short playFrame;
-		bool animCycleComplete;
-		string animationType;
-		int curFrame;
+		const AnimationCode* animationCode;
 		AnimSelect* animSel;
+		bool loop;
+		bool animCycleComplete;
+		short playFrame;
+		int curFrame;
 	};
 	std::unordered_map<std::string,int> animationTypesInProgress;
 	vector<AnimationInProgress*> animationsInProgress;
