@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include "AnimationCodes.h"
 
 #define GRAVITY 250
 #define ANIM_SPEED 2
@@ -38,7 +39,7 @@ protected:
 	};
 	short getCurrentAnimation();	
 	void updateAnimationFrame();
-	void setAnimation(short animationRequested, bool loop, AnimSelect* animSelect, short maxFrames,string animationType);
+	void setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect);
 private:
 	short curAnim = 0;
 	struct AnimationInProgress{

@@ -1,29 +1,26 @@
 #pragma once
 #include <string>
-extern struct PlayerAnimationCodes{
-    constexpr static short LEGS_MAX_LOOP = 15;
-    constexpr static short WALK_L_ANIM = 0;
-    constexpr static short IDLE_L_ANIM = 1;
-    constexpr static short IDLE_R_ANIM = 2;
-    constexpr static short WALK_R_ANIM = 3;
-    
-    constexpr static short TORSO_MAX_LOOP = 1;
-    constexpr static short TORSO_L_ANIM = 1;
-    constexpr static short TORSO_R_ANIM = 0;
 
-    constexpr static short HEAD_MAX_LOOP = 2;
-    constexpr static short HEAD_L_ANIM = 2;
-    constexpr static short HEAD_R_ANIM = 0;
-    constexpr static short HEAD_L_FALL_ANIM = 3;
-    constexpr static short HEAD_R_FALL_ANIM = 1;
-    
-    constexpr static short MUSH_GROW_MAX_LOOP = 87;
-    constexpr static short MUSH_GROW = 0;
-} playerAnimationCodes;
+struct AnimationCode{
+    std::string TYPE;
+    short CODE;
+    short MAX_LOOP;
+};
 
- namespace AnimationType{
-    const std::string FULL_SPRITE = "FULL";
-    const std::string HEAD = "HEAD";
-    const std::string TORSO = "TORSO";
-    const std::string LEGS = "LEGS";
+namespace PlayerAnimationCodes{
+    const AnimationCode WALK_L_ANIM{"LEGS",0,15};
+    const AnimationCode IDLE_L_ANIM{"LEGS",1,15};
+    const AnimationCode IDLE_R_ANIM{"LEGS",2,15};
+    const AnimationCode WALK_R_ANIM{"LEGS",3,15};
+
+    const AnimationCode TORSO_L_ANIM{"TORSO",1,1};
+    const AnimationCode TORSO_R_ANIM{"TORSO",0,1};
+
+    const AnimationCode HEAD_R_ANIM{"HEAD",0,2};
+    const AnimationCode HEAD_R_FALL_ANIM{"HEAD",1,2};
+    const AnimationCode HEAD_L_ANIM{"HEAD",2,2};
+    const AnimationCode HEAD_L_FALL_ANIM{"HEAD",1,3};
+    
+    const AnimationCode MUSH_GROW{"FULL",0,87};
 }
+

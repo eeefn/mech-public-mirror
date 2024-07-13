@@ -94,21 +94,21 @@ void Entity::updateAnimationFrame(){
 void Entity::requestAnimation(Entity* requestedBy){
 
 }
-void Entity::setAnimation(short animationRequested, bool loop, AnimSelect* animSelect, short maxFrames,string animationType){
-	if(animationTypesInProgress.find(animationType) == animationTypesInProgress.end()){
+void Entity::setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect){
+	if(animationTypesInProgress.find(animationRequested->TYPE) == animationTypesInProgress.end()){
 		animSelect->curFrame = 0;
 		AnimationInProgress *newAnimPtr = new AnimationInProgress;
-		*newAnimPtr = {loop,maxFrames, animSelect->curFrame, false,animationType,0,animSelect};
+		*newAnimPtr = {loop,animationRequested->MAX_LOOP, animSelect->curFrame, false,animationRequested->TYPE,0,animSelect};
 		animationsInProgress.push_back(newAnimPtr);
-		animationTypesInProgress[animationType] = 1;
+		animationTypesInProgress[animationRequested->TYPE] = 1;
 	}
 	else{
-		if((animationRequested != animSelect->curAnim) || (!loop)){
-			animSelect->curAnim = animationRequested;
+		if((animationRequested->CODE != animSelect->curAnim) || (!loop)){
+			animSelect->curAnim = animationRequested->CODE;
 			//update exisiting animation of same type
 			for (auto animation : animationsInProgress) {
-				if((animationType == animation->animationType)){
-					*animation = {loop, maxFrames, animSelect->curFrame, false,animationType,0,animSelect};
+				if((animationRequested->TYPE == animation->animationType)){
+					*animation = {loop, animationRequested->MAX_LOOP, animSelect->curFrame, false,animationRequested->TYPE,0,animSelect};
 					return;
 				}
 			}

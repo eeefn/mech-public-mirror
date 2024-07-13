@@ -54,18 +54,6 @@ void SoulSpriteInput::processKeyup(SDL_Event *keyupEvent){
 			inputFactory.setControlMode(controlModes.PLAYER);
 			break;
 		case SDLK_q:
-			GameObject* highlightedObjectPtr = map.getFirstHighlightedObject();
-			int playerSpawnPosX = highlightedObjectPtr->xTile * mapInfo.TILE_DIM - 16/*this number is player width / 4*/;
-			int playerSpawnPosY = highlightedObjectPtr->yTile * mapInfo.TILE_DIM - 64/*this number is player height - size of object*/;
-			if(highlightedObjectPtr != nullptr){
-				Entity* player = entityManager.spawnPlayer(playerSpawnPosX,playerSpawnPosY);
-				player->requestAnimation(playerEntity);
-				entityManager.despawnEntity(playerEntity);
-				entityManager.moveEntityToFront(player);
-				camera.setCameraTarget(player);
-				inputFactory.setControlMode(controlModes.PLAYER);
-			}
-		 //initiate transition
 			break;
 	}
 }
@@ -88,6 +76,19 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
             break;
         case SDLK_q:
             //this is where the player would switch entites
+			{
+			GameObject* highlightedObjectPtr = map.getFirstHighlightedObject();
+			int playerSpawnPosX = highlightedObjectPtr->xTile * mapInfo.TILE_DIM - 16/*this number is player width / 4*/;
+			int playerSpawnPosY = highlightedObjectPtr->yTile * mapInfo.TILE_DIM - 64/*this number is player height - size of object*/;
+			if(highlightedObjectPtr != nullptr){
+				Entity* player = entityManager.spawnPlayer(playerSpawnPosX,playerSpawnPosY);
+				player->requestAnimation(playerEntity);
+				entityManager.despawnEntity(playerEntity);
+				entityManager.moveEntityToFront(player);
+				camera.setCameraTarget(player);
+				inputFactory.setControlMode(controlModes.PLAYER);
+			}
+			}
             break;
 		case SDLK_ESCAPE: gameIsRunning = false; break;
 	}

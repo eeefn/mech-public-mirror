@@ -34,7 +34,7 @@ protected:
 	SDL_Rect torsoDisplayRect;
 	SDL_Rect legsDisplayRect;
 	SDL_Rect playerAnim[4][15];
-	SDL_Rect mushGrowAnim[1][playerAnimationCodes.MUSH_GROW_MAX_LOOP];
+	SDL_Rect mushGrowAnim[1][87];
 	SDL_Rect headAnim[4][3];
 	SDL_Rect torsoAnim[2][1];
 	SDL_Rect legsAnim[4][15];
