@@ -9,16 +9,12 @@
 
 class Mech : public Entity 
 {
-	//size of the sheet
 	public:
 		bool highlighted;
 		Mech();
-		SDL_Rect mechArr[4][60];
-		SDL_Rect handRect[5];
-		SDL_Rect mechHandArr[5];
 		bool poweredUp, stood, grappling,reelOut;
 		int currFrame,playFrame;
-		int gDist;
+		int gDist = 0;
 		void isHighlighted();
 		void updateEntity(float dt);
 		void moveLeft(bool key);
@@ -26,5 +22,9 @@ class Mech : public Entity
 		void attackRight(int xClick);
 		void render(SDL_Renderer* rend);
 		void processCollision(bool collisions[4]);
+	protected:
+		SDL_Rect mechAnim[4][60];
+		SDL_Rect handRect[5];
+		SDL_Rect mechHandArr[5];
 };
 extern Mech mech;
