@@ -23,6 +23,7 @@ class Mech : public Entity
 		void render(SDL_Renderer* rend);
 		void processCollision(bool collisions[4]);
 	protected:
+		AnimSelect fullSelect = {0,0};
 		SDL_Rect mechAnim[4][60];
 		SDL_Rect handRect[5];
 		SDL_Rect mechHandArr[5];
