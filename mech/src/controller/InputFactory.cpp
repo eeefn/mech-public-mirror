@@ -1,6 +1,7 @@
 #include "../../headers/controller/InputFactory.h"
 #include "../../headers/controller/EditInput.h"
 #include "../../headers/controller/PlayInput.h"
+#include "../../headers/controller/MechInput.h"
 #include "../../headers/controller/SoulSpriteInput.h"
 #include "../../headers/constants.h"
 
@@ -20,6 +21,9 @@ bool InputFactory::processInput(SDL_Event *event, int *gameMode){
         }
         else if(controlMode == controlModes.SOUL_SPRITE){
             gameIsRunning = soulSpriteInput.processInput(event, gameMode);
+        }
+        else if(controlMode == controlModes.MECH){
+            gameIsRunning = mechInput.processInput(event, gameMode);
         }
     }
     return gameIsRunning;
