@@ -72,12 +72,6 @@ void PlayInput::processKeyup(SDL_Event *keyupEvent){
 }
 
 void PlayInput::processMousedown(SDL_Event *keydownEvent){
-	Entity *playerEntity = camera.cameraTarget;
-	switch (keydownEvent->button.button) {
-		case SDL_BUTTON_RIGHT:
-			playerEntity->attackRight(keydownEvent->button.x);
-			break;
-	}
 }
 
 int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
@@ -116,6 +110,7 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 					mech.velX -= mech.entitySpeedX;
 				}
 				camera.setCameraTarget(entityManager.moveEntityToFront(&mech));
+				inputFactory.setControlMode(controlModes.MECH);
 			}
 			//player.isPlayer = false;
 			break;
