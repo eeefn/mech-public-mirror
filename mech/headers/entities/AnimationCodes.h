@@ -25,3 +25,10 @@ namespace PlayerAnimationCodes{
     const AnimationCode MUSH_KNEEL{"FULL",1,11};
 }
 
+namespace MechAnimationCodes{
+   const AnimationCode POWER_UP{"FULL",0,30};
+   const AnimationCode POWER_UP_COLOR{"COLOR",1,30};
+   const AnimationCode STAND_UP{"FULL",2,60};
+   const AnimationCode STAND_UP_COLOR{"COLOR",3,60};
+}
+

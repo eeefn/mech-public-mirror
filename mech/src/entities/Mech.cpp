@@ -10,58 +10,48 @@ Mech mech;
 using std::cout;
 
 Mech::Mech() {
+	entityHeight = MECH_HEIGHT; entityWidth = MECH_WIDTH;
 	
 	//init rectangles
-	//cout << "initializing mech" << '\n';
 	for (unsigned int i = 0; i < 4; i++) {
 		for (unsigned int j = 0; j < 59; j++) {
-			mechArr[i][j].x = j * 96;
-			mechArr[i][j].y = i * 144;
-			mechArr[i][j].w = 96;
-			mechArr[i][j].h = 144;
+			mechAnim[i][j].x = j * 96;
+			mechAnim[i][j].y = i * 144;
+			mechAnim[i][j].w = 96;
+			mechAnim[i][j].h = 144;
 		}
 	}
-	entityTransition = false; inMech = true; 
-	mechHandArr[0].x = 0; mechHandArr[0].y = 0; mechHandArr[0].w = 7; mechHandArr[0].h = 13;
-	handRect[0].x = 0; handRect[0].y = 0; handRect[0].w = 14; handRect[0].h = 26;
-	mechHandArr[1].x = 9; mechHandArr[1].y = 0; mechHandArr[1].w = 10; mechHandArr[1].h = 5;
-	handRect[1].x = 0; handRect[1].y = 0; handRect[1].w = 20; handRect[1].h = 10;
-	mechHandArr[2].x = 9; mechHandArr[2].y = 6; mechHandArr[2].w = 10; mechHandArr[2].h = 7;
-	handRect[2].x = 0; handRect[2].y = 0; handRect[2].w = 20; handRect[2].h = 14;
-	mechHandArr[3].x = 20; mechHandArr[3].y = 0; mechHandArr[3].w = 17; mechHandArr[3].h = 14;
-	handRect[3].x = 0; handRect[3].y = 0; handRect[3].w = 34; handRect[3].h = 28;
-	mechHandArr[4].x = 38; mechHandArr[4].y = 4; mechHandArr[4].w = 20; mechHandArr[4].h = 7;
-	handRect[4].x = 0; handRect[4].y = 0; handRect[4].w = 40; handRect[4].h = 14;
+	inMech = true; 
+	displayRect = {100,100,MECH_WIDTH,MECH_HEIGHT};
+	mechHandArr[0] = {0,0,7,13}; handRect[0] = {0,0,14,26};
+	mechHandArr[1] = {9,0,10,5}; handRect[1] = {0,0,20,10};
+	mechHandArr[2] = {9,6,10,7}; handRect[2] = {0,0,20,14};
+	mechHandArr[3] = {20,0,17,14}; handRect[3] = {0,0,34,28};
+	mechHandArr[4] = {38,4,20,7}; handRect[4] = {0,0,40,14};
 	posX = 400; posY = 80;
-	isPlayer, inAir, grappling,reelOut = false;
+	isPlayer, inAir, grappling,reelOut,entityTransition = false;
 	velX, velY = 0;
 	currFrame, playFrame = 0;
-	accX = 0; accY = 250;
-	displayRect.x, displayRect.y = 100;	
-	displayRect.w = 96 * 2;
-	displayRect.h = 144 * 2;
-	gDist = 0;
+	accX = 0; accY = GRAVITY;
 	highlighted = true;
 	poweredUp, stood = false;
 	entitySpeedX = 70;
-	entityHeight = MECH_HEIGHT;
-	entityWidth = MECH_WIDTH;
 }
 
 void Mech::render(SDL_Renderer* renderer) {
 	if (!mech.isPlayer) {
-		SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[2][0], &displayRect);
-		SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[3][0], &displayRect);
+		SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[2][0], &displayRect);
+		SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[3][0], &displayRect);
 		
 		if (highlighted) {
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[1][30], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[1][30], &displayRect);
 		}
 	}
 	else {
 		if (!poweredUp) {
 			playFrame = currFrame / 4;
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[2][playFrame], &displayRect);
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[3][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[2][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[3][playFrame], &displayRect);
 			currFrame++;
 			if (currFrame >= 240) {
 				poweredUp = true;
@@ -70,8 +60,8 @@ void Mech::render(SDL_Renderer* renderer) {
 		}
 		else if(!stood) {
 			playFrame = currFrame / 2;
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[0][playFrame], &displayRect);
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[1][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[0][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[1][playFrame], &displayRect);
 			currFrame++;
 			if (currFrame >= 59) {
 				stood = true;
@@ -79,8 +69,8 @@ void Mech::render(SDL_Renderer* renderer) {
 			}
 		}
 		else {
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[0][playFrame], &displayRect);
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechArr[1][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[0][playFrame], &displayRect);
+			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[1][playFrame], &displayRect);
 			//render grapple
 			if (grappling) {
 				for (int i = handRect[3].x-20; i >= handRect[0].x; i-=28) {
