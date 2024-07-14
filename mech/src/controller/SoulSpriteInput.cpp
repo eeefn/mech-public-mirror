@@ -89,6 +89,7 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 				camera.setCameraTarget(player);
 				inputFactory.setControlMode(controlModes.PLAYER);
 			}
+			map.removeObject(highlightedObjectPtr);
 			}
             break;
 		case SDLK_ESCAPE: gameIsRunning = false; break;
