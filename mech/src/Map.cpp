@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 
 Map map;
@@ -36,6 +37,13 @@ bool Map::read(std::string mapIn) {
 	}
 }
 
+void Map::removeObject(GameObject* objToRemove){
+	auto objIterator = find(gameObjList.begin(),gameObjList.end(),objToRemove);
+	if(objIterator != gameObjList.end()){
+		gameObjList.erase(objIterator);	
+	}
+	delete objToRemove;	
+}
 
 GameObject* Map::getFirstHighlightedObject(){
 	if(!highlightedList.empty()){
@@ -45,6 +53,7 @@ GameObject* Map::getFirstHighlightedObject(){
 		return nullptr;
 	}
 }
+
 bool Map::fill(SDL_Rect* selWindowRen) {
 	for (int i = selWindowRen->y / mapInfo.TILE_DIM + camera.yOffset; i < (selWindowRen->h / mapInfo.TILE_DIM) + (selWindowRen->y / mapInfo.TILE_DIM + camera.yOffset); i++) {
 		for (int j = selWindowRen->x / mapInfo.TILE_DIM + camera.xOffset; j < (selWindowRen->w / mapInfo.TILE_DIM) + (selWindowRen->x / mapInfo.TILE_DIM + camera.xOffset); j++) {

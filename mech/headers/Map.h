@@ -20,6 +20,7 @@ class Map {
 		bool read(std::string mapIn);
 		bool fill(SDL_Rect* selWindowRen);
 		bool save(std::string mapIn);
+		void removeObject(GameObject* objToRemove);
 		Map();
 		int tileType = 0;
 	private:
