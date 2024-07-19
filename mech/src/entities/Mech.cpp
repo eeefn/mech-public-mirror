@@ -15,10 +15,7 @@ Mech::Mech() {
 	//init rectangles
 	for (unsigned int i = 0; i < 4; i++) {
 		for (unsigned int j = 0; j < 59; j++) {
-			mechAnim[i][j].x = j * 96;
-			mechAnim[i][j].y = i * 144;
-			mechAnim[i][j].w = 96;
-			mechAnim[i][j].h = 144;
+			mechAnim[i][j] = {static_cast<int>(j * 96),static_cast<int>(i * 144),96,144};
 		}
 	}
 	inMech = true; 
@@ -38,41 +35,30 @@ Mech::Mech() {
 	entitySpeedX = 70;
 }
 
+void Mech::requestAnimation(const AnimationCode* animationRequested){
+	if(animationRequested->TYPE == "FULL"){
+		Entity::setAnimation(animationRequested,false,&fullSelect);
+	}
+	else{
+		Entity::setAnimation(animationRequested,false,&colorSelect);
+	}
+}
+
 void Mech::render(SDL_Renderer* renderer) {
-	if (!mech.isPlayer) {
+	if (!isPlayer){
 		SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[2][0], &displayRect);
 		SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[3][0], &displayRect);
-		
 		if (highlighted) {
 			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[1][30], &displayRect);
 		}
 	}
-	else {
-		if (!poweredUp) {
-			playFrame = currFrame / 4;
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[2][playFrame], &displayRect);
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[3][playFrame], &displayRect);
-			currFrame++;
-			if (currFrame >= 240) {
-				poweredUp = true;
-				currFrame = 0;
-			}
-		}
-		else if(!stood) {
-			playFrame = currFrame / 2;
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[0][playFrame], &displayRect);
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[1][playFrame], &displayRect);
-			currFrame++;
-			if (currFrame >= 59) {
-				stood = true;
-				playFrame = 29;
-			}
-		}
-		else {
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[0][playFrame], &displayRect);
-			SDL_RenderCopy(renderer, textureManager.mechTexture, &mechAnim[1][playFrame], &displayRect);
+	else{
+		SDL_RenderCopy(renderer,textureManager.mechTexture,&mechAnim[fullSelect.curAnim][fullSelect.curFrame],&displayRect);
+		SDL_RenderCopy(renderer,textureManager.mechTexture,&mechAnim[colorSelect.curAnim][colorSelect.curFrame],&displayRect);
+
+	}
 			//render grapple
-			if (grappling) {
+/*			if (grappling) {
 				for (int i = handRect[3].x-20; i >= handRect[0].x; i-=28) {
 					handRect[2].x = i;
 					handRect[2].y = posY + 142;
@@ -83,18 +69,7 @@ void Mech::render(SDL_Renderer* renderer) {
 				for (int i = handRect[3].x-8; i >= handRect[0].x;i-=28) {
 					handRect[1].x = i;
 					handRect[1].y = posY + 144;
-					SDL_RenderCopy(renderer, textureManager.mechAtTexture, &mechHandArr[1], &handRect[1]);
-				}
-			}
-			else {
-				SDL_RenderCopy(renderer, textureManager.mechAtTexture, &mechHandArr[3], &handRect[3]);
-			}
-			
-			SDL_RenderCopy(renderer, textureManager.mechAtTexture, &mechHandArr[0], &handRect[0]);
-		}
-		
-	}
-	
+				}*/
 }
 
 void Mech::moveLeft(bool key) {
@@ -149,7 +124,8 @@ void Mech::updateEntity(float dt) {
 		grappling = false;
 	}
 	
-	isHighlighted();	
+	isHighlighted();
+	Entity::updateAnimationFrame();	
 }
 
 void Mech::processCollision(bool collisions[4]) {

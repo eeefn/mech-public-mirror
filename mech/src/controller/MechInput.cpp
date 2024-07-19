@@ -8,7 +8,6 @@ MechInput::MechInput(){
 
 }
 
-
 bool MechInput::processInput(SDL_Event *keyEvent, int *gameMode){
 	bool gameIsRunning = true;
 	if (keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat == 0) {

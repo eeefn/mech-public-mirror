@@ -110,6 +110,8 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 					mech.velX -= mech.entitySpeedX;
 				}
 				camera.setCameraTarget(entityManager.moveEntityToFront(&mech));
+				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP);
+				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP_COLOR);
 				inputFactory.setControlMode(controlModes.MECH);
 			}
 			//player.isPlayer = false;
