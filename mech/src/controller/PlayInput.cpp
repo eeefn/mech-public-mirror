@@ -15,14 +15,14 @@
 PlayInput playInput;
 
 PlayInput::PlayInput(){
-    std::cout << "input constructed";
+
 }
 
 void PlayInput::processHeldKeys(SDL_Event *keyEvent){
 	switch (keyEvent->key.keysym.sym){
 		case SDLK_LSHIFT:
+		
 			entityManager.spawnSoulSprite();
-			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL);
 			camera.setCameraTarget(entityManager.swapEntityList());
 			inputFactory.setControlMode(controlModes.SOUL_SPRITE);
 			if (camera.cameraTarget->hostEntity->velX > 0){
@@ -65,9 +65,7 @@ void PlayInput::processKeyup(SDL_Event *keyupEvent){
 			playerEntity->moveRight(false);
 			break;
 		case SDLK_LSHIFT:
-			//TODO despawn soulSprite entity
-			//TODO switch camera back to player entity
-			break;
+			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,false);
 	}
 }
 
@@ -110,11 +108,14 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 					mech.velX -= mech.entitySpeedX;
 				}
 				camera.setCameraTarget(entityManager.moveEntityToFront(&mech));
-				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP);
-				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP_COLOR);
+				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP,true);
+				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP_COLOR,true);
 				inputFactory.setControlMode(controlModes.MECH);
 			}
 			//player.isPlayer = false;
+			break;
+		case SDLK_LSHIFT:
+			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,true);
 			break;
 		case SDLK_ESCAPE: gameIsRunning = false; break;
 	}

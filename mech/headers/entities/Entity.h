@@ -30,7 +30,7 @@ public:
 	virtual void attackRight(int xClick);
 	virtual void render(SDL_Renderer* renderer);	
 	virtual void processCollision(bool collisions[4]);
-	virtual void requestAnimation(const AnimationCode* animationRequested);
+	virtual void requestAnimation(const AnimationCode* animationRequested,bool forward);
 	virtual ~Entity();
 protected:
 	struct AnimSelect{
@@ -53,9 +53,10 @@ private:
 		short speed;
 		bool forward = true;
 	};
-	bool allowAnimationOverride(const AnimationCode* animationRequested, AnimSelect* animSelect, bool forward);
+	bool allowAnimationOverride(const AnimationCode* animationRequested,AnimationInProgress* curAnimInProgress, AnimSelect* animSelect, bool forward);
 	void incrementFrame(AnimationInProgress* animation);
 	bool checkAnimationCompletion(AnimationInProgress* animation);
+	AnimationInProgress* getCurrentAnimationOfType(string type);
 	std::unordered_map<std::string,int> animationTypesInProgress;
 	vector<AnimationInProgress*> animationsInProgress;
 };
