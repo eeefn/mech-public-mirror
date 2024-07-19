@@ -51,7 +51,10 @@ private:
 		short playFrame;
 		int curFrame;
 		short speed;
+		bool forward = true;
 	};
+	void incrementFrame(AnimationInProgress* animation);
+	bool checkAnimationCompletion(AnimationInProgress* animation);
 	std::unordered_map<std::string,int> animationTypesInProgress;
 	vector<AnimationInProgress*> animationsInProgress;
 };
