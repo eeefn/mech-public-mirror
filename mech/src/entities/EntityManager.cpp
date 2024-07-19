@@ -57,8 +57,6 @@ Entity* EntityManager::spawnPlayer(int xPos, int yPos){
 }
 Entity* EntityManager::swapEntityList(){
 	std::iter_swap(entityList.begin(), entityList.end() - 1);
-	std::cout << "swapped entity list" << std::endl;
-	std::cout << entityList.size() << std::endl;
 	return entityList.at(0);
 }
 
