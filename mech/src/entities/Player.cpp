@@ -144,10 +144,8 @@ void Player::setHeadAnimR(){
 
 void Player::requestAnimation(const AnimationCode* animationRequested){
 	fullBodyAnimation = true;
-	std::cout << animationRequested->CODE << std::endl;
 	Entity::setAnimation(animationRequested,false,&fullSelect);
 	if(animationRequested->CODE == MUSH_GROW.CODE){
-		std::cout << "mushGrow" << std::endl;
 		Entity::setAnimation(&HEAD_R_ANIM,true,&headSelect);
 		Entity::setAnimation(&IDLE_R_ANIM,true,&legsSelect);	
 		Entity::setAnimation(&TORSO_R_ANIM,true,&torsoSelect);
