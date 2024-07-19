@@ -76,9 +76,8 @@ void Entity::updateEntity(float dt) {
 void Entity::updateAnimationFrame(){
 	for(auto animation : animationsInProgress){
 		if(!animation->animCycleComplete){
-			animation->curFrame = (animation->curFrame + 1) % (animation->animationCode->MAX_LOOP * animation->speed);
-			animation->playFrame = animation->curFrame / animation->speed;
-			if ((animation->playFrame == (animation->animationCode->MAX_LOOP - 1)) && (animation->loop == false)){
+			incrementFrame(animation);
+			if (checkAnimationCompletion(animation)){
 				animation->playFrame = animation->animationCode->MAX_LOOP - 1;
 				animation->animCycleComplete = true;
 				animation->animSel->curFrame = animation->playFrame;
@@ -90,7 +89,33 @@ void Entity::updateAnimationFrame(){
 		}
 	}
 }
+void Entity::incrementFrame(AnimationInProgress* animation){
+	if(animation->forward){
+		animation->curFrame = (animation->curFrame + 1) % (animation->animationCode->MAX_LOOP * animation->speed);
+		animation->playFrame = animation->curFrame / animation->speed;
+	}
+	else{
+		animation->curFrame = (animation->curFrame - 1) % (animation->animationCode->MAX_LOOP * animation->speed);
+		animation->playFrame = animation->curFrame / animation->speed;
+	}
+}
 
+bool Entity::checkAnimationCompletion(AnimationInProgress* animation){
+	if(animation->loop == false){
+		if(animation->forward){
+			cout << "animation true " << animation->animationCode->TYPE << std::endl;
+			if(animation->playFrame == animation->animationCode->MAX_LOOP - 1){
+				return true;
+			}
+		}
+		else{
+			if(animation->playFrame == 0){
+				return true;
+			}
+		}	
+	}
+	return false;
+}
 void Entity::requestAnimation(const AnimationCode* animationRequested){
 
 }
