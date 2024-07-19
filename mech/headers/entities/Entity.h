@@ -39,7 +39,7 @@ protected:
 	};
 	short getCurrentAnimation();	
 	void updateAnimationFrame();
-	void setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect, short animSpeed);
+	void setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect, short animSpeed,bool playForward);
 	void setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect);
 private:
 	short curAnim = 0;
@@ -53,6 +53,7 @@ private:
 		short speed;
 		bool forward = true;
 	};
+	bool allowAnimationOverride(const AnimationCode* animationRequested, AnimSelect* animSelect, bool forward);
 	void incrementFrame(AnimationInProgress* animation);
 	bool checkAnimationCompletion(AnimationInProgress* animation);
 	std::unordered_map<std::string,int> animationTypesInProgress;
