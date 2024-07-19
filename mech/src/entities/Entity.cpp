@@ -76,8 +76,8 @@ void Entity::updateEntity(float dt) {
 void Entity::updateAnimationFrame(){
 	for(auto animation : animationsInProgress){
 		if(!animation->animCycleComplete){
-			animation->curFrame = (animation->curFrame + 1) % (animation->animationCode->MAX_LOOP * ANIM_SPEED);
-			animation->playFrame = animation->curFrame / ANIM_SPEED;
+			animation->curFrame = (animation->curFrame + 1) % (animation->animationCode->MAX_LOOP * animation->speed);
+			animation->playFrame = animation->curFrame / animation->speed;
 			if ((animation->playFrame == (animation->animationCode->MAX_LOOP - 1)) && (animation->loop == false)){
 				animation->playFrame = animation->animationCode->MAX_LOOP - 1;
 				animation->animCycleComplete = true;
@@ -94,13 +94,14 @@ void Entity::updateAnimationFrame(){
 void Entity::requestAnimation(const AnimationCode* animationRequested){
 
 }
-void Entity::setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect){
+
+void Entity::setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect, short animSpeed){
 	//check for existing instance of animation. 
 	if(animationTypesInProgress.find(animationRequested->TYPE) == animationTypesInProgress.end()){
 		animSelect->curFrame = 0;
 		animSelect->curAnim = animationRequested->CODE;
 		AnimationInProgress *newAnimPtr = new AnimationInProgress;
-		*newAnimPtr = {animationRequested,animSelect,loop,false,0,0};
+		*newAnimPtr = {animationRequested,animSelect,loop,false,0,0,animSpeed};
 		animationsInProgress.push_back(newAnimPtr);
 		animationTypesInProgress[animationRequested->TYPE] = 1;
 	}
@@ -111,12 +112,16 @@ void Entity::setAnimation(const AnimationCode* animationRequested, bool loop, An
 			//update exisiting animation of same type, ie body portion
 			for (auto animation : animationsInProgress) {
 				if((animationRequested->TYPE == animation->animationCode->TYPE)){
-					*animation = {animationRequested, animSelect, loop, false,0,0};
+					*animation = {animationRequested, animSelect, loop, false,0,0,animSpeed};
 					return;
 				}
 			}
 		}
 	}
+	
+}
+void Entity::setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect){
+	setAnimation(animationRequested, loop, animSelect, animationRequested->DEFAULT_SPEED);
 }
 
 short Entity::getCurrentAnimation(){

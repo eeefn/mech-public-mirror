@@ -39,6 +39,7 @@ protected:
 	};
 	short getCurrentAnimation();	
 	void updateAnimationFrame();
+	void setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect, short animSpeed);
 	void setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect);
 private:
 	short curAnim = 0;
@@ -49,6 +50,7 @@ private:
 		bool animCycleComplete;
 		short playFrame;
 		int curFrame;
+		short speed;
 	};
 	std::unordered_map<std::string,int> animationTypesInProgress;
 	vector<AnimationInProgress*> animationsInProgress;
