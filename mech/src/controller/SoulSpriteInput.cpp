@@ -53,6 +53,7 @@ void SoulSpriteInput::processKeyup(SDL_Event *keyupEvent){
 			camera.setCameraTarget(playerEntity->hostEntity);
 			entityManager.despawnEntity(playerEntity);
 			inputFactory.setControlMode(controlModes.PLAYER);
+			playerEntity->hostEntity->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,false);
 			break;
 		case SDLK_q:
 			break;
