@@ -82,13 +82,13 @@ void EntityManager::despawnEntity(Entity* entityToDespawn){
 
 void EntityManager::changePlayerTarget(Entity* from, Entity* to){
 	if(from->velX > 0){
-		to->velX += to->hostEntity->entitySpeedX;
+		to->velX += to->entitySpeedX;
 	}
 	else if(from->velX < 0){
 		to->velX -= to->entitySpeedX;
 	}
 	if(from->velY > 0){
-		to->velY += to->hostEntity->entitySpeedY;
+		to->velY += to->entitySpeedY;
 	}
 	else if(from->velY < 0){
 		to->velY -= to->entitySpeedY;
