@@ -101,18 +101,11 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 				playerEntity->inMech = true;
 				mech.isPlayer = true;
 				mech.highlighted = false;
-				if(playerEntity->velX >0){
-					mech.velX += mech.entitySpeedX;
-				}
-				else if(playerEntity->velX < 0){
-					mech.velX -= mech.entitySpeedX;
-				}
-				camera.setCameraTarget(entityManager.moveEntityToFront(&mech));
+				entityManager.changePlayerTarget(playerEntity,&mech);
 				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP,true);
 				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP_COLOR,true);
 				inputFactory.setControlMode(controlModes.MECH);
 			}
-			//player.isPlayer = false;
 			break;
 		case SDLK_LSHIFT:
 			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,true);

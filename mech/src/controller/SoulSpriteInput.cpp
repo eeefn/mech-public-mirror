@@ -43,14 +43,7 @@ void SoulSpriteInput::processKeyup(SDL_Event *keyupEvent){
             playerEntity->moveDown(false);
             break;
 		case SDLK_LSHIFT:
-			if(playerEntity->velX > 0){
-				playerEntity->hostEntity->velX += playerEntity->hostEntity->entitySpeedX;
-			}
-			else if(playerEntity->velX < 0){
-				playerEntity->hostEntity->velX -= playerEntity->hostEntity->entitySpeedX;
-			}
-		 	entityManager.moveEntityToFront(playerEntity->hostEntity);
-			camera.setCameraTarget(playerEntity->hostEntity);
+			entityManager.changePlayerTarget(playerEntity,playerEntity->hostEntity);
 			entityManager.despawnEntity(playerEntity);
 			inputFactory.setControlMode(controlModes.PLAYER);
 			playerEntity->hostEntity->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,false);
