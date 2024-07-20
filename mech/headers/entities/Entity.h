@@ -31,6 +31,7 @@ public:
 	virtual void render(SDL_Renderer* renderer);	
 	virtual void processCollision(bool collisions[4]);
 	virtual void requestAnimation(const AnimationCode* animationRequested,bool forward);
+	virtual void handleCompletedAnimations(const AnimationCode* animationCompleted);
 	virtual ~Entity();
 protected:
 	struct AnimSelect{
@@ -38,7 +39,7 @@ protected:
 		short curFrame;
 	};
 	short getCurrentAnimation();	
-	void updateAnimationFrame();
+	vector<const AnimationCode*> updateAnimationFrame();
 	void setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect, short animSpeed,bool playForward);
 	void setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect);
 private:
