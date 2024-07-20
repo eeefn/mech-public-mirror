@@ -21,8 +21,8 @@ class Mech : public Entity
 		void requestAnimation(const AnimationCode* animationRequested,bool forward);
 		void handleCompletedAnimations(const AnimationCode* animationCompleted);
 	protected:
-		AnimSelect fullSelect = {0,0};
-		AnimSelect colorSelect = {0,0};
+		Animator::AnimSelect fullSelect = {0,0};
+		Animator::AnimSelect colorSelect = {0,0};
 		SDL_Rect mechAnim[4][60];
 	private:
 		void processCollision(bool collisions[4]);
