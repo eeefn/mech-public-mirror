@@ -23,6 +23,7 @@ class Mech : public Entity
 		void render(SDL_Renderer* rend);
 		void processCollision(bool collisions[4]);
 		void requestAnimation(const AnimationCode* animationRequested,bool forward);
+		void handleCompletedAnimations(const AnimationCode* animationCompleted);
 	protected:
 		AnimSelect fullSelect = {0,0};
 		AnimSelect colorSelect = {0,0};

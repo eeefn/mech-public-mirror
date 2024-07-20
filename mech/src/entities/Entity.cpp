@@ -72,11 +72,13 @@ void Entity::updateEntity(float dt) {
 	displayRect.y = camera.getYPosWithinFrame(posY);
 }
 
-void Entity::updateAnimationFrame(){
+vector<const AnimationCode*> Entity::updateAnimationFrame(){
+	vector<const AnimationCode*> completedAnims;
 	for(auto animation : animationsInProgress){
 		if(!animation->animCycleComplete){
 			incrementFrame(animation);
 			if (checkAnimationCompletion(animation)){
+				//animation rests on either last or first frame when complete until overwritten
 				if(animation->forward){
 					animation->playFrame = animation->animationCode->MAX_LOOP - 1;
 				}
@@ -88,10 +90,12 @@ void Entity::updateAnimationFrame(){
 				if(animation->animationCode->TYPE == "FULL" && animation->animSel->curAnim != 1){
 					fullBodyAnimation = false;
 				}
+				completedAnims.push_back(animation->animationCode);
 			}
 			animation->animSel->curFrame = animation->playFrame;
 		}
 	}
+	return completedAnims;
 }
 
 void Entity::incrementFrame(AnimationInProgress* animation){
@@ -120,6 +124,9 @@ bool Entity::checkAnimationCompletion(AnimationInProgress* animation){
 	return false;
 }
 void Entity::requestAnimation(const AnimationCode* animationRequested,bool forward){
+
+}
+void Entity::handleCompletedAnimations(const AnimationCode* animationCompleted){
 
 }
 
@@ -165,6 +172,8 @@ void Entity::setAnimation(const AnimationCode* animationRequested, bool loop, An
 		}
 	}
 }
+
+
 void Entity::setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect){
 	setAnimation(animationRequested, loop, animSelect, animationRequested->DEFAULT_SPEED,true);
 }

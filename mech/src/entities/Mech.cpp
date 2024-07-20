@@ -1,6 +1,7 @@
 #include "../../headers/entities/Mech.h"
 #include "../../headers/Camera.h"
 #include "../../headers/TextureManager.h"
+#include "../../headers/entities/AnimationCodes.h"
 #include "stdio.h"
 #include <iostream>
 
@@ -8,6 +9,7 @@
 Mech mech;
 
 using std::cout;
+using namespace MechAnimationCodes;
 
 Mech::Mech() {
 	entityHeight = MECH_HEIGHT; entityWidth = MECH_WIDTH;
@@ -125,7 +127,10 @@ void Mech::updateEntity(float dt) {
 	}
 	
 	isHighlighted();
-	Entity::updateAnimationFrame();	
+	vector<const AnimationCode*> completedAnims = Entity::updateAnimationFrame();	
+	for(auto completedAnim : completedAnims){
+		handleCompletedAnimations(completedAnim);
+	}
 }
 
 void Mech::processCollision(bool collisions[4]) {
@@ -135,6 +140,12 @@ void Mech::processCollision(bool collisions[4]) {
 	}
 }
 
+void Mech::handleCompletedAnimations(const AnimationCode* animationCompleted){
+	if(animationCompleted->TYPE == POWER_UP_COLOR.TYPE && animationCompleted->CODE == POWER_UP_COLOR.CODE){
+		Entity::setAnimation(&STAND_UP,false,&fullSelect);
+		Entity::setAnimation(&STAND_UP_COLOR,false,&colorSelect);
+	}
+}
 void Mech::isHighlighted(){
 	if (abs(camera.cameraTarget->posX - posX - 2 * mapInfo.TILE_DIM) > 80) {
 		highlighted = false;

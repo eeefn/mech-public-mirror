@@ -120,7 +120,10 @@ void Player::updateEntity(float dt) {
 			setHeadAnimR();
 		}
 	}
-	Entity::updateAnimationFrame();
+	vector<const AnimationCode*> completedAnims = Entity::updateAnimationFrame();
+	for(auto completedAnim : completedAnims){
+		handleCompletedAnimations(completedAnim);
+	}
 }
 
 void Player::setHeadAnimL(){
@@ -150,6 +153,15 @@ void Player::requestAnimation(const AnimationCode* animationRequested, bool forw
 		Entity::setAnimation(&TORSO_R_ANIM,true,&torsoSelect,2,forward);
 	}
 }
+
+void Player::handleCompletedAnimations(const AnimationCode* animationCompleted){
+	if(animationCompleted->TYPE == MUSH_KNEEL.TYPE && animationCompleted->CODE == MUSH_KNEEL.CODE){
+		if(fullSelect.curFrame == 0){
+			fullBodyAnimation = false;
+		}
+	}
+}
+
 void Player::processCollision(bool collisions[4]) {
 	//check y collisions
 	if (collisions[0]) {

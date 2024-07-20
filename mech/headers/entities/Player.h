@@ -24,6 +24,7 @@ public:
 	void processCollision(bool collisions[4]);
 	void render(SDL_Renderer* renderer);
 	void requestAnimation(const AnimationCode* animationRequested, bool forward);
+	void handleCompletedAnimations(const AnimationCode* animationCompleted);
 protected:
 	void initializePlayerAnim();
 	AnimSelect headSelect {2,0};
