@@ -26,7 +26,6 @@ Player::Player()  {
 	playerJumpAcc = 200;
 	soul = 100;
 	initializePlayerAnim();
-
 }
 
 void Player::initializePlayerAnim(){	

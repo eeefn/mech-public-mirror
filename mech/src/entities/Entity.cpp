@@ -142,9 +142,6 @@ void Entity::setAnimation(const AnimationCode* animationRequested, bool loop, An
 	}
 	else{//animation type already exists
 		//don't override exisiting animation if it is the same animation
-		if(animationRequested->TYPE == "FULL"){
-			std::cout << "FULL" << " ";
-		}
 		AnimationInProgress* curAnimInProgress = getCurrentAnimationOfType(animationRequested->TYPE);
 		if(allowAnimationOverride(animationRequested, curAnimInProgress, animSelect, playForward)){
 			animSelect->curAnim = animationRequested->CODE;
@@ -185,11 +182,7 @@ bool Entity::allowAnimationOverride(const AnimationCode* animationRequested, Ani
 	//animation can be overWritten if the animation is a of the same type, but different animation
 	//animation can be overWritten if the current animation of the same type is complete 
 	//or if the current animation of the same type has a different play direction
-	if(curAnimInProgress->animationCode->TYPE == "FULL"){
-		std::cout << curAnimInProgress->animationCode->blocking << curAnimInProgress->animationCode->CODE << std::endl;
-	}
-	if(curAnimInProgress->animationCode->blocking){
-		std::cout << "blocking" << std::endl;
+	if(curAnimInProgress->animationCode->blocking && !curAnimInProgress->animCycleComplete){
 		return false;
 	}
 	if(animationRequested->CODE != animSelect->curAnim){

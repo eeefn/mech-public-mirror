@@ -22,7 +22,7 @@ class Mech : public Entity
 		void attackRight(int xClick);
 		void render(SDL_Renderer* rend);
 		void processCollision(bool collisions[4]);
-		void requestAnimation(const AnimationCode* animationRequested);
+		void requestAnimation(const AnimationCode* animationRequested,bool forward);
 	protected:
 		AnimSelect fullSelect = {0,0};
 		AnimSelect colorSelect = {0,0};
