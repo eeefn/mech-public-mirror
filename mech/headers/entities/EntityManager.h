@@ -11,12 +11,13 @@ class EntityManager{
         EntityManager();
         void update(float dt);
         void render(int gameMode);
-        Entity* swapEntityList(); 
-        Entity* moveEntityToFront(Entity* entityToGoToFront);
         void despawnEntity(Entity* entityToDespawn);
+        void changePlayerTarget(Entity* fromEntity, Entity* toEntity);
         Entity* spawnSoulSprite();
         Entity* spawnPlayer(int xPos, int yPos);
         Entity* getFrontEntity();
+        Entity* moveEntityToFront(Entity* entityToGoToFront);
+        Entity* swapEntityList(); 
     private:
         vector<Entity*> entityList;
                         

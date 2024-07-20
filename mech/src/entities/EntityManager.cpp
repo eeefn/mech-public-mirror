@@ -1,14 +1,15 @@
 
 #include "../../headers/entities/EntityManager.h"
+#include "../../headers/Camera.h"
 #include "../../headers/entities/Player.h"
 #include "../../headers/entities/Mech.h"
 #include "../../headers/entities/SoulSprite.h"
 #include "../../headers/WindowManager.h"
 #include "../../headers/Map.h"
 #include "../../headers/Collider.h"
+
 #include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
+
 EntityManager entityManager;
 
 EntityManager::EntityManager(){
@@ -77,4 +78,21 @@ void EntityManager::despawnEntity(Entity* entityToDespawn){
 		std::cout << "entity to erase does not exist" << std::endl;
 	}
 	delete entityToDespawn;
+}
+
+void EntityManager::changePlayerTarget(Entity* from, Entity* to){
+	if(from->velX > 0){
+		to->velX += to->hostEntity->entitySpeedX;
+	}
+	else if(from->velX < 0){
+		to->velX -= to->entitySpeedX;
+	}
+	if(from->velY > 0){
+		to->velY += to->hostEntity->entitySpeedY;
+	}
+	else if(from->velY < 0){
+		to->velY -= to->entitySpeedY;
+	}
+	from->stop();
+	camera.setCameraTarget(moveEntityToFront(to));
 }
