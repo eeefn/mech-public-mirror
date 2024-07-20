@@ -1,6 +1,8 @@
 #include "../../headers/controller/MechInput.h"
+#include "../../headers/controller/InputFactory.h"
 #include "../../headers/Camera.h"
 #include "../../headers/entities/Entity.h"
+#include "../../headers/entities/EntityManager.h"
 
 MechInput mechInput;
 
@@ -41,6 +43,19 @@ int MechInput::processKeydown(SDL_Event *keyDownEvent, int *gameMode){
 			playerEntity->moveRight(true);
 			break;
         case SDLK_q:
+				playerEntity->hostEntity->posX = playerEntity->posX;
+				playerEntity->hostEntity->posY = playerEntity->posY + playerEntity->entityHeight - playerEntity->hostEntity->entityHeight;
+				if(playerEntity->velX >0){
+					playerEntity->hostEntity->velX += playerEntity->hostEntity->entitySpeedX;
+				}
+				else if(playerEntity->velX < 0){
+					playerEntity->hostEntity->velX -= playerEntity->hostEntity->entitySpeedX;
+				}
+				playerEntity->hostEntity->inMech = false;
+				playerEntity->isPlayer = false;	
+				playerEntity->stop();
+				camera.setCameraTarget(entityManager.moveEntityToFront(playerEntity->hostEntity));
+				inputFactory.setControlMode(controlModes.PLAYER);
             break;
 		case SDLK_ESCAPE: gameIsRunning = false; break;
     }
