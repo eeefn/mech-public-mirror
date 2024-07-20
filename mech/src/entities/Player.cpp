@@ -26,7 +26,6 @@ Player::Player()  {
 	playerJumpAcc = 200;
 	soul = 100;
 	initializePlayerAnim();
-
 }
 
 void Player::initializePlayerAnim(){	
@@ -142,13 +141,13 @@ void Player::setHeadAnimR(){
 	}
 }
 
-void Player::requestAnimation(const AnimationCode* animationRequested){
+void Player::requestAnimation(const AnimationCode* animationRequested, bool forward){
 	fullBodyAnimation = true;
-	Entity::setAnimation(animationRequested,false,&fullSelect);
+	Entity::setAnimation(animationRequested,false,&fullSelect,2,forward);
 	if(animationRequested->CODE == MUSH_GROW.CODE){
-		Entity::setAnimation(&HEAD_R_ANIM,true,&headSelect);
-		Entity::setAnimation(&IDLE_R_ANIM,true,&legsSelect);	
-		Entity::setAnimation(&TORSO_R_ANIM,true,&torsoSelect);
+		Entity::setAnimation(&HEAD_R_ANIM,true,&headSelect,2,forward);
+		Entity::setAnimation(&IDLE_R_ANIM,true,&legsSelect,2,forward);	
+		Entity::setAnimation(&TORSO_R_ANIM,true,&torsoSelect,2,forward);
 	}
 }
 void Player::processCollision(bool collisions[4]) {

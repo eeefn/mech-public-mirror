@@ -35,7 +35,7 @@ Mech::Mech() {
 	entitySpeedX = 70;
 }
 
-void Mech::requestAnimation(const AnimationCode* animationRequested){
+void Mech::requestAnimation(const AnimationCode* animationRequested, bool forward){
 	if(animationRequested->TYPE == "FULL"){
 		Entity::setAnimation(animationRequested,false,&fullSelect);
 	}

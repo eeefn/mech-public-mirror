@@ -83,7 +83,7 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			int playerSpawnPosY = highlightedObjectPtr->yTile * mapInfo.TILE_DIM - 64/*this number is player height - size of object*/;
 			if(highlightedObjectPtr != nullptr){
 				Entity* player = entityManager.spawnPlayer(playerSpawnPosX,playerSpawnPosY);
-				player->requestAnimation(&PlayerAnimationCodes::MUSH_GROW);
+				player->requestAnimation(&PlayerAnimationCodes::MUSH_GROW,true);
 				entityManager.despawnEntity(playerEntity);
 				entityManager.moveEntityToFront(player);
 				camera.setCameraTarget(player);

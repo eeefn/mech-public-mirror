@@ -93,6 +93,7 @@ void Entity::updateAnimationFrame(){
 		}
 	}
 }
+
 void Entity::incrementFrame(AnimationInProgress* animation){
 	if(animation->forward){
 		animation->curFrame = (animation->curFrame + 1) % (animation->animationCode->MAX_LOOP * animation->speed);
@@ -103,7 +104,6 @@ void Entity::incrementFrame(AnimationInProgress* animation){
 		animation->playFrame = animation->curFrame / animation->speed;
 	}
 }
-
 bool Entity::checkAnimationCompletion(AnimationInProgress* animation){
 	if(animation->loop == false){
 		if(animation->forward){
@@ -119,7 +119,7 @@ bool Entity::checkAnimationCompletion(AnimationInProgress* animation){
 	}
 	return false;
 }
-void Entity::requestAnimation(const AnimationCode* animationRequested){
+void Entity::requestAnimation(const AnimationCode* animationRequested,bool forward){
 
 }
 
@@ -142,48 +142,58 @@ void Entity::setAnimation(const AnimationCode* animationRequested, bool loop, An
 	}
 	else{//animation type already exists
 		//don't override exisiting animation if it is the same animation
-		if(allowAnimationOverride(animationRequested, animSelect, playForward)){
+		AnimationInProgress* curAnimInProgress = getCurrentAnimationOfType(animationRequested->TYPE);
+		if(allowAnimationOverride(animationRequested, curAnimInProgress, animSelect, playForward)){
 			animSelect->curAnim = animationRequested->CODE;
-			//update exisiting animation of same type, ie body portion
-			for (auto animation : animationsInProgress) {
-				if((animationRequested->TYPE == animation->animationCode->TYPE)){
-					if(playForward){
-						*animation = {animationRequested, animSelect, loop, false,0,0,animSpeed,playForward};
-					}
-					else{
-						short endCurFrame = animationRequested->MAX_LOOP * animSpeed;
-						*animation = {animationRequested, animSelect, loop, false,animationRequested->MAX_LOOP,endCurFrame,animSpeed,playForward};
-					}
-					return;
+			if(playForward){
+				if(curAnimInProgress->forward != playForward){
+					*curAnimInProgress = {animationRequested, animSelect, loop, false,curAnimInProgress->playFrame,curAnimInProgress->curFrame,animSpeed,playForward};
+				}
+				else{
+					*curAnimInProgress = {animationRequested, animSelect, loop, false,0,0,animSpeed,playForward};
+				}
+			}
+			else{
+				if(curAnimInProgress->forward != playForward){
+					*curAnimInProgress = {animationRequested, animSelect, loop, false,curAnimInProgress->playFrame,curAnimInProgress->curFrame,animSpeed,playForward};
+				}
+				else{
+					short endCurFrame = animationRequested->MAX_LOOP * animSpeed;
+					*curAnimInProgress = {animationRequested, animSelect, loop, false,animationRequested->MAX_LOOP,endCurFrame,animSpeed,playForward};
 				}
 			}
 		}
 	}
-	
 }
 void Entity::setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect){
 	setAnimation(animationRequested, loop, animSelect, animationRequested->DEFAULT_SPEED,true);
 }
 
 
-bool Entity::allowAnimationOverride(const AnimationCode* animationRequested, AnimSelect* animSelect, bool forward){
+Entity::AnimationInProgress* Entity::getCurrentAnimationOfType(string type){
+	for(auto animation : animationsInProgress){
+		if(animation->animationCode->TYPE == type){
+			return animation;
+		}
+	}
+	return nullptr;
+}
+bool Entity::allowAnimationOverride(const AnimationCode* animationRequested, AnimationInProgress* curAnimInProgress, AnimSelect* animSelect, bool forward){
 	//animation can be overWritten if the animation is a of the same type, but different animation
+	//animation can be overWritten if the current animation of the same type is complete 
+	//or if the current animation of the same type has a different play direction
+	if(curAnimInProgress->animationCode->blocking && !curAnimInProgress->animCycleComplete){
+		return false;
+	}
 	if(animationRequested->CODE != animSelect->curAnim){
 		return true;
 	}
-	//animation can be overWritten if the current animation of the same type is complete 
-	//or if the current animation of the same type has a different play direction
-	for(auto animation : animationsInProgress){
-		if(animation->animationCode->TYPE == animationRequested->TYPE && animation->animCycleComplete){
-			if(animation->animCycleComplete){
-				return true;
-			}
-			if(animation->forward != forward){
-				return true;
-			}
-		}
+	if(curAnimInProgress->animCycleComplete){
+		return true;
 	}
-
+	if(curAnimInProgress->forward != forward && curAnimInProgress->animationCode->CODE == animationRequested->CODE){
+		return true;
+	}
 	return false;
 }
 short Entity::getCurrentAnimation(){
