@@ -28,10 +28,10 @@ Mech::Mech() {
 
 void Mech::requestAnimation(const AnimationCode* animationRequested, bool forward){
 	if(animationRequested->TYPE == "FULL"){
-		Entity::setAnimation(animationRequested,false,&fullSelect);
+		animator.setAnimation(animationRequested,false,&fullSelect);
 	}
 	else{
-		Entity::setAnimation(animationRequested,false,&colorSelect);
+		animator.setAnimation(animationRequested,false,&colorSelect);
 	}
 }
 
@@ -63,7 +63,7 @@ void Mech::attackRight(int xClick) {
 void Mech::updateEntity(float dt) {
 	Entity::updateEntity(dt);
 	isHighlighted();
-	vector<const AnimationCode*> completedAnims = Entity::updateAnimationFrame();	
+	vector<const AnimationCode*> completedAnims = animator.updateAnimationFrame();	
 	for(auto completedAnim : completedAnims){
 		handleCompletedAnimations(completedAnim);
 	}
@@ -79,8 +79,8 @@ void Mech::processCollision(bool collisions[4]) {
 void Mech::handleCompletedAnimations(const AnimationCode* animationCompleted){
 	//trigger stand up after power on animations complete
 	if(animationCompleted->TYPE == POWER_UP_COLOR.TYPE && animationCompleted->CODE == POWER_UP_COLOR.CODE){
-		Entity::setAnimation(&STAND_UP,false,&fullSelect);
-		Entity::setAnimation(&STAND_UP_COLOR,false,&colorSelect);
+		animator.setAnimation(&STAND_UP,false,&fullSelect);
+		animator.setAnimation(&STAND_UP_COLOR,false,&colorSelect);
 	}
 }
 void Mech::isHighlighted(){

@@ -101,26 +101,26 @@ void Player::updateEntity(float dt) {
 	torsoDisplayRect.x = displayRect.x; torsoDisplayRect.y = displayRect.y + 16 * PLAYER_SCALE;
 	legsDisplayRect.x = displayRect.x; legsDisplayRect.y = displayRect.y + 32 * PLAYER_SCALE;
 	if (velX < 0){
-		Entity::setAnimation(&WALK_L_ANIM,true,&legsSelect);
-		Entity::setAnimation(&TORSO_L_ANIM,true,&torsoSelect);
+		animator.setAnimation(&WALK_L_ANIM,true,&legsSelect);
+		animator.setAnimation(&TORSO_L_ANIM,true,&torsoSelect);
 		setHeadAnimL();
 	}
 	else if(velX > 0){
-		Entity::setAnimation(&WALK_R_ANIM,true,&legsSelect);
-		Entity::setAnimation(&TORSO_R_ANIM,true,&torsoSelect);
+		animator.setAnimation(&WALK_R_ANIM,true,&legsSelect);
+		animator.setAnimation(&TORSO_R_ANIM,true,&torsoSelect);
 		setHeadAnimR();
 	}
 	else{
 		if((legsSelect.curAnim == WALK_L_ANIM.CODE) || (legsSelect.curAnim == IDLE_L_ANIM.CODE)){
-			Entity::setAnimation(&IDLE_L_ANIM,true,&legsSelect);
+			animator.setAnimation(&IDLE_L_ANIM,true,&legsSelect);
 			setHeadAnimL();
 		}
 	  	else{
-			Entity::setAnimation(&IDLE_R_ANIM,true,&legsSelect);
+			animator.setAnimation(&IDLE_R_ANIM,true,&legsSelect);
 			setHeadAnimR();
 		}
 	}
-	vector<const AnimationCode*> completedAnims = Entity::updateAnimationFrame();
+	vector<const AnimationCode*> completedAnims = animator.updateAnimationFrame();
 	for(auto completedAnim : completedAnims){
 		handleCompletedAnimations(completedAnim);
 	}
@@ -128,29 +128,29 @@ void Player::updateEntity(float dt) {
 
 void Player::setHeadAnimL(){
 	if(velY > 50){
-		Entity::setAnimation(&HEAD_L_FALL_ANIM,true,&headSelect);
+		animator.setAnimation(&HEAD_L_FALL_ANIM,true,&headSelect);
 	}
 	else{
-		Entity::setAnimation(&HEAD_L_ANIM,true,&headSelect);
+		animator.setAnimation(&HEAD_L_ANIM,true,&headSelect);
 	}
 }
 
 void Player::setHeadAnimR(){
 	if(velY > 50){
-		Entity::setAnimation(&HEAD_R_FALL_ANIM,true,&headSelect);
+		animator.setAnimation(&HEAD_R_FALL_ANIM,true,&headSelect);
 	}
 	else{
-		Entity::setAnimation(&HEAD_R_ANIM,true,&headSelect);
+		animator.setAnimation(&HEAD_R_ANIM,true,&headSelect);
 	}
 }
 
 void Player::requestAnimation(const AnimationCode* animationRequested, bool forward){
 	fullBodyAnimation = true;
-	Entity::setAnimation(animationRequested,false,&fullSelect,2,forward);
+	animator.setAnimation(animationRequested,false,&fullSelect,2,forward);
 	if(animationRequested->CODE == MUSH_GROW.CODE){
-		Entity::setAnimation(&HEAD_R_ANIM,true,&headSelect,2,forward);
-		Entity::setAnimation(&IDLE_R_ANIM,true,&legsSelect,2,forward);	
-		Entity::setAnimation(&TORSO_R_ANIM,true,&torsoSelect,2,forward);
+		animator.setAnimation(&HEAD_R_ANIM,true,&headSelect,2,forward);
+		animator.setAnimation(&IDLE_R_ANIM,true,&legsSelect,2,forward);	
+		animator.setAnimation(&TORSO_R_ANIM,true,&torsoSelect,2,forward);
 	}
 }
 
@@ -159,6 +159,9 @@ void Player::handleCompletedAnimations(const AnimationCode* animationCompleted){
 		if(fullSelect.curFrame == 0){
 			fullBodyAnimation = false;
 		}
+	}
+	if(animationCompleted->TYPE == MUSH_GROW.TYPE && animationCompleted->CODE == MUSH_GROW.CODE){
+		fullBodyAnimation = false;
 	}
 }
 

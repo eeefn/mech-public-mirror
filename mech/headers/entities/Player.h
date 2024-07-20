@@ -1,8 +1,10 @@
 #pragma once
+#include <SDL.h>
 #include "../constants.h"
 #include "Entity.h"
-#include <SDL.h>
 #include "AnimationCodes.h"
+#include "../Animator.h"
+
 #define PLAYER_SCALE 2
 #define PLAYER_WIDTH 32*PLAYER_SCALE
 #define PLAYER_HEIGHT 48*PLAYER_SCALE
@@ -27,10 +29,10 @@ public:
 	void handleCompletedAnimations(const AnimationCode* animationCompleted);
 protected:
 	void initializePlayerAnim();
-	AnimSelect headSelect {2,0};
-	AnimSelect torsoSelect {1,0};
-	AnimSelect legsSelect {1,0};
-	AnimSelect fullSelect {0,0};
+	Animator::AnimSelect headSelect {2,0};
+	Animator::AnimSelect torsoSelect {1,0};
+	Animator::AnimSelect legsSelect {1,0};
+	Animator::AnimSelect fullSelect {0,0};
 	SDL_Rect headDisplayRect;
 	SDL_Rect torsoDisplayRect;
 	SDL_Rect legsDisplayRect;
