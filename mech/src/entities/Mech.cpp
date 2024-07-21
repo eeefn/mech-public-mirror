@@ -3,8 +3,6 @@
 #include "../../headers/TextureManager.h"
 #include "../../headers/entities/AnimationCodes.h"
 
-Mech mech;
-
 using namespace MechAnimationCodes;
 
 Mech::Mech() {
@@ -71,8 +69,8 @@ void Mech::updateEntity(float dt) {
 
 void Mech::processCollision(bool collisions[4]) {
 	if (collisions[0]) {
-		mech.posY = (mech.posY) / mapInfo.TILE_DIM * mapInfo.TILE_DIM;
-		mech.velY = 0;
+		posY = (posY) / mapInfo.TILE_DIM * mapInfo.TILE_DIM;
+		velY = 0;
 	}
 }
 

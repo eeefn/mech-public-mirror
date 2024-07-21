@@ -14,13 +14,22 @@ EntityManager entityManager;
 
 EntityManager::EntityManager(){
 	Entity* pptr = new Player();
-	Entity* mptr = &mech;
+	Entity* mptr = new Mech();
 	entityList.push_back(pptr);
 	entityList.push_back(mptr);
 }
 
 Entity* EntityManager::getFrontEntity(){
 	return entityList.at(0);
+}
+
+Entity* EntityManager::getFirstHighlightedEntity(){
+	for(auto entity : entityList){
+		if(entity->highlighted){
+			return entity;
+		}
+	}
+	return nullptr;
 }
 
 void EntityManager::update(float dt){

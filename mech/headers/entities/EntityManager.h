@@ -16,6 +16,7 @@ class EntityManager{
         Entity* spawnSoulSprite();
         Entity* spawnPlayer(int xPos, int yPos);
         Entity* getFrontEntity();
+        Entity* getFirstHighlightedEntity();
         Entity* moveEntityToFront(Entity* entityToGoToFront);
         Entity* swapEntityList(); 
     private:
