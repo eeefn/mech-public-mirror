@@ -28,25 +28,25 @@ bool SoulSpriteInput::processInput(SDL_Event *keyEvent, int *gameMode){
 }
 
 void SoulSpriteInput::processKeyup(SDL_Event *keyupEvent){
-	Entity *playerEntity = camera.cameraTarget;
+	Entity *soulSpriteEntity = camera.cameraTarget;
 	switch (keyupEvent->key.keysym.sym) {
 		case SDLK_a:
-            playerEntity->moveLeft(false);
+            soulSpriteEntity->moveLeft(false);
 			break;
 		case SDLK_d:
-            playerEntity->moveRight(false);
+        	soulSpriteEntity->moveRight(false);
 			break;
         case SDLK_w:
-            playerEntity->moveUp(false);
+            soulSpriteEntity->moveUp(false);
             break;
         case SDLK_s:
-            playerEntity->moveDown(false);
+            soulSpriteEntity->moveDown(false);
             break;
 		case SDLK_LSHIFT:
-			entityManager.changePlayerTarget(playerEntity,playerEntity->hostEntity);
-			entityManager.despawnEntity(playerEntity);
+			entityManager.changePlayerTarget(soulSpriteEntity,soulSpriteEntity->hostEntity);
+			entityManager.despawnEntity(soulSpriteEntity);
 			inputFactory.setControlMode(controlModes.PLAYER);
-			playerEntity->hostEntity->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,false);
+			soulSpriteEntity->hostEntity->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,false);
 			break;
 		case SDLK_q:
 			break;
@@ -73,16 +73,16 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
             //this is where the player would switch entites
 			{
 			GameObject* highlightedObjectPtr = map.getFirstHighlightedObject();
-			int playerSpawnPosX = highlightedObjectPtr->xTile * mapInfo.TILE_DIM - 16/*this number is player width / 4*/;
-			int playerSpawnPosY = highlightedObjectPtr->yTile * mapInfo.TILE_DIM - 64/*this number is player height - size of object*/;
 			if(highlightedObjectPtr != nullptr){
+				int playerSpawnPosY = highlightedObjectPtr->yTile * mapInfo.TILE_DIM - 64/*this number is player height - size of object*/;
+				int playerSpawnPosX = highlightedObjectPtr->xTile * mapInfo.TILE_DIM - 16/*this number is player width / 4*/;
 				Entity* player = entityManager.spawnPlayer(playerSpawnPosX,playerSpawnPosY);
 				player->requestAnimation(&PlayerAnimationCodes::MUSH_GROW,true);
 				entityManager.changePlayerTarget(playerEntity,player);
 				entityManager.despawnEntity(playerEntity);
 				inputFactory.setControlMode(controlModes.PLAYER);
+				map.removeObject(highlightedObjectPtr);
 			}
-			map.removeObject(highlightedObjectPtr);
 			}
             break;
 		case SDLK_ESCAPE: gameIsRunning = false; break;

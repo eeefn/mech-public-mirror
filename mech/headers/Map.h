@@ -11,9 +11,8 @@
 
 class Map {
 	public:
-		short tileMap[mapInfo.MAX_LVL_HEIGHT][mapInfo.MAX_LVL_WIDTH];
 		std::vector<GameObject*> gameObjList;
-		//read the map
+		short tileMap[mapInfo.MAX_LVL_HEIGHT][mapInfo.MAX_LVL_WIDTH];
 		bool checkObjectCollision(SDL_Rect* hitBox1, SDL_Rect* hitBox2) const;
 		void manageHighlightedObjects(SDL_Rect* hitBox);
 		GameObject* getFirstHighlightedObject();
@@ -25,7 +24,6 @@ class Map {
 		~Map();
 		int tileType = 0;
 	private:
-		std::vector<GameObject*> highlightedList;
 		void initialize();
 		bool initGameObject();
 };

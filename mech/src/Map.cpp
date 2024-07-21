@@ -20,7 +20,6 @@ Map::~Map(){
 		delete gameObj;
 	}
 	gameObjList.clear();
-	highlightedList.clear();
 }
 void Map::initialize(){
 	tileMap[24][20] = -1;
@@ -53,12 +52,12 @@ void Map::removeObject(GameObject* objToRemove){
 }
 
 GameObject* Map::getFirstHighlightedObject(){
-	if(!highlightedList.empty()){
-		return highlightedList.at(0);
+	for(auto gameObj : gameObjList){
+		if(gameObj->highlighted){
+			return gameObj;
+		}	
 	}
-	else{
-		return nullptr;
-	}
+	return nullptr;
 }
 
 bool Map::fill(SDL_Rect* selWindowRen) {
@@ -103,17 +102,9 @@ bool Map::initGameObject() {
 void Map::manageHighlightedObjects(SDL_Rect* hitBox){
 	for (auto gameObject : gameObjList){
 		if (checkObjectCollision(hitBox, &gameObject->renObj)){
-			highlightedList.push_back(gameObject);
 			gameObject->highlight(true);
 		}else{
 			gameObject->highlight(false);
-			for (auto highlightObject = highlightedList.begin(); highlightObject != highlightedList.end();){
-				auto& hObj = *highlightObject;
-				if (hObj->highlighted == false){
-					highlightedList.erase(highlightObject);
-					break;
-				}
-			}	
 		}
 	}	
 }
