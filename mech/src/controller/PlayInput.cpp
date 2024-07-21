@@ -1,16 +1,11 @@
 #include "../../headers/controller/PlayInput.h"
-#include "../../headers/entities/Player.h"
-#include "../../headers/entities/Mech.h"
 #include "../../headers/entities/EntityManager.h"
 #include "../../headers/Gui.h"
 #include "../../headers/Camera.h"
 #include "../../headers/Editor.h"
 #include "../../headers/controller/InputFactory.h"
 #include "../../headers/entities/AnimationCodes.h"
-#include <stdlib.h>
-#include <stdio.h>
 #include <iostream>
-#include <vector>
 
 PlayInput playInput;
 
@@ -96,15 +91,18 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			editor.setupSelector(playerEntity);
 			break;
 		case SDLK_q:
-			if(playerEntity->inMech == false && mech.highlighted){
-				mech.hostEntity = playerEntity;
+			{
+			Entity* highlightedEntity = entityManager.getFirstHighlightedEntity();
+			if(highlightedEntity != nullptr){
+				highlightedEntity->hostEntity = playerEntity;
 				playerEntity->inMech = true;
-				mech.isPlayer = true;
-				mech.highlighted = false;
-				entityManager.changePlayerTarget(playerEntity,&mech);
+				highlightedEntity->isPlayer = true;
+				highlightedEntity->highlighted = false;
+				entityManager.changePlayerTarget(playerEntity,highlightedEntity);
 				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP,true);
 				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP_COLOR,true);
 				inputFactory.setControlMode(controlModes.MECH);
+			}
 			}
 			break;
 		case SDLK_LSHIFT:

@@ -15,7 +15,7 @@ class Entity
 		int entityWidth, entityHeight;
 		int posX, posY, velX, velY;
 		float accY, accX;
-		bool isPlayer, inAir, entityTransition, inMech, fullBodyAnimation;
+		bool isPlayer, inAir, entityTransition, inMech, fullBodyAnimation,highlighted;
 		int entitySpeedX, entitySpeedY = 0;
 		SDL_Rect displayRect;
 		void stop();

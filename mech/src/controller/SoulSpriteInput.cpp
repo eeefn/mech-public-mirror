@@ -78,9 +78,8 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			if(highlightedObjectPtr != nullptr){
 				Entity* player = entityManager.spawnPlayer(playerSpawnPosX,playerSpawnPosY);
 				player->requestAnimation(&PlayerAnimationCodes::MUSH_GROW,true);
+				entityManager.changePlayerTarget(playerEntity,player);
 				entityManager.despawnEntity(playerEntity);
-				entityManager.moveEntityToFront(player);
-				camera.setCameraTarget(player);
 				inputFactory.setControlMode(controlModes.PLAYER);
 			}
 			map.removeObject(highlightedObjectPtr);

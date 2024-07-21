@@ -10,7 +10,6 @@
 class Mech : public Entity 
 {
 	public:
-		bool highlighted;
 		Mech();
 		bool poweredUp, stood;
 		void updateEntity(float dt);
@@ -28,4 +27,3 @@ class Mech : public Entity
 		void processCollision(bool collisions[4]);
 		void isHighlighted();
 };
-extern Mech mech;
