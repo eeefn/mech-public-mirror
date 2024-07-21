@@ -9,6 +9,7 @@ using std::vector;
 class EntityManager{
     public:
         EntityManager();
+        ~EntityManager();
         void update(float dt);
         void render(int gameMode);
         void despawnEntity(Entity* entityToDespawn);

@@ -15,6 +15,13 @@ Map::Map() {
 	initialize();
 }
 
+Map::~Map(){
+	for(auto gameObj : gameObjList){
+		delete gameObj;
+	}
+	gameObjList.clear();
+	highlightedList.clear();
+}
 void Map::initialize(){
 	tileMap[24][20] = -1;
 	initGameObject();

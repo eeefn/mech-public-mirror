@@ -18,7 +18,12 @@ EntityManager::EntityManager(){
 	entityList.push_back(pptr);
 	entityList.push_back(mptr);
 }
-
+EntityManager::~EntityManager(){
+	for(auto ptr : entityList){
+		delete ptr;
+	}	
+	entityList.clear();
+}
 Entity* EntityManager::getFrontEntity(){
 	return entityList.at(0);
 }
