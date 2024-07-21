@@ -22,6 +22,7 @@ class Map {
 		bool save(std::string mapIn);
 		void removeObject(GameObject* objToRemove);
 		Map();
+		~Map();
 		int tileType = 0;
 	private:
 		std::vector<GameObject*> highlightedList;

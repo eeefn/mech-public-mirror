@@ -10,6 +10,7 @@ using std::string;
 class Animator{
     public:
         Animator();
+        ~Animator();
         struct AnimSelect{
             short curAnim;
             short curFrame;

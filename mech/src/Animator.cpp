@@ -1,7 +1,14 @@
 #include "../headers/Animator.h"
-
+#include <iostream>
 Animator::Animator(){
     
+}
+
+Animator::~Animator(){
+    for(auto ptr : animationsInProgress){
+        delete ptr;
+    }
+    animationsInProgress.clear();
 }
 
 void Animator::setAnimation(const AnimationCode* animationRequested, bool loop, AnimSelect* animSelect, short animSpeed, bool playForward){
