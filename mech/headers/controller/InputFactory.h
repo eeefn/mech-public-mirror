@@ -17,9 +17,11 @@ class InputFactory{
     public:
         bool processInput(SDL_Event *event, int *gameMode);
         InputFactory();
-    public:
         void setControlMode(int mode);
         int controlMode;
+    private:
+        void setLockStatus(SDL_Event *event);
+        bool inputLock;
 };
 
 extern InputFactory inputFactory;

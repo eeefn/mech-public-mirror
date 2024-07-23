@@ -1,4 +1,6 @@
 #include "../headers/Animator.h"
+#include "../headers/constants.h"
+#include <SDL.h>
 #include <iostream>
 Animator::Animator(){
     
@@ -15,6 +17,13 @@ void Animator::setAnimation(const AnimationCode* animationRequested, bool loop, 
 	//check for existing instance of animation. 
 	if(animationTypesInProgress.find(animationRequested->TYPE) == animationTypesInProgress.end()){
 		animSelect->curAnim = animationRequested->CODE;
+		if(animationRequested->blocking){
+			SDL_Event userEvent;
+			userEvent.type = SDL_USEREVENT;
+			userEvent.user.code = userEvents.LOCK_INPUTS;
+			std::cout << "userEventCreated" << std::endl;
+			SDL_PushEvent(&userEvent);
+		}
 		AnimationInProgress *newAnimPtr = new AnimationInProgress;
 		if(playForward){
 			animSelect->curFrame = 0;
@@ -32,6 +41,13 @@ void Animator::setAnimation(const AnimationCode* animationRequested, bool loop, 
 		//don't override exisiting animation if it is the same animation
 		AnimationInProgress* curAnimInProgress = getCurrentAnimationOfType(animationRequested->TYPE);
 		if(allowAnimationOverride(animationRequested, curAnimInProgress, animSelect, playForward)){
+			if(animationRequested->blocking){
+				SDL_Event userEvent;
+				userEvent.type == SDL_USEREVENT;
+				userEvent.user.code = userEvents.LOCK_INPUTS;
+				std::cout << "userEventCreated" << std::endl;
+				SDL_PushEvent(&userEvent);
+			}
 			animSelect->curAnim = animationRequested->CODE;
 			if(playForward){
 				if(curAnimInProgress->forward != playForward){
@@ -69,10 +85,13 @@ vector<const AnimationCode*> Animator::updateAnimationFrame(){
 				}
 				animation->animCycleComplete = true;
 				animation->animSel->curFrame = animation->playFrame;
-				/*if(animation->animationCode->TYPE == "FULL" && animation->animSel->curAnim != 1){
-					fullBodyAnimation = false;
-				}*/
 				completedAnims.push_back(animation->animationCode);
+				if(animation->animationCode->blocking == true){
+					SDL_Event unlockEvent;
+					unlockEvent.type = SDL_USEREVENT;
+					unlockEvent.user.code = userEvents.UNLOCK_INPUTS;
+					SDL_PushEvent(&unlockEvent);
+				}
 			}
 			animation->animSel->curFrame = animation->playFrame;
 		}

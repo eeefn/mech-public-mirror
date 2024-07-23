@@ -15,3 +15,7 @@ extern struct Gamemodes{
     constexpr static int PLAY = 0;
 } gamemodes;
 
+extern struct UserEvents{
+    constexpr static int LOCK_INPUTS = 0;
+    constexpr static int UNLOCK_INPUTS = 1;
+}userEvents;

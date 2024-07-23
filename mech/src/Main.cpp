@@ -33,8 +33,11 @@ void setup() {
 
 void processInput() {
 	SDL_Event event;
-	SDL_PollEvent(&event);
-	gameIsRunning = inputFactory.processInput(&event, &gameMode);
+	//handle all events
+	while(SDL_PollEvent(&event)){
+		gameIsRunning = inputFactory.processInput(&event, &gameMode);
+	}
+	
 }
 
 void update() {
