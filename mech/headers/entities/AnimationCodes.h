@@ -28,9 +28,9 @@ namespace PlayerAnimationCodes{
 }
 
 namespace MechAnimationCodes{
-   const AnimationCode STAND_UP{"FULL",0,30,4,false};
+   const AnimationCode STAND_UP{"FULL",0,30,4,true};
    const AnimationCode STAND_UP_COLOR{"COLOR",1,30,4,false};
-   const AnimationCode POWER_UP{"FULL",2,59,4,false};
+   const AnimationCode POWER_UP{"FULL",2,59,4,true};
    const AnimationCode POWER_UP_COLOR{"COLOR",3,59,4,false};
 }
 

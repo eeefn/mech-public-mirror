@@ -31,13 +31,17 @@ bool InputFactory::processInput(SDL_Event *event, int *gameMode){
             }
         }
     }
+    else{
+        if(event->type == SDL_KEYDOWN && event->key.keysym.sym == SDLK_ESCAPE){
+            gameIsRunning = false;
+        }
+    }
     return gameIsRunning;
 }
 
 void InputFactory::setLockStatus(SDL_Event *event){
     if(event->type == SDL_USEREVENT){
         if(event->user.code == userEvents.LOCK_INPUTS){
-            std::cout << "input lock recv" << std::endl;
             inputLock = true;
         }
         else if(event->user.code == userEvents.UNLOCK_INPUTS){

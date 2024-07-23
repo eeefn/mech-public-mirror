@@ -21,7 +21,6 @@ void Animator::setAnimation(const AnimationCode* animationRequested, bool loop, 
 			SDL_Event userEvent;
 			userEvent.type = SDL_USEREVENT;
 			userEvent.user.code = userEvents.LOCK_INPUTS;
-			std::cout << "userEventCreated" << std::endl;
 			SDL_PushEvent(&userEvent);
 		}
 		AnimationInProgress *newAnimPtr = new AnimationInProgress;
@@ -45,7 +44,6 @@ void Animator::setAnimation(const AnimationCode* animationRequested, bool loop, 
 				SDL_Event userEvent;
 				userEvent.type == SDL_USEREVENT;
 				userEvent.user.code = userEvents.LOCK_INPUTS;
-				std::cout << "userEventCreated" << std::endl;
 				SDL_PushEvent(&userEvent);
 			}
 			animSelect->curAnim = animationRequested->CODE;
