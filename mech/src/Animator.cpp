@@ -1,6 +1,4 @@
 #include "../headers/Animator.h"
-#include "../headers/constants.h"
-#include <SDL.h>
 #include <iostream>
 Animator::Animator(){
     

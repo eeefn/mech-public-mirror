@@ -5,8 +5,6 @@
 #include "../../headers/controller/SoulSpriteInput.h"
 #include "../../headers/constants.h"
 
-#include <iostream>
-
 InputFactory inputFactory;
 
 InputFactory::InputFactory(){
