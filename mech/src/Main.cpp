@@ -55,6 +55,7 @@ void update() {
 		entityManager.update(deltaTime);
 		camera.update();
 	}
+	inputFactory.update();
 }
 
 void render() {

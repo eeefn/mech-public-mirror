@@ -18,10 +18,13 @@ class InputFactory{
         bool processInput(SDL_Event *event, int *gameMode);
         InputFactory();
         void setControlMode(int mode);
+        void addLockTime(int lockTime);
+        void update();
         int controlMode;
     private:
-        void setLockStatus(SDL_Event *event);
-        bool inputLock;
+        int lockTime = 0;
+        int moveLeftCount = 0;
+        int moveRightCount = 0;
 };
 
 extern InputFactory inputFactory;

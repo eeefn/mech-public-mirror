@@ -45,7 +45,7 @@ int MechInput::processKeydown(SDL_Event *keyDownEvent, int *gameMode){
         case SDLK_q:
 				playerEntity->hostEntity->posX = playerEntity->posX;
 				playerEntity->hostEntity->posY = playerEntity->posY + playerEntity->entityHeight - playerEntity->hostEntity->entityHeight;
-				entityManager.changePlayerTarget(playerEntity,playerEntity->hostEntity);
+				entityManager.changePlayerTarget(playerEntity,playerEntity->hostEntity,false);
 				playerEntity->hostEntity->inMech = false;
 				playerEntity->isPlayer = false;	
 				inputFactory.setControlMode(controlModes.PLAYER);

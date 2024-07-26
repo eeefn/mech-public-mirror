@@ -94,18 +94,20 @@ void EntityManager::despawnEntity(Entity* entityToDespawn){
 	delete entityToDespawn;
 }
 
-void EntityManager::changePlayerTarget(Entity* from, Entity* to){
-	if(from->velX > 0){
-		to->velX += to->entitySpeedX;
-	}
-	else if(from->velX < 0){
-		to->velX -= to->entitySpeedX;
-	}
-	if(from->velY > 0){
-		to->velY += to->entitySpeedY;
-	}
-	else if(from->velY < 0){
-		to->velY -= to->entitySpeedY;
+void EntityManager::changePlayerTarget(Entity* from, Entity* to,bool controlLockSwitch){
+	if(!controlLockSwitch){
+		if(from->velX > 0){
+			to->velX += to->entitySpeedX;
+		}
+		else if(from->velX < 0){
+			to->velX -= to->entitySpeedX;
+		}
+		if(from->velY > 0){
+			to->velY += to->entitySpeedY;
+		}
+		else if(from->velY < 0){
+			to->velY -= to->entitySpeedY;
+		}
 	}
 	from->stop();
 	camera.setCameraTarget(moveEntityToFront(to));

@@ -43,7 +43,7 @@ void SoulSpriteInput::processKeyup(SDL_Event *keyupEvent){
             soulSpriteEntity->moveDown(false);
             break;
 		case SDLK_LSHIFT:
-			entityManager.changePlayerTarget(soulSpriteEntity,soulSpriteEntity->hostEntity);
+			entityManager.changePlayerTarget(soulSpriteEntity,soulSpriteEntity->hostEntity,false);
 			entityManager.despawnEntity(soulSpriteEntity);
 			inputFactory.setControlMode(controlModes.PLAYER);
 			soulSpriteEntity->hostEntity->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,false);
@@ -74,14 +74,26 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			{
 			GameObject* highlightedObjectPtr = map.getFirstHighlightedObject();
 			if(highlightedObjectPtr != nullptr){
+				SDL_Event ev;
+				ev.key.repeat = 0;
+				ev.type = SDL_KEYDOWN;
+				if(playerEntity->velX > 0){
+					ev.key.keysym.sym = SDLK_d;
+					SDL_PushEvent(&ev);
+				}
+				else if(playerEntity->velX < 0){
+					ev.key.keysym.sym = SDLK_a;
+					SDL_PushEvent(&ev);
+				}
 				int playerSpawnPosY = highlightedObjectPtr->yTile * mapInfo.TILE_DIM - 64/*this number is player height - size of object*/;
 				int playerSpawnPosX = highlightedObjectPtr->xTile * mapInfo.TILE_DIM - 16/*this number is player width / 4*/;
 				Entity* player = entityManager.spawnPlayer(playerSpawnPosX,playerSpawnPosY);
 				player->requestAnimation(&PlayerAnimationCodes::MUSH_GROW,true);
-				entityManager.changePlayerTarget(playerEntity,player);
+				entityManager.changePlayerTarget(playerEntity,player,true);
 				entityManager.despawnEntity(playerEntity);
 				inputFactory.setControlMode(controlModes.PLAYER);
 				map.removeObject(highlightedObjectPtr);
+				inputFactory.addLockTime(PlayerAnimationCodes::MUSH_GROW.MAX_LOOP * PlayerAnimationCodes::MUSH_GROW.DEFAULT_SPEED);
 			}
 			}
             break;

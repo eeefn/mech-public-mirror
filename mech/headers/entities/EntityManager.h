@@ -13,7 +13,7 @@ class EntityManager{
         void update(float dt);
         void render(int gameMode);
         void despawnEntity(Entity* entityToDespawn);
-        void changePlayerTarget(Entity* fromEntity, Entity* toEntity);
+        void changePlayerTarget(Entity* fromEntity, Entity* toEntity,bool controlLockSwitch);
         Entity* spawnSoulSprite();
         Entity* spawnPlayer(int xPos, int yPos);
         Entity* getFrontEntity();

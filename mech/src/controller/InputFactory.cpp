@@ -14,8 +14,7 @@ InputFactory::InputFactory(){
 
 bool InputFactory::processInput(SDL_Event *event, int *gameMode){
     bool gameIsRunning = true;
-    setLockStatus(event);
-    if(!inputLock){
+    if(lockTime == 0){
         if(*gameMode == gamemodes.EDIT){
             gameIsRunning = editInput.processInput(event,gameMode);
         }
@@ -32,20 +31,54 @@ bool InputFactory::processInput(SDL_Event *event, int *gameMode){
         }
     }
     else{
-        if(event->type == SDL_KEYDOWN && event->key.keysym.sym == SDLK_ESCAPE){
-            gameIsRunning = false;
+        if(event->type == SDL_KEYDOWN && event->key.repeat == 0){
+            switch(event->key.keysym.sym){
+                case SDLK_ESCAPE:
+                    gameIsRunning = false;
+                    break;
+                case SDLK_a:
+                    moveLeftCount++;
+                    break;
+                case SDLK_d:
+                    moveRightCount++;
+                    break;
+            }
+        }
+        if(event->type == SDL_KEYUP){
+            switch(event->key.keysym.sym){
+                case SDLK_a:
+                    moveLeftCount--;
+                    break;
+                case SDLK_d:
+                    moveRightCount--;
+                    break;
+            }
         }
     }
     return gameIsRunning;
 }
 
-void InputFactory::setLockStatus(SDL_Event *event){
-    if(event->type == SDL_USEREVENT){
-        if(event->user.code == userEvents.LOCK_INPUTS){
-            inputLock = true;
+void InputFactory::addLockTime(int reqLockTime){
+    lockTime = lockTime + reqLockTime;
+}
+
+void InputFactory::update(){
+    if(lockTime > 0){
+        lockTime--;
+    }
+    else{
+        SDL_Event ev;
+        ev.type = SDL_KEYDOWN;
+        ev.key.repeat = 0;
+        if(moveLeftCount > 0){
+            moveLeftCount = 0;
+            ev.key.keysym.sym = SDLK_a;
+            SDL_PushEvent(&ev);
         }
-        else if(event->user.code == userEvents.UNLOCK_INPUTS){
-            inputLock = false;
+        if(moveRightCount > 0){
+            moveRightCount = 0;
+            ev.key.keysym.sym = SDLK_d;
+            SDL_PushEvent(&ev);
         }
     }
 }
