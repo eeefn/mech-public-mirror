@@ -14,4 +14,3 @@ extern struct Gamemodes{
     constexpr static int EDIT = 1;
     constexpr static int PLAY = 0;
 } gamemodes;
-

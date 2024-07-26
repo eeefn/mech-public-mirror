@@ -94,11 +94,25 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			{
 			Entity* highlightedEntity = entityManager.getFirstHighlightedEntity();
 			if(highlightedEntity != nullptr){
+				int controlLockTime = MechAnimationCodes::POWER_UP.MAX_LOOP * MechAnimationCodes::POWER_UP.DEFAULT_SPEED;
+				controlLockTime += MechAnimationCodes::STAND_UP.MAX_LOOP * MechAnimationCodes::STAND_UP.DEFAULT_SPEED;
+				inputFactory.addLockTime(controlLockTime);
+				SDL_Event ev;
+				ev.key.repeat = 0;
+				ev.type = SDL_KEYDOWN;
+				if(playerEntity->velX > 0){
+					ev.key.keysym.sym = SDLK_d;
+					SDL_PushEvent(&ev);
+				}
+				else if(playerEntity->velX < 0){
+					ev.key.keysym.sym = SDLK_a;
+					SDL_PushEvent(&ev);
+				}
 				highlightedEntity->hostEntity = playerEntity;
 				playerEntity->inMech = true;
 				highlightedEntity->isPlayer = true;
 				highlightedEntity->highlighted = false;
-				entityManager.changePlayerTarget(playerEntity,highlightedEntity);
+				entityManager.changePlayerTarget(playerEntity,highlightedEntity,true);
 				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP,true);
 				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP_COLOR,true);
 				inputFactory.setControlMode(controlModes.MECH);

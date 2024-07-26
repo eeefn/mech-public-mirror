@@ -69,9 +69,6 @@ vector<const AnimationCode*> Animator::updateAnimationFrame(){
 				}
 				animation->animCycleComplete = true;
 				animation->animSel->curFrame = animation->playFrame;
-				/*if(animation->animationCode->TYPE == "FULL" && animation->animSel->curAnim != 1){
-					fullBodyAnimation = false;
-				}*/
 				completedAnims.push_back(animation->animationCode);
 			}
 			animation->animSel->curFrame = animation->playFrame;
