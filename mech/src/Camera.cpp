@@ -119,6 +119,10 @@ void Camera::updateCameraOffsets(){
 	camera.yOffset = (cameraTarget->posY) / mapInfo.TILE_DIM - (windowSize.WINDOW_HEIGHT / 2 - cameraTarget->entityHeight / 2) / mapInfo.TILE_DIM;
 }
 
+void Camera::renderBackround(){
+	SDL_RenderCopy(windowManager.renderer,textureManager.caveBackroundTexture,NULL,NULL);
+}
+
 void Camera::updateTargetDisplayPos(){
 	if (camera.xOffset >= 0) {
 		cameraTarget->displayRect.x = cameraTarget->posX - (camera.xOffset * mapInfo.TILE_DIM) - cameraTarget->posX % mapInfo.TILE_DIM;

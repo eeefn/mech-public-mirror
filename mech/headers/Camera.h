@@ -14,6 +14,7 @@ class Camera{
         
         Entity *cameraTarget;
         void renderMap();
+        void renderBackround();
         int getXPosWithinFrame(int xPos);
         int getYPosWithinFrame(int yPos);
         void initializeCamera(int height,int width,Entity* initialCameraTarget);

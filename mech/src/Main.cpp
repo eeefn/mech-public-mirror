@@ -62,7 +62,7 @@ void render() {
 	//reset renderer
 	SDL_SetRenderDrawColor(windowManager.renderer, 0, 0, 0, 255);
 	SDL_RenderClear(windowManager.renderer);
-	
+	camera.renderBackround();	
 	camera.renderMap();
 	gui.render(gameMode);		
 	entityManager.render(gameMode);
