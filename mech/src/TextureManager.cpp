@@ -53,4 +53,9 @@ void TextureManager::initPermanentTextures(SDL_Renderer* renderer){
 	if (!mushFullSurface) { fprintf(stderr, "could not find full anims"); return; }
 	mushFullTexture = SDL_CreateTextureFromSurface(renderer, mushFullSurface);
 	SDL_FreeSurface(mushFullSurface);
+
+	SDL_Surface* caveSurface = SDL_LoadBMP("../resources/caveBackround.bmp");
+	if (!caveSurface) { fprintf(stderr, "could not find cave backround"); return; }
+	caveBackroundTexture = SDL_CreateTextureFromSurface(renderer, caveSurface);
+	SDL_FreeSurface(caveSurface);
 }

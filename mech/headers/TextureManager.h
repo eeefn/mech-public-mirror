@@ -13,6 +13,7 @@ class TextureManager{
         SDL_Texture* torsoTexture;
         SDL_Texture* legsTexture;
         SDL_Texture* mushFullTexture;
+        SDL_Texture* caveBackroundTexture;
         void initPermanentTextures(SDL_Renderer* renderer);
 };
 
