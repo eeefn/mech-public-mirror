@@ -5,7 +5,7 @@ LIBRARYPATH=$(USERPROFILE)/SDL2/x86_64-w64-mingw32/lib
 BUILD_DIR=build
 cc=g++
 
-CPP = $(wildcard *.cpp) $(wildcard entities/*.cpp) $(wildcard controller/*.cpp)
+CPP = $(wildcard *.cpp) $(wildcard entities/*.cpp) $(wildcard controller/*.cpp) $(wildcard gameObjects/*.cpp)
 OBJ = $(CPP:%.cpp=$(BUILD_DIR)/%.o)
 DEP = $(OBJ:%.o=%.d)
 

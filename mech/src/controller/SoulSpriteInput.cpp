@@ -4,7 +4,7 @@
 #include "../../headers/controller/InputFactory.h"
 #include "../../headers/Camera.h"
 #include "../../headers/Map.h"
-#include "../../headers/GameObject.h"
+#include "../../headers/gameObjects/GameObject.h"
 #include "../../headers/constants.h"
 #include "../../headers/entities/AnimationCodes.h"
 SoulSpriteInput soulSpriteInput;

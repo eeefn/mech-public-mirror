@@ -1,6 +1,6 @@
 #pragma once
 #include "./constants.h"
-#include "./GameObject.h"
+#include "gameObjects/GameObject.h"
 #include "stdlib.h"
 #include <SDL.h>
 

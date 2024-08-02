@@ -1,4 +1,4 @@
-#include "../headers/GameObject.h"
+#include "../../headers/gameObjects/GameObject.h"
 
 GameObject::GameObject(short scale, int w, int h){
 	objectScale = scale;

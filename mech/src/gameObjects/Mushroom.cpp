@@ -1,4 +1,4 @@
-#include "../headers/Mushroom.h"
+#include "../../headers/gameObjects/Mushroom.h"
 
 Mushroom::Mushroom(short mType, short id, int xT, int yT) : GameObject(2,16,16) {
 	mushType = mType;
