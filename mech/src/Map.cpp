@@ -8,7 +8,6 @@
 #include <fstream>
 #include <algorithm>
 
-
 Map map;
 
 Map::Map() {

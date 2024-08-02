@@ -14,6 +14,7 @@ class TextureManager{
         SDL_Texture* legsTexture;
         SDL_Texture* mushFullTexture;
         SDL_Texture* caveBackroundTexture;
+        SDL_Texture* portalTexture;
         void initPermanentTextures(SDL_Renderer* renderer);
 };
 

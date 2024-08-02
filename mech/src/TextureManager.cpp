@@ -58,4 +58,9 @@ void TextureManager::initPermanentTextures(SDL_Renderer* renderer){
 	if (!caveSurface) { fprintf(stderr, "could not find cave backround"); return; }
 	caveBackroundTexture = SDL_CreateTextureFromSurface(renderer, caveSurface);
 	SDL_FreeSurface(caveSurface);
+	
+	SDL_Surface* portalSurface = SDL_LoadBMP("../resources/portal.bmp");
+	if(!portalSurface) {fprintf(stderr,"could not find portal backround"); return;};
+	portalTexture = SDL_CreateTextureFromSurface(renderer, portalSurface);
+	SDL_FreeSurface(portalSurface);
 }

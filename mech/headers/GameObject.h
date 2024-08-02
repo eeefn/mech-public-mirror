@@ -4,6 +4,7 @@
 class GameObject
 {
 	public:
+		GameObject(short scale, int width, int height);
 		int xTile, yTile;
 		short ID;
 		short objectScale;
