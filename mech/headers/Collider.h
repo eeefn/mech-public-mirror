@@ -11,6 +11,7 @@ public:
 	bool colResults[4];
 	Collider();
 	bool collisionCheck(Entity* entity, short tileMap[][mapInfo.MAX_LVL_WIDTH]);
+	bool checkObjectCollision(SDL_Rect* hitBox1, SDL_Rect* hitBox2) const;
 
 };
 

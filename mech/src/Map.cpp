@@ -1,5 +1,6 @@
 #include "../headers/Map.h"
 #include "../headers/constants.h"
+#include "../headers/gameObjects/gameObjectManager.h"
 #include "../headers/gameObjects/Mushroom.h"
 #include "../headers/Camera.h"
 #include <stdlib.h>
@@ -15,10 +16,6 @@ Map::Map() {
 }
 
 Map::~Map(){
-	for(auto gameObj : gameObjList){
-		delete gameObj;
-	}
-	gameObjList.clear();
 }
 void Map::initialize(){
 	tileMap[24][20] = -1;
@@ -42,14 +39,8 @@ bool Map::read(std::string mapIn) {
 	}
 }
 
-void Map::removeObject(GameObject* objToRemove){
-	auto objIterator = find(gameObjList.begin(),gameObjList.end(),objToRemove);
-	if(objIterator != gameObjList.end()){
-		gameObjList.erase(objIterator);	
-	}
-	delete objToRemove;	
-}
 
+    
 GameObject* Map::getFirstHighlightedObject(){
 	for(auto gameObj : gameObjList){
 		if(gameObj->highlighted){
@@ -86,34 +77,15 @@ bool Map::initGameObject() {
 			if (this->tileMap[i][j] < 0) {
 				short obj = this->tileMap[i][j] * -1;
 				//- values represent objects in the tilemap
-				if (obj > 0 &&  obj < 15) {
+				gameObjectManager.makeObject(obj,j,i);
+				/*if (obj > 0 &&  obj < 15) {
 					//construct a mushroom
 					Mushroom* mushPtr = new Mushroom(obj,0,j,i);
 					gameObjList.push_back(mushPtr);
-				}
+    
+				}*/
 			}
 		}
 	}
 	return true;
 }
-
-
-void Map::manageHighlightedObjects(SDL_Rect* hitBox){
-	for (auto gameObject : gameObjList){
-		if (checkObjectCollision(hitBox, &gameObject->renObj)){
-			gameObject->highlight(true);
-		}else{
-			gameObject->highlight(false);
-		}
-	}	
-}
-
-bool Map::checkObjectCollision(SDL_Rect* hitBox1,SDL_Rect* hitBox2) const{
-	if ((hitBox1->x < hitBox2->x + hitBox2->w) && (hitBox1->x + hitBox1->w > hitBox2->x)){
-		if ((hitBox1->y < hitBox2->y + hitBox2->h) && (hitBox1->y + hitBox1->h > hitBox2->y)){
-			return true;
-		}
-	}
-	return false;
-}
-

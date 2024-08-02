@@ -4,6 +4,7 @@
 #include "../../headers/TextureManager.h"
 #include "../../headers/Map.h"
 #include "../../headers/gameObjects/GameObject.h"
+#include "../../headers/gameObjects/GameObjectManager.h"
 #include <math.h>
 
 SoulSprite::SoulSprite(Entity *entity){
@@ -26,7 +27,7 @@ SoulSprite::~SoulSprite(){
 void SoulSprite::updateEntity(float dt){
 	posX += round(velX * dt);
 	posY += round(velY * dt);
-    map.manageHighlightedObjects(&displayRect);
+    gameObjectManager.manageHighlightedObjects(&displayRect);
     return;
 }
 

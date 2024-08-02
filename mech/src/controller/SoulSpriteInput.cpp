@@ -4,6 +4,7 @@
 #include "../../headers/controller/InputFactory.h"
 #include "../../headers/Camera.h"
 #include "../../headers/Map.h"
+#include "../../headers/gameObjects/GameObjectManager.h"
 #include "../../headers/gameObjects/GameObject.h"
 #include "../../headers/constants.h"
 #include "../../headers/entities/AnimationCodes.h"
@@ -92,7 +93,7 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 				entityManager.changePlayerTarget(playerEntity,player,true);
 				entityManager.despawnEntity(playerEntity);
 				inputFactory.setControlMode(controlModes.PLAYER);
-				map.removeObject(highlightedObjectPtr);
+				gameObjectManager.removeObject(highlightedObjectPtr);
 				inputFactory.addLockTime(PlayerAnimationCodes::MUSH_GROW.MAX_LOOP * PlayerAnimationCodes::MUSH_GROW.DEFAULT_SPEED);
 			}
 			}
