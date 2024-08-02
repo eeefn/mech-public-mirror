@@ -3,7 +3,7 @@
 #include "../../headers/entities/SoulSprite.h"
 #include "../../headers/TextureManager.h"
 #include "../../headers/Map.h"
-#include "../../headers/GameObject.h"
+#include "../../headers/gameObjects/GameObject.h"
 #include <math.h>
 
 SoulSprite::SoulSprite(Entity *entity){

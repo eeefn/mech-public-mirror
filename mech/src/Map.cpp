@@ -1,6 +1,6 @@
 #include "../headers/Map.h"
 #include "../headers/constants.h"
-#include "../headers/Mushroom.h"
+#include "../headers/gameObjects/Mushroom.h"
 #include "../headers/Camera.h"
 #include <stdlib.h>
 #include <stdio.h>
