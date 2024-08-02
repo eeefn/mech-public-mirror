@@ -9,4 +9,3 @@ class Mushroom : public GameObject
         Mushroom(short mType, short id, int xT, int yT);
 
 };
-

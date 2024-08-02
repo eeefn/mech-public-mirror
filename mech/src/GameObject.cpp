@@ -1,6 +1,11 @@
 #include "../headers/GameObject.h"
-#include <vector>
 
+GameObject::GameObject(short scale, int w, int h){
+	objectScale = scale;
+	width = scale * w;
+	height = scale * h;
+	renObj = {0,0,width,height};
+}
 
 bool GameObject::place() {
 	return false;
