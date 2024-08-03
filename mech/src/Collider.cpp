@@ -69,3 +69,12 @@ bool Collider::collisionCheck(Entity* entity, short tileMap[][mapInfo.MAX_LVL_WI
 	}
 	return colOccur;
 }
+
+bool Collider::checkObjectCollision(SDL_Rect* hitBox1,SDL_Rect* hitBox2) const{
+	if ((hitBox1->x < hitBox2->x + hitBox2->w) && (hitBox1->x + hitBox1->w > hitBox2->x)){
+		if ((hitBox1->y < hitBox2->y + hitBox2->h) && (hitBox1->y + hitBox1->h > hitBox2->y)){
+			return true;
+		}
+	}
+	return false;
+}

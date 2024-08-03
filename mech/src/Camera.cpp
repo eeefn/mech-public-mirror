@@ -4,6 +4,7 @@
 #include "../headers/entities/Player.h"
 #include "../headers/WindowManager.h"
 #include "../headers/TextureManager.h"
+#include "../headers/gameObjects/GameObjectManager.h"
 #include <iostream>
 
 
@@ -67,7 +68,7 @@ void Camera::renderMap(){
 			}
 			else {
 				//find the object at the location
-				for (auto &obj:map.gameObjList) {
+				for (auto &obj:gameObjectManager.gameObjectList) {
 					if ((obj->xTile == x) && (obj->yTile == y)) {
 						//change the rendering tile size to render our object
 						obj->renObj.x = renTile.x;
