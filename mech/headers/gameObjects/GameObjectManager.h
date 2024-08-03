@@ -15,10 +15,11 @@ class GameObjectManager{
             {1, [](int id, short xT, short yT) -> GameObject* {Mushroom* mush = new Mushroom(0,id,xT,yT); return mush;}}, 
             {2, [](int id, short xT, short yT) -> GameObject* {Portal* port = new Portal();return port;}}
         };
-        void manageHighlightedObjects(SDL_Rect* hitBox);
+        void manageHighlightedObjects(SDL_Rect* hitBox,const string& entityId);
         void removeObject(GameObject* objToRemove);
         void makeObject(short objectType,short xT, short yT);
         void renderGameObjects(SDL_Renderer* rend);
+        void updateGameObjects();
 		GameObject* getFirstHighlightedObject();
         std::vector<GameObject*> gameObjectList;
 };

@@ -1,4 +1,5 @@
 #include "../../headers/gameObjects/GameObjectManager.h" 
+#include "../../headers/Camera.h"
 #include "../../headers/Collider.h"
 #include <iostream>
 #include <algorithm>
@@ -31,19 +32,26 @@ void GameObjectManager::makeObject(short objectType, short xT, short yT){
     //add returned object to list
 }
 
-void GameObjectManager::manageHighlightedObjects(SDL_Rect* hitBox){
+void GameObjectManager::manageHighlightedObjects(SDL_Rect* hitBox,const string& entityId){
 	for (auto gameObject : gameObjectList){
 		if (collider.checkObjectCollision(hitBox, &gameObject->renObj)){
-			gameObject->highlight(true);
-		}else{
-			gameObject->highlight(false);
+			if(gameObject->highlight(entityId)){
+				break;
+			};
 		}
 	}	
 }
 void GameObjectManager::renderGameObjects(SDL_Renderer* rend){
     for(auto gameObject : gameObjectList){
-
+		gameObject->render(rend);
     }
+}
+
+void GameObjectManager::updateGameObjects(){
+	for(auto gameObject : gameObjectList){
+		gameObject->update();
+	}
+	manageHighlightedObjects(&camera.cameraTarget->displayRect,camera.cameraTarget->identifier);
 }
 
 GameObject* GameObjectManager::getFirstHighlightedObject(){

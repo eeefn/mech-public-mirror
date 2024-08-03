@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include "../headers/entities/EntityManager.h"
+#include "../headers/gameObjects/GameObjectManager.h"
 #include "../headers/TextureManager.h"
 #include "../headers/WindowManager.h"
 #include "../headers/constants.h"
@@ -26,7 +27,9 @@ void setup() {
 	SDL_GetCurrentDisplayMode(0,&dm);
 
 	textureManager.initPermanentTextures(windowManager.renderer);
+	map.initialize();
 	camera.initializeCamera(dm.h,dm.w,entityManager.getFrontEntity(),dm);
+
 
 	srand(time(NULL));
 }
@@ -54,6 +57,7 @@ void update() {
 	if (gameMode == gamemodes.PLAY) {
 		entityManager.update(deltaTime);
 		camera.update();
+		gameObjectManager.updateGameObjects();
 	}
 	inputFactory.update();
 }
@@ -64,7 +68,8 @@ void render() {
 	SDL_RenderClear(windowManager.renderer);
 	camera.renderBackround();	
 	camera.renderMap();
-	gui.render(gameMode);		
+	gameObjectManager.renderGameObjects(windowManager.renderer);
+	gui.render(gameMode);
 	entityManager.render(gameMode);
 
 	SDL_RenderPresent(windowManager.renderer);

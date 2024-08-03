@@ -11,6 +11,7 @@ using namespace PlayerAnimationCodes;
 #include <iostream>
 
 Player::Player()  {
+	identifier = "PLAYER";
 	displayRect = {0,0,PLAYER_WIDTH,PLAYER_HEIGHT};
 	headDisplayRect = {0,0,PLAYER_WIDTH, 20*PLAYER_SCALE};
 	torsoDisplayRect = {0,0,PLAYER_WIDTH, 16*PLAYER_SCALE};

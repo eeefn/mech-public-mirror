@@ -12,11 +12,11 @@
 Map map;
 
 Map::Map() {
-	initialize();
 }
 
 Map::~Map(){
 }
+
 void Map::initialize(){
 	tileMap[24][20] = -1;
 	readGameObjectsFromMap();

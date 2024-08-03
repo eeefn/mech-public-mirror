@@ -6,6 +6,7 @@
 using namespace MechAnimationCodes;
 
 Mech::Mech() {
+	identifier = "MECH";
 	entityHeight = MECH_HEIGHT; entityWidth = MECH_WIDTH;
 	//init rectangles
 	for (unsigned int i = 0; i < 4; i++) {
