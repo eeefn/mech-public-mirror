@@ -5,6 +5,7 @@
 #include "../../headers/Map.h"
 #include "../../headers/gameObjects/GameObject.h"
 #include "../../headers/gameObjects/GameObjectManager.h"
+#include "../../headers/Camera.h"
 #include <math.h>
 
 SoulSprite::SoulSprite(Entity *entity){
@@ -28,6 +29,8 @@ void SoulSprite::updateEntity(float dt){
 	posX += round(velX * dt);
 	posY += round(velY * dt);
     gameObjectManager.manageHighlightedObjects(&displayRect);
+    displayRect.x = camera.getXPosWithinFrame(posX);
+    displayRect.y = camera.getYPosWithinFrame(posY);
     return;
 }
 
