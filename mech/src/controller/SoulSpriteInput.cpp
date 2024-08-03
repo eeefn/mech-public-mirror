@@ -73,7 +73,7 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
         case SDLK_q:
             //this is where the player would switch entites
 			{
-			GameObject* highlightedObjectPtr = map.getFirstHighlightedObject();
+			GameObject* highlightedObjectPtr = gameObjectManager.getFirstHighlightedObject();
 			if(highlightedObjectPtr != nullptr){
 				SDL_Event ev;
 				ev.key.repeat = 0;

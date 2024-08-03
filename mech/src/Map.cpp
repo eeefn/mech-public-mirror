@@ -19,7 +19,7 @@ Map::~Map(){
 }
 void Map::initialize(){
 	tileMap[24][20] = -1;
-	initGameObject();
+	readGameObjectsFromMap();
 	read("../resources/lvl1Test.bin");
 }
 
@@ -37,17 +37,6 @@ bool Map::read(std::string mapIn) {
 	else {
 		return false;
 	}
-}
-
-
-    
-GameObject* Map::getFirstHighlightedObject(){
-	for(auto gameObj : gameObjList){
-		if(gameObj->highlighted){
-			return gameObj;
-		}	
-	}
-	return nullptr;
 }
 
 bool Map::fill(SDL_Rect* selWindowRen) {
@@ -70,7 +59,7 @@ bool Map::save(std::string mapIn) {
 	return true;
 }
 
-bool Map::initGameObject() {
+bool Map::readGameObjectsFromMap() {
 	for (unsigned int i = 0; i < mapInfo.MAX_LVL_HEIGHT; i++) {
 		for (unsigned int j = 0; j < mapInfo.MAX_LVL_WIDTH; j++) {
 			//check to see if the tile is an object.

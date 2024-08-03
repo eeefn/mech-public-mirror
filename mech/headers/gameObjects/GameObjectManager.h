@@ -19,6 +19,7 @@ class GameObjectManager{
         void removeObject(GameObject* objToRemove);
         void makeObject(short objectType,short xT, short yT);
         void renderGameObjects(SDL_Renderer* rend);
+		GameObject* getFirstHighlightedObject();
         std::vector<GameObject*> gameObjectList;
 };
 
