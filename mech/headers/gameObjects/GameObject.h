@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <string>
 
 class GameObject
 {
@@ -15,7 +16,11 @@ class GameObject
 		virtual bool destroy();
 		virtual bool activate();
 		virtual bool deactivate();
-		virtual void highlight(bool highlight);
+		virtual void render(SDL_Renderer* rend);
+		virtual void update();
+		virtual bool highlight(const std::string& srcEntityId);
 		bool highlighted = false;
+	protected:
+		SDL_Texture* objectTexture;
 };
 

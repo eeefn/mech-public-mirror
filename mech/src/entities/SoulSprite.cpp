@@ -9,6 +9,7 @@
 #include <math.h>
 
 SoulSprite::SoulSprite(Entity *entity){
+    identifier = "SOUL_SPRITE";
     hostEntity = entity;
     posX = entity->posX;
     posY = entity->posY;
@@ -28,7 +29,6 @@ SoulSprite::~SoulSprite(){
 void SoulSprite::updateEntity(float dt){
 	posX += round(velX * dt);
 	posY += round(velY * dt);
-    gameObjectManager.manageHighlightedObjects(&displayRect);
     displayRect.x = camera.getXPosWithinFrame(posX);
     displayRect.y = camera.getYPosWithinFrame(posY);
     return;

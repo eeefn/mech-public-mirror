@@ -19,8 +19,8 @@ class Map {
 		Map();
 		~Map();
 		int tileType = 0;
-	private:
 		void initialize();
+	private:
 		bool readGameObjectsFromMap();
 };
 extern Map map;

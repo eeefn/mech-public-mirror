@@ -7,8 +7,8 @@ class Camera{
     public:
         int yOffset, xOffset;
         SDL_Rect tileSelect[mapInfo.TILE_WIDTH_IN_TILE_MAP][mapInfo.TILE_WIDTH_IN_TILE_MAP];
-        Entity *cameraTarget;
         
+        Entity *cameraTarget;
         void renderMap();
         void renderBackround();
 

@@ -1,4 +1,5 @@
 #include "../../headers/gameObjects/GameObject.h"
+#include "../../headers/Camera.h"
 
 GameObject::GameObject(short scale, int w, int h){
 	objectScale = scale;
@@ -22,7 +23,16 @@ bool GameObject::activate() {
 bool GameObject::deactivate(){
 	return false;
 }
+void GameObject::render(SDL_Renderer* rend){
+	SDL_RenderCopy(rend,objectTexture,&spriteSheetPos,&renObj);
+}
 
-void GameObject::highlight(bool highlight){
-	highlighted = highlight;
+bool GameObject::highlight(const std::string& srcEntityId){
+	return false;
+}
+
+
+void GameObject::update(){
+	renObj.x = camera.getXPosWithinFrame(xTile * mapInfo.TILE_DIM);
+	renObj.y = camera.getYPosWithinFrame(yTile * mapInfo.TILE_DIM);
 }
