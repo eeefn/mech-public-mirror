@@ -13,7 +13,7 @@ class GameObjectManager{
         using ObjectFactory = GameObject*(*)(int id, short xT, short yT);
         std::unordered_map<int,ObjectFactory> objectFactory = {
             {1, [](int id, short xT, short yT) -> GameObject* {Mushroom* mush = new Mushroom(0,id,xT,yT); return mush;}}, 
-            {2, [](int id, short xT, short yT) -> GameObject* {Portal* port = new Portal();return port;}}
+            {2, [](int id, short xT, short yT) -> GameObject* {Portal* port = new Portal(id,xT,yT);return port;}}
         };
         void manageHighlightedObjects(SDL_Rect* hitBox,const string& entityId);
         void removeObject(GameObject* objToRemove);
