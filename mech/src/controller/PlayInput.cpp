@@ -1,11 +1,11 @@
 #include "../../headers/controller/PlayInput.h"
 #include "../../headers/entities/EntityManager.h"
+#include "../../headers/gameObjects/GameObjectManager.h"
 #include "../../headers/Gui.h"
 #include "../../headers/Camera.h"
 #include "../../headers/Editor.h"
 #include "../../headers/controller/InputFactory.h"
 #include "../../headers/entities/AnimationCodes.h"
-#include <iostream>
 
 PlayInput playInput;
 
@@ -116,6 +116,11 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP,true);
 				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP_COLOR,true);
 				inputFactory.setControlMode(controlModes.MECH);
+			}else{
+				GameObject* obj = gameObjectManager.getFirstHighlightedObject();
+				if(obj != nullptr){
+					obj->activate();
+				}
 			}
 			}
 			break;

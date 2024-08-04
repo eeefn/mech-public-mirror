@@ -35,7 +35,7 @@ namespace MechAnimationCodes{
 }
 
 namespace PortalAnimationCodes{
-   const AnimationCode MOVE_DISCS{"FULL",1,26,true};
-   const AnimationCode OPEN_PORTAL_G{"COLOR",0,53,2,true};
+   const AnimationCode MOVE_DISCS{"FULL",0,26,true};
+   const AnimationCode OPEN_PORTAL_G{"COLOR",1,55,2,true};
 }
 
