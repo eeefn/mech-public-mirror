@@ -15,6 +15,7 @@ class TextureManager{
         SDL_Texture* mushFullTexture;
         SDL_Texture* caveBackroundTexture;
         SDL_Texture* portalTexture;
+        SDL_Texture* rocksTexture;
         void initPermanentTextures(SDL_Renderer* renderer);
 };
 
