@@ -6,8 +6,10 @@
 #include "../../headers/Editor.h"
 #include "../../headers/controller/InputFactory.h"
 #include "../../headers/entities/AnimationCodes.h"
-
+#include "../../headers/PlayerState.h"
+#include "../../headers/SoulColorCodes.h"
 PlayInput playInput;
+using namespace SoulColors;
 
 PlayInput::PlayInput(){
 
@@ -72,7 +74,7 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
     Entity *playerEntity = camera.cameraTarget;
     switch (keydownEvent->key.keysym.sym) {
 		case SDLK_UP:
-			gui.setSoulColor(gui.soulColors.RED);
+			playerState.setSoulColor(RED);
 			break;
 		case SDLK_w:
 			if (!playerEntity->inAir) {
@@ -125,7 +127,7 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			}
 			break;
 		case SDLK_TAB:
-			gui.toggleInventory();
+			playerState.toggleInventory();
 			break;
 		case SDLK_LSHIFT:
 			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,true);
