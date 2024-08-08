@@ -17,6 +17,7 @@ class TextureManager{
         SDL_Texture* portalTexture;
         SDL_Texture* rocksTexture;
         void initPermanentTextures(SDL_Renderer* renderer);
+        void initializeTexture(SDL_Texture** textureToInit, const char* filePath, SDL_Renderer* renderer);
 };
 
 extern TextureManager textureManager;
