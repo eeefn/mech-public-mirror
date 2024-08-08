@@ -12,6 +12,9 @@
 #include "../headers/Gui.h"
 #include "../headers/Camera.h"
 
+#include "../headers/PlayerState.h"
+#include "../headers/items/RockItem.h"
+
 #include "../headers/controller/InputFactory.h"
 
 #include <iostream>
@@ -30,7 +33,8 @@ void setup() {
 	map.initialize();
 	camera.initializeCamera(dm.h,dm.w,entityManager.getFrontEntity(),dm);
 
-
+	Item* rock = new RockItem(1);
+	playerState.addToInventory(rock);
 	srand(time(NULL));
 }
 

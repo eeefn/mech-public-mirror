@@ -63,4 +63,30 @@ void Gui::render(int gameMode){
 
 void Gui::renderInventory(){
 	SDL_RenderCopy(windowManager.renderer,textureManager.inventoryTexture,NULL,&inventoryPos);
+	for(int i = 0; i < 3; i++){
+		for(int j = 0; j < 10; j++){
+			if(playerState.inventory[i][j] != nullptr){
+				SDL_Rect* itemTexturePos = playerState.inventory[i][j]->getSpriteSheetPos();
+				itemPos.x = getItemXPos(j);
+				itemPos.y = getItemYPos(i);
+				SDL_RenderCopy(windowManager.renderer,textureManager.itemsTexture,itemTexturePos,&itemPos);
+			}
+		}
+	}
+}
+
+int Gui::getItemXPos(int xInvenPos){
+	int firstItemPos = inventoryPos.x + 10 * inventoryScale;
+	int itemOffset = xInvenPos * ((2 + 16) * inventoryScale);
+	return firstItemPos + itemOffset;	
+}
+
+int Gui::getItemYPos(int yInvenPos){
+	int firstItemPos = inventoryPos.y + 10 * inventoryScale;
+	int itemOffset = 0;
+	if(yInvenPos != 0){
+		firstItemPos += ((5 + 16) * inventoryScale);
+		itemOffset = (yInvenPos - 1) * ((16 + 2) * inventoryScale);
+	}
+	return firstItemPos + itemOffset;	
 }

@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include "Item.h"
 
-class RockItem : Item{
+class RockItem : public Item{
     public:
         RockItem(int numItems);
         SDL_Rect* getSpriteSheetPos();

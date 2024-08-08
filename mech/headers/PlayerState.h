@@ -7,11 +7,12 @@ class PlayerState {
         PlayerState();
 		    void toggleInventory();
         void setSoulColor(int color);
+        bool addToInventory(Item* itemToAdd);
     private:
       int soul = 100;
       int soulColor = 0;
       bool inventoryOpen = false;
-      Item* inventory[3][10];
+      Item* inventory[3][10] = {nullptr};
 };
 
 extern PlayerState playerState;
