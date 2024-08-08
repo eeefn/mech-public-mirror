@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL.h>
-
+#include "../headers/items/Item.h"
 class Gui
 {
 	public:
@@ -11,6 +11,8 @@ class Gui
         int inventoryScale = 3;
 		Gui();
 	private:
+		void placeItem(Item* itemAtClick, int xSlot, int ySlot);
+		void pickItem(Item* itemAtClick, int xSlot, int ySlot);
 		void renderSoul();
 		void renderInventory();
 		int getItemXPos(int xInvenPos);
@@ -22,6 +24,7 @@ class Gui
 		SDL_Rect selWindowRen;
 		SDL_Rect inventoryPos;
 		SDL_Rect itemPos = {0,0,16*inventoryScale,16*inventoryScale};
+		Item* heldItem = nullptr;	
 
 };
 
