@@ -11,16 +11,22 @@ Gui gui;
 
 Gui::Gui() {
 	//initialize our gui rectangles
-	for (unsigned int i = 0; i < 8; i++) {
-		for (unsigned int j = 0; j < 22; j++) {
-			guiArr[i][j].x = j * 16;
-			guiArr[i][j].y = i * 16;
-			guiArr[i][j].w = 16;
-			guiArr[i][j].h = 16;
+	initializeInventory();
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 22; j++) {
+			guiArr[i][j] = {j*16,i*16,16,16};
 		}
 	}
 }
 
+
+void Gui::initializeInventory(){
+	int inventoryWidth = 198 * inventoryScale;
+	int inventoryHeight = 75 * inventoryScale;
+	int inventoryYPos = (windowSize.WINDOW_HEIGHT - inventoryHeight) / 2;
+	int inventoryXPos = (windowSize.WINDOW_WIDTH - inventoryWidth) / 2;
+	inventoryPos = {inventoryXPos,inventoryYPos,inventoryWidth,inventoryHeight};
+}
 
 void Gui::renderSoul() {
 	//render the soul, with small pulse effect
@@ -46,6 +52,9 @@ void Gui::renderSoul() {
 void Gui::render(int gameMode){
 	if(gameMode == gamemodes.PLAY){
 		renderSoul();
+		if(inventoryOpen){
+			renderInventory();//render inventory	
+		}
 	}
 	else{
 		editor.renderEditorSelection();
@@ -56,4 +65,12 @@ void Gui::setSoulColor(int color){
 	if(color >= 0 && color <= 7){
 		soulColor = color;
 	}
+}
+
+void Gui::toggleInventory(){
+	inventoryOpen = !inventoryOpen;
+}
+
+void Gui::renderInventory(){
+	SDL_RenderCopy(windowManager.renderer,textureManager.inventoryTexture,NULL,&inventoryPos);
 }
