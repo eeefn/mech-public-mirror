@@ -75,6 +75,13 @@ void Gui::renderInventory(){
 			}
 		}
 	}
+	if(heldItem != nullptr){
+		SDL_Rect* itemTexturePos = heldItem->getSpriteSheetPos();
+		SDL_GetMouseState(&heldItem->itemPos.x,&heldItem->itemPos.y);
+		heldItem->itemPos.x -= (inventoryScale * 16) / 2;
+		heldItem->itemPos.y -= (inventoryScale * 16) / 2;
+		SDL_RenderCopy(windowManager.renderer,textureManager.itemsTexture,itemTexturePos,&heldItem->itemPos);
+	}
 }
 
 int Gui::getItemXPos(int xInvenPos){
@@ -119,6 +126,23 @@ int Gui::getInvPosFromYPos(int yPos){
 }
 
 void Gui::handleGuiClick(int xPos, int yPos){
-	std::cout << getInvPosFromXPos(xPos) << " ";
-	std::cout << getInvPosFromYPos(yPos) << std::endl;
+	int xSlot = getInvPosFromXPos(xPos);
+	int ySlot = getInvPosFromYPos(yPos);
+	Item* itemAtClick = playerState.inventory[ySlot][xSlot];
+	if(ySlot != -1 && xSlot != -1){
+		if(!heldItem){
+			std::cout << xSlot << " " << ySlot << std::flush;
+			if(itemAtClick != nullptr){
+				heldItem = itemAtClick;
+				playerState.inventory[ySlot][xSlot] = nullptr;
+				heldItem->itemPos = {xPos,yPos,16*inventoryScale,16*inventoryScale};
+			}
+		}
+		else{
+			if(itemAtClick == nullptr){
+				playerState.inventory[ySlot][xSlot] = heldItem;
+				heldItem = nullptr;
+			}
+		}
+	}
 }

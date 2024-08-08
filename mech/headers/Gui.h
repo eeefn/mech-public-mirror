@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL.h>
-
+#include "../headers/items/Item.h"
 class Gui
 {
 	public:
@@ -22,6 +22,7 @@ class Gui
 		SDL_Rect selWindowRen;
 		SDL_Rect inventoryPos;
 		SDL_Rect itemPos = {0,0,16*inventoryScale,16*inventoryScale};
+		Item* heldItem = nullptr;	
 
 };
 
