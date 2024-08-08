@@ -18,12 +18,13 @@ void TextureManager::initPermanentTextures(SDL_Renderer* renderer){
 	initializeTexture(&this->portalTexture,"../resources/portal.bmp",renderer);
 	initializeTexture(&this->rocksTexture,"../resources/RocksSheet.bmp",renderer);
 	initializeTexture(&this->inventoryTexture,"../resources/Inventory.bmp",renderer);
+	initializeTexture(&this->itemsTexture,"../resources/ItemSheet.bmp",renderer);
 }
 
 /*Double pointer because passing uninitialized values seems to cause xPlosion*/
 void TextureManager::initializeTexture(SDL_Texture** textureToInit, const char* filePath,SDL_Renderer* renderer){
 	SDL_Surface* surfaceFromBMP = SDL_LoadBMP(filePath);
-	if (!surfaceFromBMP) { fprintf(stderr, "could not find tile images"); }
+	if (!surfaceFromBMP) { fprintf(stderr, "could not find %s",filePath); }
 	*textureToInit = SDL_CreateTextureFromSurface(renderer,surfaceFromBMP);
 	SDL_FreeSurface(surfaceFromBMP);
 }

@@ -3,8 +3,9 @@
 
 class Item{
     public:
-        Item();
+        Item(int numItems);
         virtual ~Item();
         SDL_Rect itemPos;
         virtual SDL_Rect* getSpriteSheetPos();
+        int numberOfItems;
 };

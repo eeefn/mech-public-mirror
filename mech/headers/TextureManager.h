@@ -17,6 +17,7 @@ class TextureManager{
         SDL_Texture* portalTexture;
         SDL_Texture* rocksTexture;
         SDL_Texture* inventoryTexture;
+        SDL_Texture* itemsTexture;
         void initPermanentTextures(SDL_Renderer* renderer);
         void initializeTexture(SDL_Texture** textureToInit, const char* filePath, SDL_Renderer* renderer);
 };
