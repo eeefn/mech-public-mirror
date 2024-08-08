@@ -130,19 +130,26 @@ void Gui::handleGuiClick(int xPos, int yPos){
 	int ySlot = getInvPosFromYPos(yPos);
 	Item* itemAtClick = playerState.inventory[ySlot][xSlot];
 	if(ySlot != -1 && xSlot != -1){
-		if(!heldItem){
-			std::cout << xSlot << " " << ySlot << std::flush;
-			if(itemAtClick != nullptr){
-				heldItem = itemAtClick;
-				playerState.inventory[ySlot][xSlot] = nullptr;
-				heldItem->itemPos = {xPos,yPos,16*inventoryScale,16*inventoryScale};
-			}
+		if(heldItem){
+			placeItem(itemAtClick,xSlot,ySlot);
 		}
 		else{
-			if(itemAtClick == nullptr){
-				playerState.inventory[ySlot][xSlot] = heldItem;
-				heldItem = nullptr;
-			}
+			pickItem(itemAtClick,xSlot,ySlot);
 		}
+	}
+}
+
+void Gui::placeItem(Item* itemAtClick, int xSlot, int ySlot){
+	if(itemAtClick == nullptr){
+		playerState.inventory[ySlot][xSlot] = heldItem;
+		heldItem = nullptr;
+	}			
+}
+
+void Gui::pickItem(Item* itemAtClick, int xSlot, int ySlot){
+	if(itemAtClick != nullptr){
+		heldItem = itemAtClick;
+		playerState.inventory[ySlot][xSlot] = nullptr;
+		heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
 	}
 }

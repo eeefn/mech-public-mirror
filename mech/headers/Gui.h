@@ -11,6 +11,8 @@ class Gui
         int inventoryScale = 3;
 		Gui();
 	private:
+		void placeItem(Item* itemAtClick, int xSlot, int ySlot);
+		void pickItem(Item* itemAtClick, int xSlot, int ySlot);
 		void renderSoul();
 		void renderInventory();
 		int getItemXPos(int xInvenPos);
