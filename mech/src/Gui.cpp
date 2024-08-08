@@ -17,6 +17,9 @@ Gui::Gui() {
 			guiArr[i][j] = {j*16,i*16,16,16};
 		}
 	}
+	for(int i = 0; i < 10;i++){
+		numArr[i] = {i * 3, 0, 3,6};
+	}
 }
 
 
@@ -72,6 +75,7 @@ void Gui::renderInventory(){
 				itemPos.x = getItemXPos(j);
 				itemPos.y = getItemYPos(i);
 				SDL_RenderCopy(windowManager.renderer,textureManager.itemsTexture,itemTexturePos,&itemPos);
+				renderNumber(playerState.inventory[i][j]->numberOfItems,itemPos.x + 2*inventoryScale,itemPos.y,windowManager.renderer);
 			}
 		}
 	}
@@ -81,6 +85,8 @@ void Gui::renderInventory(){
 		heldItem->itemPos.x -= (inventoryScale * 16) / 2;
 		heldItem->itemPos.y -= (inventoryScale * 16) / 2;
 		SDL_RenderCopy(windowManager.renderer,textureManager.itemsTexture,itemTexturePos,&heldItem->itemPos);
+		renderNumber(heldItem->numberOfItems,heldItem->itemPos.x + 2*inventoryScale,heldItem->itemPos.y,windowManager.renderer);
+
 	}
 }
 
@@ -151,5 +157,34 @@ void Gui::pickItem(Item* itemAtClick, int xSlot, int ySlot){
 		heldItem = itemAtClick;
 		playerState.inventory[ySlot][xSlot] = nullptr;
 		heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
+	}
+}
+
+void Gui::renderNumber(int num, int xPos, int yPos,SDL_Renderer* rend){
+	SDL_Rect dispNum = {xPos,yPos,3*inventoryScale,7*inventoryScale};
+	int hundredsPlace = (num / 100);
+	num = num - hundredsPlace * 100;
+	int tensPlace = num / 10;
+	num = num - tensPlace * 10;
+	int onesPlace = num;
+	int distBetweenNum = 2 * inventoryScale + 3 *inventoryScale;
+	if(hundredsPlace != 0){
+		SDL_RenderCopy(rend,textureManager.numberTexture,&numArr[hundredsPlace], &dispNum);
+		dispNum.x += distBetweenNum;
+		SDL_RenderCopy(rend,textureManager.numberTexture,&numArr[tensPlace], &dispNum);
+		dispNum.x += distBetweenNum;
+		SDL_RenderCopy(rend,textureManager.numberTexture,&numArr[onesPlace], &dispNum);
+	}
+	else{
+		dispNum.x += distBetweenNum;	
+		if(tensPlace != 0){
+			SDL_RenderCopy(rend,textureManager.numberTexture,&numArr[tensPlace], &dispNum);
+			dispNum.x += distBetweenNum;
+			SDL_RenderCopy(rend,textureManager.numberTexture,&numArr[onesPlace], &dispNum);
+		}
+		else{
+			dispNum.x += distBetweenNum;
+			SDL_RenderCopy(rend,textureManager.numberTexture,&numArr[onesPlace], &dispNum);
+		}
 	}
 }
