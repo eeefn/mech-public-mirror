@@ -14,3 +14,8 @@ void PlayerState::setSoulColor(int color){
 		soulColor = color;	
 	}
 }
+
+bool PlayerState::addToInventory(Item* itemToAdd){
+	inventory[0][0] = itemToAdd;	
+	return true;	
+}
