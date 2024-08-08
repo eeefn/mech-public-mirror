@@ -15,11 +15,13 @@ class Gui
 		void pickItem(Item* itemAtClick, int xSlot, int ySlot);
 		void renderSoul();
 		void renderInventory();
+		void renderNumber(int num, int xPos, int yPos,SDL_Renderer* rend);
 		int getItemXPos(int xInvenPos);
 		int getItemYPos(int yInvenPos);
 		int getInvPosFromXPos(int xPos);
 		int getInvPosFromYPos(int yPos);
 		SDL_Rect guiArr[8][22];
+		SDL_Rect numArr[10];
 		SDL_Rect guiComponent = {16, 16, 48, 48};
 		SDL_Rect selWindowRen;
 		SDL_Rect inventoryPos;
