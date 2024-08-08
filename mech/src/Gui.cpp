@@ -4,11 +4,12 @@
 #include "../headers/WindowManager.h"
 #include "../headers/Editor.h"
 #include "../headers/constants.h"
-#include <stdlib.h>
+#include "../headers/PlayerState.h"
+/*#include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
 Gui gui;
-
+*/
 Gui::Gui() {
 	//initialize our gui rectangles
 	initializeInventory();
@@ -46,13 +47,13 @@ void Gui::renderSoul() {
 	if (pulseCount > 75) {
 		pulseCount = 0;
 	}
-	SDL_RenderCopy(windowManager.renderer, textureManager.guiTexture, &gui.guiArr[soulColor][fullness], &gui.guiComponent);
+	SDL_RenderCopy(windowManager.renderer, textureManager.guiTexture, &gui.guiArr[playerState.soulColor][fullness], &gui.guiComponent);
 }
 
 void Gui::render(int gameMode){
 	if(gameMode == gamemodes.PLAY){
 		renderSoul();
-		if(inventoryOpen){
+		if(playerState.inventoryOpen){
 			renderInventory();//render inventory	
 		}
 	}
@@ -61,15 +62,7 @@ void Gui::render(int gameMode){
 	}
 }
 
-void Gui::setSoulColor(int color){
-	if(color >= 0 && color <= 7){
-		soulColor = color;
-	}
-}
 
-void Gui::toggleInventory(){
-	inventoryOpen = !inventoryOpen;
-}
 
 void Gui::renderInventory(){
 	SDL_RenderCopy(windowManager.renderer,textureManager.inventoryTexture,NULL,&inventoryPos);
