@@ -7,6 +7,7 @@ class Gui
 		int pulseCount = 0;
 		void render(int gameMode);
 		void initializeInventory();
+		void handleGuiClick(int xPos, int yPos);
         int inventoryScale = 3;
 		Gui();
 	private:
@@ -14,6 +15,8 @@ class Gui
 		void renderInventory();
 		int getItemXPos(int xInvenPos);
 		int getItemYPos(int yInvenPos);
+		int getInvPosFromXPos(int xPos);
+		int getInvPosFromYPos(int yPos);
 		SDL_Rect guiArr[8][22];
 		SDL_Rect guiComponent = {16, 16, 48, 48};
 		SDL_Rect selWindowRen;

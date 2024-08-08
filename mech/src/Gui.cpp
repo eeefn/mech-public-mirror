@@ -5,6 +5,8 @@
 #include "../headers/constants.h"
 #include "../headers/PlayerState.h"
 
+#include <iostream>
+
 Gui gui;
 
 Gui::Gui() {
@@ -89,4 +91,34 @@ int Gui::getItemYPos(int yInvenPos){
 		itemOffset = (yInvenPos - 1) * ((16 + 2) * inventoryScale);
 	}
 	return firstItemPos + itemOffset;	
+}
+
+int Gui::getInvPosFromXPos(int xPos){
+	if(xPos >= (inventoryPos.x + 10 * inventoryScale) && xPos <= inventoryPos.x + inventoryPos.w - (10 * inventoryScale)){
+		//adjust xPos to account for pos of gui and frame
+		xPos = xPos - inventoryPos.x - (10 * inventoryScale);
+		int clickBoxWidth = ((16 + 2) * inventoryScale);
+		int invPos = xPos / clickBoxWidth;
+		return invPos;
+	}
+	else{
+		return -1;
+	}
+}
+
+int Gui::getInvPosFromYPos(int yPos){
+	if(yPos >= (inventoryPos.y + 10 * inventoryScale) && yPos <= inventoryPos.y + inventoryPos.h - (10 * inventoryScale)){
+		yPos = yPos - inventoryPos.y - (10 * inventoryScale);
+		int clickBoxHeight = ((16 + 2) * inventoryScale);
+		int invPos = yPos / clickBoxHeight;
+		return invPos;
+	}
+	else{
+		return -1;
+	}
+}
+
+void Gui::handleGuiClick(int xPos, int yPos){
+	std::cout << getInvPosFromXPos(xPos) << " ";
+	std::cout << getInvPosFromYPos(yPos) << std::endl;
 }
