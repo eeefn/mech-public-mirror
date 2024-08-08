@@ -124,6 +124,9 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			}
 			}
 			break;
+		case SDLK_TAB:
+			gui.toggleInventory();
+			break;
 		case SDLK_LSHIFT:
 			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,true);
 			break;

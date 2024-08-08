@@ -18,13 +18,19 @@ class Gui
 		int pulseCount = 0;
 		void setSoulColor(int color);
 		void render(int gameMode);
-		void renderSoul();
+		void toggleInventory();
+		void initializeInventory();
+        int inventoryScale = 3;
 		Gui();
 	private:
+		bool inventoryOpen = false;
+		void renderSoul();
+		void renderInventory();
 		int soulColor = 0;
 		SDL_Rect guiArr[8][22];
 		SDL_Rect guiComponent = {16, 16, 48, 48};
 		SDL_Rect selWindowRen;
+		SDL_Rect inventoryPos;
 
 };
 

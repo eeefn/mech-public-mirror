@@ -17,6 +17,7 @@ void TextureManager::initPermanentTextures(SDL_Renderer* renderer){
 	initializeTexture(&this->caveBackroundTexture,"../resources/caveBackround.bmp",renderer);
 	initializeTexture(&this->portalTexture,"../resources/portal.bmp",renderer);
 	initializeTexture(&this->rocksTexture,"../resources/RocksSheet.bmp",renderer);
+	initializeTexture(&this->inventoryTexture,"../resources/Inventory.bmp",renderer);
 }
 
 /*Double pointer because passing uninitialized values seems to cause xPlosion*/
