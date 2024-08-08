@@ -1,15 +1,12 @@
 #include "../headers/Gui.h"
-#include "../headers/entities/Player.h"
 #include "../headers/TextureManager.h"
 #include "../headers/WindowManager.h"
 #include "../headers/Editor.h"
 #include "../headers/constants.h"
 #include "../headers/PlayerState.h"
-/*#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
+
 Gui gui;
-*/
+
 Gui::Gui() {
 	//initialize our gui rectangles
 	initializeInventory();
@@ -33,7 +30,7 @@ void Gui::renderSoul() {
 	//render the soul, with small pulse effect
 	pulseCount++;
 	//TODO reintegrate player soul and gui soul effect
-	int fullness = /*player.soul*/100 / 5;
+	int fullness = playerState.soul / 5;
 	fullness = (fullness - 20) * -1;
 	if (fullness > 21) {
 		fullness = 21;
