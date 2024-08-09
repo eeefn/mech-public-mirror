@@ -16,7 +16,7 @@ void TextureManager::initPermanentTextures(SDL_Renderer* renderer){
 	initializeTexture(&this->mushFullTexture,"../resources/fullBodyPlayerAnims.bmp",renderer);
 	initializeTexture(&this->caveBackroundTexture,"../resources/caveBackround.bmp",renderer);
 	initializeTexture(&this->portalTexture,"../resources/portal.bmp",renderer);
-	initializeTexture(&this->rocksTexture,"../resources/RocksSheet.bmp",renderer);
+	initializeTexture(&this->gameObjectsTexture,"../resources/objectSheet.bmp",renderer);
 	initializeTexture(&this->inventoryTexture,"../resources/Inventory.bmp",renderer);
 	initializeTexture(&this->itemsTexture,"../resources/ItemSheet.bmp",renderer);
 	initializeTexture(&this->numberTexture,"../resources/Numbers.bmp",renderer);
