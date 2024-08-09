@@ -14,6 +14,7 @@
 
 #include "../headers/PlayerState.h"
 #include "../headers/items/RockItem.h"
+#include "../headers/items/StickItem.h"
 
 #include "../headers/controller/InputFactory.h"
 
@@ -34,7 +35,9 @@ void setup() {
 	camera.initializeCamera(dm.h,dm.w,entityManager.getFrontEntity(),dm);
 
 	Item* rock = new RockItem(128);
+	Item* stick = new StickItem(128);
 	playerState.addToInventory(rock);
+	playerState.addToInventory(stick);
 	srand(time(NULL));
 }
 

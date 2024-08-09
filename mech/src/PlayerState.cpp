@@ -16,6 +16,13 @@ void PlayerState::setSoulColor(int color){
 }
 
 bool PlayerState::addToInventory(Item* itemToAdd){
-	inventory[0][0] = itemToAdd;	
-	return true;	
+	for(int i = 0; i < 3; i++){
+		for(int j = 0; j < 10; j++){
+			if(inventory[i][j] == nullptr){
+				inventory[i][j] = itemToAdd;
+				return true;
+			}
+		}
+	}
+	return false;	
 }
