@@ -68,7 +68,7 @@ void PlayInput::processKeyup(SDL_Event *keyupEvent){
 
 void PlayInput::processMousedown(SDL_Event *keydownEvent){
 	if(playerState.inventoryOpen){
-		gui.handleGuiClick(keydownEvent->button.x,keydownEvent->button.y);
+		gui.handleGuiClick(keydownEvent->button.x,keydownEvent->button.y,keydownEvent->button.button);
 	}
 }
 

@@ -33,7 +33,7 @@ void setup() {
 	map.initialize();
 	camera.initializeCamera(dm.h,dm.w,entityManager.getFrontEntity(),dm);
 
-	Item* rock = new RockItem(12);
+	Item* rock = new RockItem(128);
 	playerState.addToInventory(rock);
 	srand(time(NULL));
 }
