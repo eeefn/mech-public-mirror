@@ -15,7 +15,7 @@ class TextureManager{
         SDL_Texture* mushFullTexture;
         SDL_Texture* caveBackroundTexture;
         SDL_Texture* portalTexture;
-        SDL_Texture* rocksTexture;
+        SDL_Texture* gameObjectsTexture;
         SDL_Texture* inventoryTexture;
         SDL_Texture* itemsTexture;
         SDL_Texture* numberTexture;
