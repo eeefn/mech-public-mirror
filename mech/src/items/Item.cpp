@@ -1,6 +1,6 @@
 #include "../../headers/items/Item.h"
 
-Item::Item(int numItems){
+Item::Item(int numItems,int itType){
    if(numItems < 0){
       numItems = 0;
    }
@@ -8,6 +8,7 @@ Item::Item(int numItems){
       numItems = 128;
    }
    numberOfItems = numItems;
+   itemType = itType;
    return;
 }
 

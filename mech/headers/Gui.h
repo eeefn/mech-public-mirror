@@ -7,12 +7,14 @@ class Gui
 		int pulseCount = 0;
 		void render(int gameMode);
 		void initializeInventory();
-		void handleGuiClick(int xPos, int yPos);
+		void handleGuiClick(int xPos, int yPos,Uint32 clickType);
         int inventoryScale = 3;
 		Gui();
 	private:
 		void placeItem(Item* itemAtClick, int xSlot, int ySlot);
 		void pickItem(Item* itemAtClick, int xSlot, int ySlot);
+		void placeOne(Item* itemAtClick, int xSlot, int ySlot);
+		void pickHalf(Item* itemAtClick, int xSlot, int ySlot);
 		void renderSoul();
 		void renderInventory();
 		void renderNumber(int num, int xPos, int yPos,SDL_Renderer* rend);

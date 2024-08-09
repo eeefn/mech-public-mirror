@@ -4,7 +4,7 @@
 #include "../headers/Editor.h"
 #include "../headers/constants.h"
 #include "../headers/PlayerState.h"
-
+#include "../headers/items/ItemManager.h"
 #include <iostream>
 
 Gui gui;
@@ -131,16 +131,26 @@ int Gui::getInvPosFromYPos(int yPos){
 	}
 }
 
-void Gui::handleGuiClick(int xPos, int yPos){
+void Gui::handleGuiClick(int xPos, int yPos,Uint32 clickType){
 	int xSlot = getInvPosFromXPos(xPos);
 	int ySlot = getInvPosFromYPos(yPos);
 	Item* itemAtClick = playerState.inventory[ySlot][xSlot];
 	if(ySlot != -1 && xSlot != -1){
 		if(heldItem){
-			placeItem(itemAtClick,xSlot,ySlot);
+			if(clickType == SDL_BUTTON_LEFT){
+				placeItem(itemAtClick,xSlot,ySlot);
+			}
+			else if(clickType == SDL_BUTTON_RIGHT){
+				placeOne(itemAtClick,xSlot,ySlot);
+			}
 		}
 		else{
-			pickItem(itemAtClick,xSlot,ySlot);
+			if(clickType == SDL_BUTTON_LEFT){
+				pickItem(itemAtClick,xSlot,ySlot);
+			}
+			else if(clickType == SDL_BUTTON_RIGHT){
+				pickHalf(itemAtClick,xSlot,ySlot);	
+			}
 		}
 	}
 }
@@ -149,7 +159,20 @@ void Gui::placeItem(Item* itemAtClick, int xSlot, int ySlot){
 	if(itemAtClick == nullptr){
 		playerState.inventory[ySlot][xSlot] = heldItem;
 		heldItem = nullptr;
-	}			
+	}
+	else if(itemAtClick->itemType == heldItem->itemType){
+		int totalItems = itemAtClick->numberOfItems + heldItem->numberOfItems;
+		if(totalItems > 128){
+			int remainingItems = totalItems - 128;
+			itemAtClick->numberOfItems = 128;
+			heldItem->numberOfItems = remainingItems;
+		}
+		else{
+			itemAtClick->numberOfItems = totalItems;
+			delete heldItem;
+			heldItem = nullptr;
+		}
+	}
 }
 
 void Gui::pickItem(Item* itemAtClick, int xSlot, int ySlot){
@@ -187,4 +210,44 @@ void Gui::renderNumber(int num, int xPos, int yPos,SDL_Renderer* rend){
 			SDL_RenderCopy(rend,textureManager.numberTexture,&numArr[onesPlace], &dispNum);
 		}
 	}
+}
+
+void Gui::placeOne(Item* itemAtClick, int xSlot, int ySlot){
+	if(itemAtClick){
+		if(itemAtClick->itemType == heldItem->itemType){
+			if(itemAtClick->numberOfItems < 128){
+				itemAtClick->numberOfItems++;
+				if(heldItem->numberOfItems > 1){
+					heldItem->numberOfItems--;
+				}
+				else{
+					delete heldItem;
+					heldItem = nullptr;	
+				}
+			}
+		}
+	}
+	else{
+		if(heldItem->numberOfItems > 1){
+			heldItem->numberOfItems--;
+			playerState.inventory[ySlot][xSlot] = itemManager.makeItem(heldItem->itemType,1);
+		}
+		else{
+			playerState.inventory[ySlot][xSlot] = heldItem;
+			heldItem = nullptr;	
+		}
+	}
+	return;	
+}
+
+void Gui::pickHalf(Item* itemAtClick, int xSlot, int ySlot){
+	if(itemAtClick != nullptr){
+		int half = itemAtClick->numberOfItems / 2;
+		if(half != 0){
+			heldItem = itemManager.makeItem(playerState.inventory[ySlot][xSlot]->itemType,half);
+			playerState.inventory[ySlot][xSlot]->numberOfItems -= half;
+			heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
+		}
+	}
+	return;
 }
