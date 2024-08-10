@@ -42,9 +42,6 @@ void Inventory::pickHalf(){
 	return;
 }
 
-void Inventory::placeItem(int num){
-}
-
 void Inventory::placeOne(){
 	if(itemAtClick){
 			if(itemAtClick->numberOfItems < 128){

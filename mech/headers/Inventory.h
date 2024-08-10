@@ -28,7 +28,6 @@ class Inventory{
 		Item* heldItem = nullptr;
 		Item* itemAtClick = nullptr;
 		bool setSlotClicked(int xPosClicked,int yPosClicked);
-		void placeItem(int num);
 		void placeItem();
 		void pickItem();
 		void placeOne();
