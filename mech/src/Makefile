@@ -1,5 +1,5 @@
 TARGET=main.exe
-FLAGS=--std=c++14
+FLAGS=--std=c++14 -g
 INCLUDEPATH=$(USERPROFILE)/SDL2/x86_64-w64-mingw32/include/SDL2/
 LIBRARYPATH=$(USERPROFILE)/SDL2/x86_64-w64-mingw32/lib
 BUILD_DIR=build

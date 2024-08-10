@@ -1,18 +1,20 @@
 #include "../headers/Gui.h"
 #include "../headers/items/Item.h"
+#include "../headers/Inventory.h"
 
 class PlayerState {
     friend class Gui; 
     public:
         PlayerState();
+        void handleInventoryClick(int xPos, int yPos,Uint32 clickType);
+        void addToInventory(Item* itemToAdd);
 		void toggleInventory();
         void setSoulColor(int color);
-        bool addToInventory(Item* itemToAdd);
         bool inventoryOpen = false;
     private:
+		Inventory playerInventory = Inventory(10,3,128);
         int soul = 100;
         int soulColor = 0;
-        Item* inventory[3][10] = {nullptr};
 };
 
 extern PlayerState playerState;
