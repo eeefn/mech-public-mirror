@@ -1,8 +1,9 @@
 #include "../../headers/gameObjects/GameObjectManager.h" 
+#include "../../headers/gameObjects/GameObjectFactory.h"
 #include "../../headers/Camera.h"
 #include "../../headers/Collider.h"
-#include <iostream>
 #include <algorithm>
+
 GameObjectManager gameObjectManager;
 
 GameObjectManager::GameObjectManager(){
