@@ -9,17 +9,16 @@ Inventory::Inventory(int slotsX, int slotsY, int stackLimit){
     inventorySize.slotsX = slotsX;
     inventorySize.slotsY = slotsY;
     this->stackLimit = stackLimit;
-    inventory.resize(slotsY); //we're gonna need to check this yo:
 	for(int i = 0; i < 10;i++){
 		numArr[i] = {i * 3, 0, 3,6};
 	}
+    inventory.resize(slotsY);
     for(int j = 0; j < slotsY; j++){
         for(int i = 0; i < slotsX; i++){
             inventory.at(j).push_back(nullptr);
         }
     }
 	initializeInventory();
-	std::cout << inventory.size() << " " << inventory.at(slotsY - 1).size();
     return;
 }
 
@@ -31,20 +30,23 @@ void Inventory::initializeInventory(){
 	int inventoryXPos = (windowSize.WINDOW_WIDTH - inventoryWidth) / 2;
 	this->inventoryPos = {inventoryXPos,inventoryYPos,inventoryWidth,inventoryHeight};
 }
-void Inventory::pickHalf(Item* itemAtClick, int xSlot, int ySlot){
+void Inventory::pickHalf(){
 	if(itemAtClick != nullptr){
 		int half = itemAtClick->numberOfItems / 2;
 		if(half != 0){
-			heldItem = itemManager.makeItem(inventory.at(ySlot).at(xSlot)->itemType,half);
-			inventory.at(ySlot).at(xSlot)->numberOfItems -= half;
+			heldItem = itemManager.makeItem(itemAtClick->itemType,half);
+			itemAtClick->numberOfItems -= half;
 			heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
 		}
 	}
 	return;
 }
-void Inventory::placeOne(Item* itemAtClick, int xSlot, int ySlot){
+
+void Inventory::placeItem(int num){
+}
+
+void Inventory::placeOne(){
 	if(itemAtClick){
-		if(itemAtClick->itemType == heldItem->itemType){
 			if(itemAtClick->numberOfItems < 128){
 				itemAtClick->numberOfItems++;
 				if(heldItem->numberOfItems > 1){
@@ -55,15 +57,14 @@ void Inventory::placeOne(Item* itemAtClick, int xSlot, int ySlot){
 					heldItem = nullptr;	
 				}
 			}
-		}
 	}
 	else{
 		if(heldItem->numberOfItems > 1){
 			heldItem->numberOfItems--;
-			inventory.at(ySlot).at(xSlot) = itemManager.makeItem(heldItem->itemType,1);
+			inventory[slotClicked.slotsY][slotClicked.slotsX] = itemManager.makeItem(heldItem->itemType,1);
 		}
 		else{
-			inventory.at(ySlot).at(xSlot) = heldItem;
+			inventory[slotClicked.slotsY][slotClicked.slotsX] = heldItem;
 			heldItem = nullptr;	
 		}
 	}
@@ -163,34 +164,36 @@ int Inventory::getInvPosFromYPos(int yPos){
 		return -1;
 	}
 }
-
+bool Inventory::setSlotClicked(int xPosClicked,int yPosClicked){
+	slotClicked = {getInvPosFromXPos(xPosClicked),getInvPosFromYPos(yPosClicked)};
+	if(slotClicked.slotsX == -1 || slotClicked.slotsY == -1){ return false;}
+	return true;
+}
 void Inventory::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
-	int xSlot = getInvPosFromXPos(xPos);
-	int ySlot = getInvPosFromYPos(yPos);
-	Item* itemAtClick = inventory.at(ySlot).at(xSlot);
-	if(ySlot != -1 && xSlot != -1){
+	if(setSlotClicked(xPos, yPos)){
+		itemAtClick =inventory[slotClicked.slotsY][slotClicked.slotsX];
 		if(heldItem){
 			if(clickType == SDL_BUTTON_LEFT){
-				placeItem(itemAtClick,xSlot,ySlot);
+				placeItem();
 			}
 			else if(clickType == SDL_BUTTON_RIGHT){
-				placeOne(itemAtClick,xSlot,ySlot);
+				placeOne();
 			}
 		}
 		else{
 			if(clickType == SDL_BUTTON_LEFT){
-				pickItem(itemAtClick,xSlot,ySlot);
+				pickItem();
 			}
 			else if(clickType == SDL_BUTTON_RIGHT){
-				pickHalf(itemAtClick,xSlot,ySlot);	
+				pickHalf();	
 			}
 		}
 	}
 }
 
-void Inventory::placeItem(Item* itemAtClick, int xSlot, int ySlot){
+void Inventory::placeItem(){
 	if(itemAtClick == nullptr){
-		inventory[ySlot][xSlot] = heldItem;
+		inventory[slotClicked.slotsY][slotClicked.slotsX] = heldItem;
 		heldItem = nullptr;
 	}
 	else if(itemAtClick->itemType == heldItem->itemType){
@@ -208,10 +211,10 @@ void Inventory::placeItem(Item* itemAtClick, int xSlot, int ySlot){
 	}
 }
 
-void Inventory::pickItem(Item* itemAtClick, int xSlot, int ySlot){
+void Inventory::pickItem(){
 	if(itemAtClick != nullptr){
 		heldItem = itemAtClick;
-		inventory[ySlot][xSlot] = nullptr;
+		inventory[slotClicked.slotsY][slotClicked.slotsX] = nullptr;
 		heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
 	}
 }
