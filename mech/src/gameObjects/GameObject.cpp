@@ -7,6 +7,9 @@ GameObject::GameObject(short scale, int w, int h){
 	height = scale * h;
 	renObj = {0,0,width,height};
 }
+GameObject::~GameObject(){
+
+}
 
 bool GameObject::place() {
 	return false;
