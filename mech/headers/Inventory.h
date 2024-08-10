@@ -1,6 +1,7 @@
 #pragma once
 #include "./items/Item.h"
 #include <vector>
+#include <array>
 using std::vector;
 
 struct InventoryPosition{
@@ -14,7 +15,14 @@ class Inventory{
 		void initializeInventory();
 
         static int inventoryScale;
-		SDL_Rect numArr[10];
+		static constexpr std::array<SDL_Rect,10> numArr = []{
+			std::array<SDL_Rect,10> ar{};
+			for(int i = 0; i < 10;i++){
+				ar[i] = {i * 3, 0, 3,6};
+			}
+			return ar;
+		}();
+
         InventoryPosition inventorySize;
 		InventoryPosition slotClicked;
 		void handleInventoryClick(int xPos, int yPos,Uint32 clickType);

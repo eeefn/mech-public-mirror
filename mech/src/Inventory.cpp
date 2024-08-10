@@ -2,16 +2,13 @@
 #include "../headers/items/ItemManager.h"
 #include "../headers/TextureManager.h"
 #include "../headers/WindowManager.h"
-#include <iostream>
+
 int Inventory::inventoryScale = 3;
 
 Inventory::Inventory(int slotsX, int slotsY, int stackLimit){
     inventorySize.slotsX = slotsX;
     inventorySize.slotsY = slotsY;
     this->stackLimit = stackLimit;
-	for(int i = 0; i < 10;i++){
-		numArr[i] = {i * 3, 0, 3,6};
-	}
     inventory.resize(slotsY);
     for(int j = 0; j < slotsY; j++){
         for(int i = 0; i < slotsX; i++){
@@ -22,7 +19,6 @@ Inventory::Inventory(int slotsX, int slotsY, int stackLimit){
     return;
 }
 
-
 void Inventory::initializeInventory(){
 	int inventoryWidth = 198 * inventoryScale;
 	int inventoryHeight = 75 * inventoryScale;
@@ -30,8 +26,17 @@ void Inventory::initializeInventory(){
 	int inventoryXPos = (windowSize.WINDOW_WIDTH - inventoryWidth) / 2;
 	this->inventoryPos = {inventoryXPos,inventoryYPos,inventoryWidth,inventoryHeight};
 }
-void Inventory::pickHalf(){
+
+void Inventory::pickItem(){
 	if(itemAtClick != nullptr){
+		heldItem = itemAtClick;
+		inventory[slotClicked.slotsY][slotClicked.slotsX] = nullptr;
+		heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
+	}
+}
+
+void Inventory::pickHalf(){
+	if(itemAtClick){
 		int half = itemAtClick->numberOfItems / 2;
 		if(half != 0){
 			heldItem = itemManager.makeItem(itemAtClick->itemType,half);
@@ -44,7 +49,8 @@ void Inventory::pickHalf(){
 
 void Inventory::placeOne(){
 	if(itemAtClick){
-			if(itemAtClick->numberOfItems < 128){
+		if(itemAtClick->itemType == heldItem->itemType){
+			if(itemAtClick->numberOfItems < stackLimit){
 				itemAtClick->numberOfItems++;
 				if(heldItem->numberOfItems > 1){
 					heldItem->numberOfItems--;
@@ -54,6 +60,7 @@ void Inventory::placeOne(){
 					heldItem = nullptr;	
 				}
 			}
+		}
 	}
 	else{
 		if(heldItem->numberOfItems > 1){
@@ -143,6 +150,9 @@ int Inventory::getInvPosFromXPos(int xPos){
 		xPos = xPos - inventoryPos.x - (10 * inventoryScale);
 		int clickBoxWidth = ((16 + 2) * inventoryScale);
 		int invPos = xPos / clickBoxWidth;
+		if(invPos >= inventorySize.slotsX){
+			invPos = inventorySize.slotsX - 1;
+		}
 		return invPos;
 	}
 	else{
@@ -155,17 +165,22 @@ int Inventory::getInvPosFromYPos(int yPos){
 		yPos = yPos - inventoryPos.y - (10 * inventoryScale);
 		int clickBoxHeight = ((16 + 2) * inventoryScale);
 		int invPos = yPos / clickBoxHeight;
+		if(invPos >= inventorySize.slotsY){
+			invPos = inventorySize.slotsY - 1;
+		}
 		return invPos;
 	}
 	else{
 		return -1;
 	}
 }
+
 bool Inventory::setSlotClicked(int xPosClicked,int yPosClicked){
 	slotClicked = {getInvPosFromXPos(xPosClicked),getInvPosFromYPos(yPosClicked)};
 	if(slotClicked.slotsX == -1 || slotClicked.slotsY == -1){ return false;}
 	return true;
 }
+
 void Inventory::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
 	if(setSlotClicked(xPos, yPos)){
 		itemAtClick =inventory[slotClicked.slotsY][slotClicked.slotsX];
@@ -195,9 +210,9 @@ void Inventory::placeItem(){
 	}
 	else if(itemAtClick->itemType == heldItem->itemType){
 		int totalItems = itemAtClick->numberOfItems + heldItem->numberOfItems;
-		if(totalItems > 128){
-			int remainingItems = totalItems - 128;
-			itemAtClick->numberOfItems = 128;
+		if(totalItems > stackLimit){
+			int remainingItems = totalItems - stackLimit;
+			itemAtClick->numberOfItems = stackLimit;
 			heldItem->numberOfItems = remainingItems;
 		}
 		else{
@@ -208,18 +223,10 @@ void Inventory::placeItem(){
 	}
 }
 
-void Inventory::pickItem(){
-	if(itemAtClick != nullptr){
-		heldItem = itemAtClick;
-		inventory[slotClicked.slotsY][slotClicked.slotsX] = nullptr;
-		heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
-	}
-}
-
 bool Inventory::addToInventory(Item* itemToAdd){
-	for(int i = 0; i < 3; i++){
-		for(int j = 0; j < 10; j++){
-			if(inventory[i][j] == nullptr){
+	for(int i = 0; i < inventorySize.slotsY; i++){
+		for(int j = 0; j < inventorySize.slotsX; j++){
+			if(!inventory[i][j]){
 				inventory[i][j] = itemToAdd;
 				return true;
 			}
