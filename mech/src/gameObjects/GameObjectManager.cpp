@@ -24,16 +24,15 @@ void GameObjectManager::removeObject(GameObject* objToRemove){
 	delete objToRemove;	
 }
 
+//pass string into lambda factory function
+//add returned object to list if it exists
 void GameObjectManager::makeObject(short objectType, short xT, short yT){
-    auto objIt = objectFactory.find(objectType);
-    if(objIt != objectFactory.end()){
-        gameObjectList.push_back(objIt->second(objectType,xT,yT));
-    }
-    //pass string into lambda factory function
-    //add returned object to list
+	if(GameObject* pushBack = gameObjectFactory.makeObject(objectType,xT,yT)){
+		gameObjectList.push_back(pushBack);
+	}
 }
 
-void GameObjectManager::manageHighlightedObjects(SDL_Rect* hitBox,const string& entityId){
+void GameObjectManager::manageHighlightedObjects(SDL_Rect* hitBox,const std::string& entityId){
 	for (auto gameObject : gameObjectList){
 		if (collider.checkObjectCollision(hitBox, &gameObject->renObj)){
 			if(gameObject->highlight(entityId)){
