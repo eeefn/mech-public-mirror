@@ -4,8 +4,6 @@
 #include "../headers/Editor.h"
 #include "../headers/constants.h"
 #include "../headers/PlayerState.h"
-#include "../headers/items/ItemManager.h"
-#include <iostream>
 
 Gui gui;
 

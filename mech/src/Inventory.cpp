@@ -1,5 +1,5 @@
 #include "../headers/Inventory.h"
-#include "../headers/items/ItemManager.h"
+#include "../headers/items/ItemFactory.h"
 #include "../headers/TextureManager.h"
 #include "../headers/WindowManager.h"
 
@@ -39,7 +39,7 @@ void Inventory::pickHalf(){
 	if(itemAtClick){
 		int half = itemAtClick->numberOfItems / 2;
 		if(half != 0){
-			heldItem = itemManager.makeItem(itemAtClick->itemType,half);
+			heldItem = itemFactory.makeItem(itemAtClick->itemType,half);
 			itemAtClick->numberOfItems -= half;
 			heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
 		}
@@ -65,7 +65,7 @@ void Inventory::placeOne(){
 	else{
 		if(heldItem->numberOfItems > 1){
 			heldItem->numberOfItems--;
-			inventory[slotClicked.slotsY][slotClicked.slotsX] = itemManager.makeItem(heldItem->itemType,1);
+			inventory[slotClicked.slotsY][slotClicked.slotsX] = itemFactory.makeItem(heldItem->itemType,1);
 		}
 		else{
 			inventory[slotClicked.slotsY][slotClicked.slotsX] = heldItem;
