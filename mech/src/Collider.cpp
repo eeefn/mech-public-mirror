@@ -9,10 +9,7 @@
 Collider collider;
 
 Collider::Collider() {
-	yLen = 0;
-	xLen = 0;
-	xTilePos = 0;
-	yTilePos = 0;
+	yLen = 0; xLen = 0; xTilePos = 0; yTilePos = 0;
 	for (unsigned int i = 0; i < 4; i++) {
 		colResults[i] = false;
 	}
@@ -50,7 +47,7 @@ bool Collider::collisionCheck(Entity* entity, short tileMap[][mapInfo.MAX_LVL_WI
 	}
 	if (entity->velX > 0) {
 		//moving right
-		for (unsigned int i = yTilePos; i < (yTilePos + yLen); i++) {
+		for (short int i = yTilePos; i < (yTilePos + yLen); i++) {
 			if (tileMap[i][xTilePos + xLen] > 0) {
 				colResults[2] = true;
 				colOccur = true;
@@ -59,7 +56,7 @@ bool Collider::collisionCheck(Entity* entity, short tileMap[][mapInfo.MAX_LVL_WI
 	}
 	else if (entity->velX < 0){
 		//moving left
-		for (unsigned int i = yTilePos; i < (yTilePos + yLen); i++) {
+		for (short int i = yTilePos; i < (yTilePos + yLen); i++) {
 			if (tileMap[i][xTilePos] > 0) {
 				colResults[3] = true;
 				//cout << "collison left at " << xTilePos << ", " << i << '\n';

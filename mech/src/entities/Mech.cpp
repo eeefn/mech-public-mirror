@@ -15,13 +15,13 @@ Mech::Mech() {
 		}
 	}
 	inMech = true; 
+	isPlayer = false; inAir = false; entityTransition = false;
 	displayRect = {100,100,MECH_WIDTH,MECH_HEIGHT};
 	posX = 400; posY = 80;
-	isPlayer, inAir, entityTransition = false;
-	velX, velY = 0;
+	velX = 0; velY = 0;
 	accX = 0; accY = GRAVITY;
 	highlighted = true;
-	poweredUp, stood = false;
+	poweredUp = false; stood = false;
 	entitySpeedX = 70;
 }
 

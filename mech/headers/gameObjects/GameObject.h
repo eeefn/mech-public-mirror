@@ -6,6 +6,7 @@ class GameObject
 {
 	public:
 		GameObject(short scale, int width, int height);
+		virtual ~GameObject();
 		int xTile, yTile;
 		short ID;
 		short objectScale;
