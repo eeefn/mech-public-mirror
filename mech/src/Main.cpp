@@ -5,6 +5,7 @@
 
 #include "../headers/entities/EntityManager.h"
 #include "../headers/gameObjects/GameObjectManager.h"
+#include "../headers/items/ItemManager.h"
 #include "../headers/TextureManager.h"
 #include "../headers/WindowManager.h"
 #include "../headers/constants.h"
@@ -36,6 +37,7 @@ void setup() {
 
 	Item* rock = new RockItem(128);
 	Item* stick = new StickItem(128);
+	itemManager.makeExternalItem(1,1,200, 200);
 	playerState.addToInventory(rock);
 	playerState.addToInventory(stick);
 	srand(time(NULL));
@@ -65,6 +67,7 @@ void update() {
 		entityManager.update(deltaTime);
 		camera.update();
 		gameObjectManager.updateGameObjects();
+		itemManager.updateItems(deltaTime);
 	}
 	inputFactory.update();
 }
@@ -77,6 +80,7 @@ void render() {
 	camera.renderBackround();	
 	gameObjectManager.renderGameObjects(windowManager.renderer);
 	camera.renderMap();
+	itemManager.renderItems();
 	entityManager.render(gameMode);
 	gui.render(gameMode);
 
