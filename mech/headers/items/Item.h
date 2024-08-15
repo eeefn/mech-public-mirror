@@ -7,6 +7,11 @@ class Item{
         virtual ~Item();
         SDL_Rect itemPos;
         virtual SDL_Rect* getSpriteSheetPos();
+        void update(float dt);
         int numberOfItems;
         int itemType;
+        int xPos;
+        int yPos;
+        int yVel;
+        int yAcc;
 };
