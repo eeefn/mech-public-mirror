@@ -10,8 +10,8 @@ void PlayerState::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
 	playerInventory.handleInventoryClick(xPos,yPos,clickType);	
 }
 
-void PlayerState::addToInventory(Item* itemToAdd){
-	playerInventory.addToInventory(itemToAdd);
+bool PlayerState::addToInventory(Item* itemToAdd){
+	return playerInventory.addToInventory(itemToAdd);
 }
 
 void PlayerState::toggleInventory(){

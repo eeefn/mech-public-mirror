@@ -10,7 +10,7 @@ class ItemManager{
         void updateItems(float dt);
         void renderItems();
     private:
-        void checkItemCollisions();
+        void handleItemCollisions();
         std::vector<Item*> itemList;
 };
 

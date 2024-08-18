@@ -7,7 +7,7 @@ class PlayerState {
     public:
         PlayerState();
         void handleInventoryClick(int xPos, int yPos,Uint32 clickType);
-        void addToInventory(Item* itemToAdd);
+        bool addToInventory(Item* itemToAdd);
 		void toggleInventory();
         void setSoulColor(int color);
         bool inventoryOpen = false;

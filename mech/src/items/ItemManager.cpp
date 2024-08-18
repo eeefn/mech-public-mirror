@@ -3,6 +3,7 @@
 #include "../../headers/WindowManager.h"
 #include "../../headers/TextureManager.h"
 #include "../../headers/Camera.h"
+#include "../../headers/PlayerState.h"
 #include <iostream>
 #include <SDL.h>
 
@@ -30,6 +31,7 @@ void ItemManager::updateItems(float dt){
         item->itemPos.x = camera.getXPosWithinFrame(item->xPos);
         item->itemPos.y = camera.getYPosWithinFrame(item->yPos);
     }
+    handleItemCollisions();
     return; 
 }
 
@@ -40,6 +42,16 @@ void ItemManager::renderItems(){
     return;
 }
 
-void ItemManager::checkItemCollisions(){
+void ItemManager::handleItemCollisions(){
+    vector<Item*>::iterator item = itemList.begin();
+    while(item != itemList.end()){
+        //if item collided with player and item okay to add to inventory, remove item from list. 
+        if(collider.checkObjectCollision(&(*item)->itemPos, &camera.cameraTarget->displayRect) && playerState.addToInventory((*item))){
+            item = itemList.erase(item);
+        }
+        else{
+           ++item;
+        }
+    }
     return; 
 }
