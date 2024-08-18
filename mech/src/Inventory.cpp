@@ -224,13 +224,27 @@ void Inventory::placeItem(){
 }
 
 bool Inventory::addToInventory(Item* itemToAdd){
-	for(int i = 0; i < inventorySize.slotsY; i++){
-		for(int j = 0; j < inventorySize.slotsX; j++){
+	bool addSuccess = false;
+	int tempIPos = 0;
+	int tempJPos = 0;
+	for(int i = inventorySize.slotsY - 1; i >= 0; i--){
+		for(int j = inventorySize.slotsX - 1; j >= 0; j--){
 			if(!inventory[i][j]){
-				inventory[i][j] = itemToAdd;
-				return true;
+				addSuccess = true;
+				tempIPos = i;
+				tempJPos = j;
+			}
+			else if(inventory[i][j]->itemType == itemToAdd->itemType){
+				if(inventory[i][j]->numberOfItems + itemToAdd->numberOfItems <= stackLimit){
+					inventory[i][j]->numberOfItems += itemToAdd->numberOfItems;
+					delete itemToAdd;
+					return true;
+				}
 			}
 		}
 	}
-	return false;	
+	if(addSuccess){
+		inventory[tempIPos][tempJPos] = itemToAdd;
+	}
+	return addSuccess;	
 }
