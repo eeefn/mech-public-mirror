@@ -16,6 +16,7 @@
 #include "../headers/PlayerState.h"
 #include "../headers/items/RockItem.h"
 #include "../headers/items/StickItem.h"
+#include "../headers/items/SoulSwordItem.h"
 
 #include "../headers/controller/InputFactory.h"
 
@@ -37,9 +38,11 @@ void setup() {
 
 	Item* rock = new RockItem(128);
 	Item* stick = new StickItem(127);
+	Item* sword = new SoulSwordItem(1);
 	itemManager.makeExternalItem(1,1,200, 200);
 	playerState.addToInventory(rock);
 	playerState.addToInventory(stick);
+	playerState.addToInventory(sword);
 	srand(time(NULL));
 }
 
