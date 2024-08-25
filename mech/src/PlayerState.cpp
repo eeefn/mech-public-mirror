@@ -23,3 +23,11 @@ void PlayerState::setSoulColor(int color){
 		soulColor = color;	
 	}
 }
+
+int PlayerState::getSoulColor(){
+	return soulColor;
+}
+
+int PlayerState::getSoulVal(){
+	return soul;	
+}
