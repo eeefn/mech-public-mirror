@@ -1,4 +1,3 @@
-
 #pragma once
 #include "ToolItem.h"
 #include <SDL.h>
