@@ -113,7 +113,9 @@ void Inventory::renderInventory(){
 				itemPos.x = getItemXPos(j);
 				itemPos.y = getItemYPos(i);
 				SDL_RenderCopy(windowManager.renderer,textureManager.itemsTexture,itemTexturePos,&itemPos);
-				renderNumber(inventory.at(i).at(j)->numberOfItems,itemPos.x + 2*inventoryScale,itemPos.y,windowManager.renderer);
+				if(inventory[i][j]->numberOfItems > 1){
+					renderNumber(inventory.at(i).at(j)->numberOfItems,itemPos.x + 2*inventoryScale,itemPos.y,windowManager.renderer);
+				}
 			}
 		}
 	}
@@ -123,8 +125,9 @@ void Inventory::renderInventory(){
 		heldItem->itemPos.x -= (inventoryScale * 16) / 2;
 		heldItem->itemPos.y -= (inventoryScale * 16) / 2;
 		SDL_RenderCopy(windowManager.renderer,textureManager.itemsTexture,itemTexturePos,&heldItem->itemPos);
-		renderNumber(heldItem->numberOfItems,heldItem->itemPos.x + 2*inventoryScale,heldItem->itemPos.y,windowManager.renderer);
-
+		if(heldItem->numberOfItems > 1){
+			renderNumber(heldItem->numberOfItems,heldItem->itemPos.x + 2*inventoryScale,heldItem->itemPos.y,windowManager.renderer);
+		}
 	}
 }
 
