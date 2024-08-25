@@ -3,4 +3,6 @@ namespace ItemCodes{
     const int STICK = 1;
     const int SOULSWORD = 2;
     const int SOULPICK = 3;
+    const int SOULSHOVEL = 4;
+    const int SOULFISHINGROD = 5;
 }
