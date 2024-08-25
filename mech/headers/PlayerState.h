@@ -10,6 +10,8 @@ class PlayerState {
         bool addToInventory(Item* itemToAdd);
 		void toggleInventory();
         void setSoulColor(int color);
+        int getSoulColor();
+        int getSoulVal();
         bool inventoryOpen = false;
     private:
 		Inventory playerInventory = Inventory(10,3,128);

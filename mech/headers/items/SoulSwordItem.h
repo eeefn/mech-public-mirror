@@ -1,8 +1,8 @@
 #pragma once
-#include "Item.h"
+#include "ToolItem.h"
 #include <SDL.h>
 
-class SoulSwordItem : public Item{
+class SoulSwordItem : public ToolItem{
     public:
         SoulSwordItem(int numItems);
         SDL_Rect* getSpriteSheetPos();
