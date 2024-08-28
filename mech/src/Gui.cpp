@@ -43,6 +43,7 @@ void Gui::render(int gameMode){
 		if(playerState.inventoryOpen){
 			playerState.playerInventory.renderInventory();//render inventory	
 		}
+		playerState.hotbar.render();
 	}
 	else{
 		editor.renderEditorSelection();
