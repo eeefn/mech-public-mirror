@@ -135,6 +135,16 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 		case SDLK_LSHIFT:
 			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,true);
 			break;
+		case SDLK_1: playerState.hotbar.setSelectedSlot(0); break;
+		case SDLK_2: playerState.hotbar.setSelectedSlot(1); break;
+		case SDLK_3: playerState.hotbar.setSelectedSlot(2); break;
+		case SDLK_4: playerState.hotbar.setSelectedSlot(3); break;
+		case SDLK_5: playerState.hotbar.setSelectedSlot(4); break;
+		case SDLK_6: playerState.hotbar.setSelectedSlot(5); break;
+		case SDLK_7: playerState.hotbar.setSelectedSlot(6); break;
+		case SDLK_8: playerState.hotbar.setSelectedSlot(7); break;
+		case SDLK_9: playerState.hotbar.setSelectedSlot(8); break;
+		case SDLK_0: playerState.hotbar.setSelectedSlot(9); break;
 		case SDLK_ESCAPE: gameIsRunning = false; break;
 	}
     return gameIsRunning;

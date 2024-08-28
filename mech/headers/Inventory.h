@@ -28,9 +28,11 @@ class Inventory{
 		void handleInventoryClick(int xPos, int yPos,Uint32 clickType);
 		void renderInventory();
         bool addToInventory(Item* itemToAdd);
+		vector<Item*>* getInventoryRow(int rowToGet);
     private:
         int stackLimit;
 		SDL_Rect inventoryPos;
+		SDL_Rect invenTexSel = {0,0,198,75};
 		SDL_Rect itemPos = {0,0,16*inventoryScale,16*inventoryScale};
         vector<vector<Item*>> inventory;
 		Item* heldItem = nullptr;

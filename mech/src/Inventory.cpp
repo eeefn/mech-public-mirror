@@ -2,6 +2,7 @@
 #include "../headers/items/ItemFactory.h"
 #include "../headers/TextureManager.h"
 #include "../headers/WindowManager.h"
+#include <stdexcept>
 
 int Inventory::inventoryScale = 3;
 
@@ -105,7 +106,7 @@ void Inventory::renderNumber(int num, int xPos, int yPos,SDL_Renderer* rend){
 }
 
 void Inventory::renderInventory(){
-	SDL_RenderCopy(windowManager.renderer,textureManager.inventoryTexture,NULL,&inventoryPos);
+	SDL_RenderCopy(windowManager.renderer,textureManager.inventoryTexture,&invenTexSel,&inventoryPos);
 	for(int i = 0; i < 3; i++){
 		for(int j = 0; j < 10; j++){
 			if(inventory.at(i).at(j) != nullptr){
@@ -250,4 +251,15 @@ bool Inventory::addToInventory(Item* itemToAdd){
 		inventory[tempIPos][tempJPos] = itemToAdd;
 	}
 	return addSuccess;	
+}
+
+vector<Item*>* Inventory::getInventoryRow(int rowToGet){
+	vector<Item*> *returnRow;
+	try{
+		returnRow = &inventory.at(rowToGet);
+	} 
+	catch(const std::out_of_range& oor){
+		returnRow = nullptr;
+	}
+	return returnRow;
 }
