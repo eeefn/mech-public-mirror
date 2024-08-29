@@ -9,7 +9,10 @@
 #include "../../headers/PlayerState.h"
 #include "../../headers/SoulColorCodes.h"
 PlayInput playInput;
+
 using namespace SoulColors;
+
+#include <iostream>
 
 PlayInput::PlayInput(){
 
@@ -69,6 +72,16 @@ void PlayInput::processKeyup(SDL_Event *keyupEvent){
 void PlayInput::processMousedown(SDL_Event *keydownEvent){
 	if(playerState.inventoryOpen){
 		playerState.handleInventoryClick(keydownEvent->button.x,keydownEvent->button.y,keydownEvent->button.button);
+	}
+	else{
+		GameObject *objectAtClick = gameObjectManager.getGameObjectAtClick(keydownEvent->button.x,keydownEvent->button.y,keydownEvent->button.button);
+		if(objectAtClick != nullptr){
+			std::cout << "objectAtClick has type: " << objectAtClick->ID << std::endl;
+			Item *clickedBy = playerState.hotbar.getItemAtSelectedSlot();
+			if(clickedBy != nullptr){
+				//objectAtClick.handleClick(clickedBy);
+			}
+		}
 	}
 }
 

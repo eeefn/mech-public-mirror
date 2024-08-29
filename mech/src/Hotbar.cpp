@@ -52,3 +52,7 @@ void Hotbar::setSelectedSlot(int setTo){
        selectPos.x = getItemXPos(setTo) - 1 * hotbarScale;
     }
 }
+
+Item* Hotbar::getItemAtSelectedSlot(){
+    return selectedItem; 
+}

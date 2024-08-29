@@ -92,3 +92,12 @@ bool Collider::checkObjectCollision(SDL_Rect* hitBox1,SDL_Rect* hitBox2) const{
 	}
 	return false;
 }
+
+bool Collider::pointWithinRect(int xPos,int yPos,SDL_Rect &renObj){
+	if(xPos >= renObj.x && xPos <= renObj.x + renObj.w){
+		if(yPos >= renObj.y && yPos <= renObj.y + renObj.x){
+			return true;		
+		}
+	}
+	return false;
+}

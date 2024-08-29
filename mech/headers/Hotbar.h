@@ -9,6 +9,7 @@ class Hotbar{
         Hotbar(vector<Item*> *bar);
         void render();
         void setSelectedSlot(int setTo);
+        Item* getItemAtSelectedSlot();
         void incrementSelectedSlot();
         void decrementSelectedSlot();
     private:

@@ -14,6 +14,7 @@ public:
 	bool collisionCheck(Entity* entity);
 	bool checkItemCollision(Item* item);
 	bool checkObjectCollision(SDL_Rect* hitBox1, SDL_Rect* hitBox2) const;
+	bool pointWithinRect(int xPos,int yPos,SDL_Rect &renObj);
 
 };
 

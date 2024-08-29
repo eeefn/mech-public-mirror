@@ -62,3 +62,13 @@ GameObject* GameObjectManager::getFirstHighlightedObject(){
 	}
 	return nullptr;
 }
+
+GameObject* GameObjectManager::getGameObjectAtClick(int xPos, int yPos,Uint32 clickType){
+	for(auto gameObject : gameObjectList){
+		if(collider.pointWithinRect(xPos,yPos,gameObject->renObj)){
+			return gameObject;
+		}
+	}
+	return nullptr;
+}
+

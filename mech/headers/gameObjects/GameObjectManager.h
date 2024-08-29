@@ -9,6 +9,7 @@ class GameObjectManager{
         GameObjectManager();
         ~GameObjectManager();
         void manageHighlightedObjects(SDL_Rect* hitBox,const std::string& entityId);
+        GameObject* getGameObjectAtClick(int xPos, int yPos,Uint32 clickType);
         void removeObject(GameObject* objToRemove);
         void makeObject(short objectType,short xT, short yT);
         void renderGameObjects(SDL_Renderer* rend);
