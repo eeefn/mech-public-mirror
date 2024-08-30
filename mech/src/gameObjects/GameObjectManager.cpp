@@ -48,6 +48,10 @@ void GameObjectManager::renderGameObjects(SDL_Renderer* rend){
 }
 
 void GameObjectManager::updateGameObjects(){
+	for(auto remObject : objectsToRemove){
+		removeObject(remObject);
+	}
+	objectsToRemove.clear();
 	for(auto gameObject : gameObjectList){
 		gameObject->update();
 	}
@@ -61,4 +65,17 @@ GameObject* GameObjectManager::getFirstHighlightedObject(){
 		}	
 	}
 	return nullptr;
+}
+
+GameObject* GameObjectManager::getGameObjectAtClick(int xPos, int yPos,Uint32 clickType){
+	for(auto gameObject : gameObjectList){
+		if(collider.pointWithinRect(xPos,yPos,gameObject->renObj)){
+			return gameObject;
+		}
+	}
+	return nullptr;
+}
+
+void GameObjectManager::queueObjectForRemoval(GameObject* objToRemove){
+	objectsToRemove.push_back(objToRemove);
 }

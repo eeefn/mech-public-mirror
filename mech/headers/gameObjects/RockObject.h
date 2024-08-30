@@ -5,5 +5,6 @@
 class RockObject : public GameObject{
     public:
         RockObject(short id, int xT, int yT, short rockType);
+        void handleClick(Item* clickedBy);
 
 };

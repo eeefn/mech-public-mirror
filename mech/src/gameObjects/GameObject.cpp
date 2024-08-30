@@ -39,3 +39,7 @@ void GameObject::update(){
 	renObj.x = camera.getXPosWithinFrame(xTile * mapInfo.TILE_DIM);
 	renObj.y = camera.getYPosWithinFrame(yTile * mapInfo.TILE_DIM);
 }
+
+void GameObject::handleClick(Item *clickedBy){
+	
+}
