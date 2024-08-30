@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include <string>
+#include "../items/Item.h"
 
 class GameObject
 {
@@ -21,7 +22,9 @@ class GameObject
 		virtual void update();
 		virtual bool highlight(const std::string& srcEntityId);
 		bool highlighted = false;
+		virtual void handleClick(Item *clickedBy);
 	protected:
 		SDL_Texture* objectTexture;
+		int objectHealth;
 };
 

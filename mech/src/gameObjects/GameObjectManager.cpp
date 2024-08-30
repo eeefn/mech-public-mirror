@@ -48,6 +48,10 @@ void GameObjectManager::renderGameObjects(SDL_Renderer* rend){
 }
 
 void GameObjectManager::updateGameObjects(){
+	for(auto remObject : objectsToRemove){
+		removeObject(remObject);
+	}
+	objectsToRemove.clear();
 	for(auto gameObject : gameObjectList){
 		gameObject->update();
 	}
@@ -72,3 +76,6 @@ GameObject* GameObjectManager::getGameObjectAtClick(int xPos, int yPos,Uint32 cl
 	return nullptr;
 }
 
+void GameObjectManager::queueObjectForRemoval(GameObject* objToRemove){
+	objectsToRemove.push_back(objToRemove);
+}

@@ -43,6 +43,11 @@ bool PlayInput::processInput(SDL_Event *keyEvent, int *gameMode){
 	}
 	if (keyEvent->type == SDL_MOUSEBUTTONDOWN) {
 		playInput.processMousedown(keyEvent);
+		mousedown = true;
+	}
+	else if(keyEvent->type == SDL_MOUSEBUTTONUP){
+		std::cout << "mouseup" << std::endl;
+		mousedown = false;
 	}
 	if(keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat != 0){
 		playInput.processHeldKeys(keyEvent);
@@ -55,6 +60,13 @@ bool PlayInput::processInput(SDL_Event *keyEvent, int *gameMode){
 	}
 	return gameIsRunning;
 }
+
+void PlayInput::update(){
+	if(mousedown){
+		processHeldClick();		
+	}
+}
+
 void PlayInput::processKeyup(SDL_Event *keyupEvent){
 	Entity *playerEntity = camera.cameraTarget;
 	switch (keyupEvent->key.keysym.sym) {
@@ -74,12 +86,22 @@ void PlayInput::processMousedown(SDL_Event *keydownEvent){
 		playerState.handleInventoryClick(keydownEvent->button.x,keydownEvent->button.y,keydownEvent->button.button);
 	}
 	else{
-		GameObject *objectAtClick = gameObjectManager.getGameObjectAtClick(keydownEvent->button.x,keydownEvent->button.y,keydownEvent->button.button);
+		mousedown = true;
+	}
+}
+
+void PlayInput::processHeldClick(){
+	if(!playerState.inventoryOpen){
+		int mouseXPos;
+		int mouseYPos;
+		auto buttonPressed = SDL_GetMouseState(&mouseXPos,&mouseYPos);
+		GameObject *objectAtClick = gameObjectManager.getGameObjectAtClick(mouseXPos,mouseYPos,buttonPressed);
 		if(objectAtClick != nullptr){
-			std::cout << "objectAtClick has type: " << objectAtClick->ID << std::endl;
+			std::cout << "objectAtClick has type: " << objectAtClick->ID;
 			Item *clickedBy = playerState.hotbar.getItemAtSelectedSlot();
 			if(clickedBy != nullptr){
-				//objectAtClick.handleClick(clickedBy);
+				std::cout << " got clicked item" << std::endl;
+				objectAtClick->handleClick(clickedBy);
 			}
 		}
 	}

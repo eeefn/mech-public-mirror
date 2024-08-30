@@ -54,5 +54,6 @@ void Hotbar::setSelectedSlot(int setTo){
 }
 
 Item* Hotbar::getItemAtSelectedSlot(){
+    selectedItem = barRef->at(selectedSlot);
     return selectedItem; 
 }

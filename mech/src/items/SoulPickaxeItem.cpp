@@ -4,6 +4,7 @@
 SDL_Rect* SoulPickaxeItem::spriteSheetPos = new SDL_Rect {0,32,16,16};
 
 SoulPickaxeItem::SoulPickaxeItem() : ToolItem(ItemCodes::SOULPICK){
+    damagePerFrame = 1;
     return;
 }
 
