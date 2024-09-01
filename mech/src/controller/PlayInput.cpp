@@ -1,19 +1,17 @@
-#include "../../headers/controller/PlayInput.h"
 #include "../../headers/entities/EntityManager.h"
 #include "../../headers/gameObjects/GameObjectManager.h"
+#include "../../headers/controller/InputFactory.h"
+#include "../../headers/controller/PlayInput.h"
 #include "../../headers/Gui.h"
 #include "../../headers/Camera.h"
 #include "../../headers/Editor.h"
-#include "../../headers/controller/InputFactory.h"
 #include "../../headers/entities/AnimationCodes.h"
-#include "../../headers/PlayerState.h"
 #include "../../headers/SoulColorCodes.h"
-PlayInput playInput;
+#include "../../headers/PlayerState.h"
 
 using namespace SoulColors;
 
-#include <iostream>
-
+PlayInput playInput;
 PlayInput::PlayInput(){
 
 }
@@ -46,7 +44,6 @@ bool PlayInput::processInput(SDL_Event *keyEvent, int *gameMode){
 		mousedown = true;
 	}
 	else if(keyEvent->type == SDL_MOUSEBUTTONUP){
-		std::cout << "mouseup" << std::endl;
 		mousedown = false;
 	}
 	if(keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat != 0){
@@ -92,15 +89,19 @@ void PlayInput::processMousedown(SDL_Event *keydownEvent){
 
 void PlayInput::processHeldClick(){
 	if(!playerState.inventoryOpen){
+		if(camera.cameraTarget->facingL){
+			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::TORSO_SWING_L,true);
+		}
+		else{
+			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::TORSO_SWING_R,true);
+		}
 		int mouseXPos;
 		int mouseYPos;
 		auto buttonPressed = SDL_GetMouseState(&mouseXPos,&mouseYPos);
 		GameObject *objectAtClick = gameObjectManager.getGameObjectAtClick(mouseXPos,mouseYPos,buttonPressed);
 		if(objectAtClick != nullptr){
-			std::cout << "objectAtClick has type: " << objectAtClick->ID;
 			Item *clickedBy = playerState.hotbar.getItemAtSelectedSlot();
 			if(clickedBy != nullptr){
-				std::cout << " got clicked item" << std::endl;
 				objectAtClick->handleClick(clickedBy);
 			}
 		}

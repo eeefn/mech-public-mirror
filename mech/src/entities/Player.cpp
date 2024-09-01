@@ -1,14 +1,13 @@
-
 #include <SDL.h>
 #include <cmath>
+
 #include "../../headers/constants.h"
 #include "../../headers/entities/Player.h"
 #include "../../headers/entities/AnimationCodes.h"
 #include "../../headers/TextureManager.h"
 #include "../../headers/Camera.h"
-using namespace PlayerAnimationCodes;
 
-#include <iostream>
+using namespace PlayerAnimationCodes;
 
 Player::Player()  {
 	identifier = "PLAYER";
@@ -41,8 +40,8 @@ void Player::initializePlayerAnim(){
 			headAnim[j][i] = {i * 32, j * 20, 32, 20};
 		}
 	}
-	for (int i = 0; i < 1; i++) {
-		for (int j = 0; j < 2; j++) {
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 4; j++) {
 			torsoAnim[j][i] = {i * 32, j * 16, 32, 16};
 		}
 	}
@@ -104,20 +103,24 @@ void Player::updateEntity(float dt) {
 	if (velX < 0){
 		animator.setAnimation(&WALK_L_ANIM,true,&legsSelect);
 		animator.setAnimation(&TORSO_L_ANIM,true,&torsoSelect);
+		facingL = true;
 		setHeadAnimL();
 	}
 	else if(velX > 0){
 		animator.setAnimation(&WALK_R_ANIM,true,&legsSelect);
 		animator.setAnimation(&TORSO_R_ANIM,true,&torsoSelect);
+		facingL = false;
 		setHeadAnimR();
 	}
 	else{
 		if((legsSelect.curAnim == WALK_L_ANIM.CODE) || (legsSelect.curAnim == IDLE_L_ANIM.CODE)){
 			animator.setAnimation(&IDLE_L_ANIM,true,&legsSelect);
+			facingL = true;
 			setHeadAnimL();
 		}
 	  	else{
 			animator.setAnimation(&IDLE_R_ANIM,true,&legsSelect);
+			facingL = false;
 			setHeadAnimR();
 		}
 	}
@@ -146,12 +149,19 @@ void Player::setHeadAnimR(){
 }
 
 void Player::requestAnimation(const AnimationCode* animationRequested, bool forward){
-	fullBodyAnimation = true;
-	animator.setAnimation(animationRequested,false,&fullSelect,2,forward);
-	if(animationRequested->CODE == MUSH_GROW.CODE){
-		animator.setAnimation(&HEAD_R_ANIM,true,&headSelect,2,forward);
-		animator.setAnimation(&IDLE_R_ANIM,true,&legsSelect,2,forward);	
-		animator.setAnimation(&TORSO_R_ANIM,true,&torsoSelect,2,forward);
+	if(animationRequested->TYPE == "FULL"){
+		fullBodyAnimation = true;
+		animator.setAnimation(animationRequested,false,&fullSelect,2,forward);
+		if(animationRequested->CODE == MUSH_GROW.CODE){
+			animator.setAnimation(&HEAD_R_ANIM,true,&headSelect,2,forward);
+			animator.setAnimation(&IDLE_R_ANIM,true,&legsSelect,2,forward);	
+			animator.setAnimation(&TORSO_R_ANIM,true,&torsoSelect,2,forward);
+		}
+	}
+	else{
+		if(animationRequested->TYPE == "TORSO"){
+			animator.setAnimation(animationRequested,false,&torsoSelect,animationRequested->DEFAULT_SPEED,forward);
+		}
 	}
 }
 

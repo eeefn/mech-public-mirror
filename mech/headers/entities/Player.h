@@ -39,7 +39,7 @@ protected:
 	SDL_Rect playerAnim[4][15];
 	SDL_Rect mushFullAnim[2][87];
 	SDL_Rect headAnim[4][3];
-	SDL_Rect torsoAnim[2][1];
+	SDL_Rect torsoAnim[4][5];
 	SDL_Rect legsAnim[4][15];
 private:
 	void setHeadAnimR();
