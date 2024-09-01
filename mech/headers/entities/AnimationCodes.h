@@ -15,13 +15,15 @@ namespace PlayerAnimationCodes{
     const AnimationCode IDLE_R_ANIM{"LEGS",2,15,2,false};
     const AnimationCode WALK_R_ANIM{"LEGS",3,15,2,false};
 
-    const AnimationCode TORSO_L_ANIM{"TORSO",1,1,2,false};
     const AnimationCode TORSO_R_ANIM{"TORSO",0,1,2,false};
+    const AnimationCode TORSO_L_ANIM{"TORSO",1,1,2,false};
+    const AnimationCode TORSO_SWING_R{"TORSO",3,5,6,true};
+    const AnimationCode TORSO_SWING_L{"TORSO",2,5,6,true};
 
     const AnimationCode HEAD_R_ANIM{"HEAD",0,2,2,false};
     const AnimationCode HEAD_R_FALL_ANIM{"HEAD",1,2,2,false};
     const AnimationCode HEAD_L_ANIM{"HEAD",2,2,2,false};
-    const AnimationCode HEAD_L_FALL_ANIM{"HEAD",1,3,2,false};
+    const AnimationCode HEAD_L_FALL_ANIM{"HEAD",3,3,2,false};
     
     const AnimationCode MUSH_GROW{"FULL",0,87,2,true};
     const AnimationCode MUSH_KNEEL{"FULL",1,11,2,false};
