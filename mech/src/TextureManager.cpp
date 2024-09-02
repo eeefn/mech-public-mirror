@@ -25,7 +25,12 @@ void TextureManager::initPermanentTextures(SDL_Renderer* renderer){
 /*Double pointer because passing uninitialized values seems to cause xPlosion*/
 void TextureManager::initializeTexture(SDL_Texture** textureToInit, const char* filePath,SDL_Renderer* renderer){
 	SDL_Surface* surfaceFromBMP = SDL_LoadBMP(filePath);
-	if (!surfaceFromBMP) { fprintf(stderr, "could not find %s",filePath); }
+	if (!surfaceFromBMP) { 
+		fprintf(stderr, "could not find %s",filePath);
+		surfaceFromBMP = SDL_LoadBMP("../resources/TextureNotFound.bmp");
+		if(!surfaceFromBMP){fprintf(stderr,"could not find nulltexture");
+		}
+	}
 	*textureToInit = SDL_CreateTextureFromSurface(renderer,surfaceFromBMP);
 	SDL_FreeSurface(surfaceFromBMP);
 }
