@@ -3,10 +3,11 @@
 
 GameObject::GameObject(short scale, int w, int h){
 	objectScale = scale;
-	width = scale * w;
-	height = scale * h;
-	renObj = {0,0,width,height};
+	scaledWidth = scale * w;
+	scaledHeight = scale * h;
+	renderRects.posOnScreen = {0,0,scaledWidth,scaledHeight};
 }
+
 GameObject::~GameObject(){
 
 }
@@ -26,20 +27,20 @@ bool GameObject::activate() {
 bool GameObject::deactivate(){
 	return false;
 }
-void GameObject::render(SDL_Renderer* rend){
-	SDL_RenderCopy(rend,objectTexture,&spriteSheetPos,&renObj);
-}
 
 bool GameObject::highlight(const std::string& srcEntityId){
 	return false;
 }
 
-
-void GameObject::update(){
-	renObj.x = camera.getXPosWithinFrame(xTile * mapInfo.TILE_DIM);
-	renObj.y = camera.getYPosWithinFrame(yTile * mapInfo.TILE_DIM);
-}
-
 void GameObject::handleClick(Item *clickedBy){
 	
+}
+
+void GameObject::render(SDL_Renderer* rend){
+	SDL_RenderCopy(rend,objectTexture,&renderRects.posOnTexture,&renderRects.posOnScreen);
+}
+
+void GameObject::update(){
+	renderRects.posOnScreen.x = camera.getXPosWithinFrame(xTile * mapInfo.TILE_DIM);
+	renderRects.posOnScreen.y = camera.getYPosWithinFrame(yTile * mapInfo.TILE_DIM);
 }

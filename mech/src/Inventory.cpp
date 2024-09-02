@@ -25,14 +25,15 @@ void Inventory::initializeInventory(){
 	int inventoryHeight = 75 * inventoryScale;
 	int inventoryYPos = (windowSize.WINDOW_HEIGHT - inventoryHeight) / 2;
 	int inventoryXPos = (windowSize.WINDOW_WIDTH - inventoryWidth) / 2;
-	this->inventoryPos = {inventoryXPos,inventoryYPos,inventoryWidth,inventoryHeight};
+	renderRect.posOnScreen = {inventoryXPos,inventoryYPos,inventoryWidth,inventoryHeight};
+	renderRect.posOnTexture = {0,0,198,75};
 }
 
 void Inventory::pickItem(){
 	if(itemAtClick != nullptr){
 		heldItem = itemAtClick;
 		inventory[slotClicked.slotsY][slotClicked.slotsX] = nullptr;
-		heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
+		heldItem->renderRectRefs.posOnScreen = {0,0,16*inventoryScale,16*inventoryScale};
 	}
 }
 
@@ -42,7 +43,7 @@ void Inventory::pickHalf(){
 		if(half != 0){
 			heldItem = itemFactory.makeItem(itemAtClick->itemType,half);
 			itemAtClick->numberOfItems -= half;
-			heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
+			heldItem->renderRectRefs.posOnScreen = {0,0,16*inventoryScale,16*inventoryScale};
 		}
 	}
 	return;
@@ -106,7 +107,7 @@ void Inventory::renderNumber(int num, int xPos, int yPos,SDL_Renderer* rend){
 }
 
 void Inventory::renderInventory(){
-	SDL_RenderCopy(windowManager.renderer,textureManager.inventoryTexture,&invenTexSel,&inventoryPos);
+	SDL_RenderCopy(windowManager.renderer,textureManager.inventoryTexture,&renderRect.posOnTexture,&renderRect.posOnScreen);
 	for(int i = 0; i < 3; i++){
 		for(int j = 0; j < 10; j++){
 			if(inventory.at(i).at(j) != nullptr){
@@ -122,24 +123,24 @@ void Inventory::renderInventory(){
 	}
 	if(heldItem != nullptr){
 		SDL_Rect* itemTexturePos = heldItem->getSpriteSheetPos();
-		SDL_GetMouseState(&heldItem->itemPos.x,&heldItem->itemPos.y);
-		heldItem->itemPos.x -= (inventoryScale * 16) / 2;
-		heldItem->itemPos.y -= (inventoryScale * 16) / 2;
-		SDL_RenderCopy(windowManager.renderer,textureManager.itemsTexture,itemTexturePos,&heldItem->itemPos);
+		SDL_GetMouseState(&heldItem->renderRectRefs.posOnScreen.x,&heldItem->renderRectRefs.posOnScreen.y);
+		heldItem->renderRectRefs.posOnScreen.x -= (inventoryScale * 16) / 2;
+		heldItem->renderRectRefs.posOnScreen.y -= (inventoryScale * 16) / 2;
+		SDL_RenderCopy(windowManager.renderer,textureManager.itemsTexture,itemTexturePos,&heldItem->renderRectRefs.posOnScreen);
 		if(heldItem->numberOfItems > 1){
-			renderNumber(heldItem->numberOfItems,heldItem->itemPos.x + 2*inventoryScale,heldItem->itemPos.y,windowManager.renderer);
+			renderNumber(heldItem->numberOfItems,heldItem->renderRectRefs.posOnScreen.x + 2*inventoryScale,heldItem->renderRectRefs.posOnScreen.y,windowManager.renderer);
 		}
 	}
 }
 
 int Inventory::getItemXPos(int xInvenPos){
-	int firstItemPos = inventoryPos.x + 10 * inventoryScale;
+	int firstItemPos = renderRect.posOnScreen.x + 10 * inventoryScale;
 	int itemOffset = xInvenPos * ((2 + 16) * inventoryScale);
 	return firstItemPos + itemOffset;	
 }
 
 int Inventory::getItemYPos(int yInvenPos){
-	int firstItemPos = inventoryPos.y + 10 * inventoryScale;
+	int firstItemPos = renderRect.posOnScreen.y + 10 * inventoryScale;
 	int itemOffset = 0;
 	if(yInvenPos != 0){
 		firstItemPos += ((5 + 16) * inventoryScale);
@@ -149,9 +150,9 @@ int Inventory::getItemYPos(int yInvenPos){
 }
 
 int Inventory::getInvPosFromXPos(int xPos){
-	if(xPos >= (inventoryPos.x + 10 * inventoryScale) && xPos <= inventoryPos.x + inventoryPos.w - (10 * inventoryScale)){
+	if(xPos >= (renderRect.posOnScreen.x + 10 * inventoryScale) && xPos <= renderRect.posOnScreen.x + renderRect.posOnScreen.w - (10 * inventoryScale)){
 		//adjust xPos to account for pos of gui and frame
-		xPos = xPos - inventoryPos.x - (10 * inventoryScale);
+		xPos = xPos - renderRect.posOnScreen.x - (10 * inventoryScale);
 		int clickBoxWidth = ((16 + 2) * inventoryScale);
 		int invPos = xPos / clickBoxWidth;
 		if(invPos >= inventorySize.slotsX){
@@ -165,8 +166,8 @@ int Inventory::getInvPosFromXPos(int xPos){
 }
 
 int Inventory::getInvPosFromYPos(int yPos){
-	if(yPos >= (inventoryPos.y + 10 * inventoryScale) && yPos <= inventoryPos.y + inventoryPos.h - (10 * inventoryScale)){
-		yPos = yPos - inventoryPos.y - (10 * inventoryScale);
+	if(yPos >= (renderRect.posOnScreen.y + 10 * inventoryScale) && yPos <= renderRect.posOnScreen.y + renderRect.posOnScreen.h - (10 * inventoryScale)){
+		yPos = yPos - renderRect.posOnScreen.y - (10 * inventoryScale);
 		int clickBoxHeight = ((16 + 2) * inventoryScale);
 		int invPos = yPos / clickBoxHeight;
 		if(invPos >= inventorySize.slotsY){

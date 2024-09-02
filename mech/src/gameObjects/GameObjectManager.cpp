@@ -34,7 +34,7 @@ void GameObjectManager::makeObject(short objectType, short xT, short yT){
 
 void GameObjectManager::manageHighlightedObjects(SDL_Rect* hitBox,const std::string& entityId){
 	for (auto gameObject : gameObjectList){
-		if (collider.checkObjectCollision(hitBox, &gameObject->renObj)){
+		if (collider.checkObjectCollision(hitBox, &gameObject->renderRects.posOnScreen)){
 			if(gameObject->highlight(entityId)){
 				break;
 			};
@@ -69,13 +69,13 @@ GameObject* GameObjectManager::getFirstHighlightedObject(){
 
 GameObject* GameObjectManager::getGameObjectAtClick(int xPos, int yPos,Uint32 clickType){
 	for(auto gameObject : gameObjectList){
-		if(collider.pointWithinRect(xPos,yPos,gameObject->renObj)){
+		if(collider.pointWithinRect(xPos,yPos,gameObject->renderRects.posOnScreen)){
 			return gameObject;
 		}
 	}
 	return nullptr;
 }
-
+//allows objects to request their own deletion on the next update cycle
 void GameObjectManager::queueObjectForRemoval(GameObject* objToRemove){
 	objectsToRemove.push_back(objToRemove);
 }
