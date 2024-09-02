@@ -6,5 +6,5 @@ ShrubObject::ShrubObject(short id, int xT, int yT, short shrubType) : GameObject
     xTile = xT;
     yTile = yT;
     objectTexture = textureManager.gameObjectsTexture; 
-    spriteSheetPos = {(shrubType) * 32, 32, 32, 32};
+    renderRects.posOnTexture = {(shrubType) * 32, 32, 32, 32};
 }

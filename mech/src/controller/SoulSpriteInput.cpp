@@ -8,6 +8,9 @@
 #include "../../headers/gameObjects/GameObject.h"
 #include "../../headers/constants.h"
 #include "../../headers/entities/AnimationCodes.h"
+
+#include <iostream>
+
 SoulSpriteInput soulSpriteInput;
 
 SoulSpriteInput::SoulSpriteInput(){
@@ -75,6 +78,7 @@ int SoulSpriteInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 			{
 			GameObject* highlightedObjectPtr = gameObjectManager.getFirstHighlightedObject();
 			if(highlightedObjectPtr != nullptr){
+				std::cout << "got highlightedObject" << std::endl;
 				SDL_Event ev;
 				ev.key.repeat = 0;
 				ev.type = SDL_KEYDOWN;

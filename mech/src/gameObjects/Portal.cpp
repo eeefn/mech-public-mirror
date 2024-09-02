@@ -16,9 +16,9 @@ Portal::Portal(short id,int xT,int yT) : GameObject(3,96,72){
 }
 
 void Portal::render(SDL_Renderer* rend){
-    SDL_RenderCopy(rend,objectTexture,&portalAnimRect[discs.curAnim][discs.curFrame],&renObj);
-    SDL_RenderCopy(rend,objectTexture,&portalAnimRect[beam.curAnim][beam.curFrame],&renObj);
-    SDL_RenderCopy(rend,objectTexture,&portalAnimRect[1][0],&renObj);
+    SDL_RenderCopy(rend,objectTexture,&portalAnimRect[discs.curAnim][discs.curFrame],&renderRects.posOnScreen);
+    SDL_RenderCopy(rend,objectTexture,&portalAnimRect[beam.curAnim][beam.curFrame],&renderRects.posOnScreen);
+    SDL_RenderCopy(rend,objectTexture,&portalAnimRect[1][0],&renderRects.posOnScreen);
 }
 
 bool Portal::activate(){
