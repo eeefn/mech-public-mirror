@@ -19,7 +19,7 @@ class TextureManager{
         SDL_Texture* inventoryTexture;
         SDL_Texture* itemsTexture;
         SDL_Texture* numberTexture;
-        SDL_Texture* soulSwordSwing;
+        SDL_Texture* toolSwingTexture;
         void initPermanentTextures(SDL_Renderer* renderer);
         void initializeTexture(SDL_Texture** textureToInit, const char* filePath, SDL_Renderer* renderer);
 };
