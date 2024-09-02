@@ -33,8 +33,6 @@ class Inventory{
     private:
         int stackLimit;
 		RenderRect renderRect;
-//		SDL_Rect inventoryPos;
-//		SDL_Rect invenTexSel = {0,0,198,75};
 		SDL_Rect itemPos = {0,0,16*inventoryScale,16*inventoryScale};
         vector<vector<Item*>> inventory;
 		Item* heldItem = nullptr;
