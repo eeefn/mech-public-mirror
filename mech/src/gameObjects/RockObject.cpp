@@ -22,6 +22,7 @@ void RockObject::handleClick(Item* clickedBy){
             objectHealth -= tool->damagePerFrame;
             if(objectHealth <= 0){
                 gameObjectManager.queueObjectForRemoval(this);
+                GameObject::dropObject(0,1,xTile,yTile);
             }
         }
     }
