@@ -32,7 +32,7 @@ void Inventory::pickItem(){
 	if(itemAtClick != nullptr){
 		heldItem = itemAtClick;
 		inventory[slotClicked.slotsY][slotClicked.slotsX] = nullptr;
-		heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
+		heldItem->renderRectRefs.posOnScreen = {0,0,16*inventoryScale,16*inventoryScale};
 	}
 }
 
@@ -42,7 +42,7 @@ void Inventory::pickHalf(){
 		if(half != 0){
 			heldItem = itemFactory.makeItem(itemAtClick->itemType,half);
 			itemAtClick->numberOfItems -= half;
-			heldItem->itemPos = {0,0,16*inventoryScale,16*inventoryScale};
+			heldItem->renderRectRefs.posOnScreen = {0,0,16*inventoryScale,16*inventoryScale};
 		}
 	}
 	return;
@@ -122,12 +122,12 @@ void Inventory::renderInventory(){
 	}
 	if(heldItem != nullptr){
 		SDL_Rect* itemTexturePos = heldItem->getSpriteSheetPos();
-		SDL_GetMouseState(&heldItem->itemPos.x,&heldItem->itemPos.y);
-		heldItem->itemPos.x -= (inventoryScale * 16) / 2;
-		heldItem->itemPos.y -= (inventoryScale * 16) / 2;
-		SDL_RenderCopy(windowManager.renderer,textureManager.itemsTexture,itemTexturePos,&heldItem->itemPos);
+		SDL_GetMouseState(&heldItem->renderRectRefs.posOnScreen.x,&heldItem->renderRectRefs.posOnScreen.y);
+		heldItem->renderRectRefs.posOnScreen.x -= (inventoryScale * 16) / 2;
+		heldItem->renderRectRefs.posOnScreen.y -= (inventoryScale * 16) / 2;
+		SDL_RenderCopy(windowManager.renderer,textureManager.itemsTexture,itemTexturePos,&heldItem->renderRectRefs.posOnScreen);
 		if(heldItem->numberOfItems > 1){
-			renderNumber(heldItem->numberOfItems,heldItem->itemPos.x + 2*inventoryScale,heldItem->itemPos.y,windowManager.renderer);
+			renderNumber(heldItem->numberOfItems,heldItem->renderRectRefs.posOnScreen.x + 2*inventoryScale,heldItem->renderRectRefs.posOnScreen.y,windowManager.renderer);
 		}
 	}
 }

@@ -8,5 +8,6 @@ SDL_Rect* RockItem::getSpriteSheetPos(){
 }
 
 RockItem::RockItem(int numItems) : Item(numItems,ItemCodes::ROCK){
+    renderRectRefs.posOnTexture = spriteSheetPos;
     return;
 }
