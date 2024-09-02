@@ -15,6 +15,7 @@ Player::Player()  {
 	headDisplayRect = {0,0,PLAYER_WIDTH, 20*PLAYER_SCALE};
 	torsoDisplayRect = {0,0,PLAYER_WIDTH, 16*PLAYER_SCALE};
 	legsDisplayRect = {0,0,PLAYER_WIDTH, 16*PLAYER_SCALE};
+	swingDisplayRect = {0,0,32*PLAYER_SCALE,48*PLAYER_SCALE};
 	entityWidth = PLAYER_WIDTH; entityHeight = PLAYER_HEIGHT;
 	inAir = true;
 	isPlayer = true; inMech = false; fullBodyAnimation = false;
@@ -55,6 +56,10 @@ void Player::initializePlayerAnim(){
 			mushFullAnim[j][i] = {i * 32,j * 48,32,48};
 		}
 	}
+	for(int i = 0; i < 5; i++){
+		swingAnim[0][i] = {i*32,0,32,48};		
+	}
+	
 }
 
 void Player::jump() {
@@ -90,6 +95,9 @@ void Player::render(SDL_Renderer* renderer){
 			SDL_RenderCopy(renderer, textureManager.headTexture, &headAnim[headSelect.curAnim][headSelect.curFrame], &headDisplayRect);
 			SDL_RenderCopy(renderer,textureManager.torsoTexture,&torsoAnim[torsoSelect.curAnim][torsoSelect.curFrame],&torsoDisplayRect);
 			SDL_RenderCopy(renderer, textureManager.legsTexture, &legsAnim[legsSelect.curAnim][legsSelect.curFrame], &legsDisplayRect);
+			if(torsoSelect.curAnim == 3){
+				SDL_RenderCopy(renderer,textureManager.soulSwordSwing,&swingAnim[0][torsoSelect.curFrame],&swingDisplayRect);
+			}
 		}
 	}
 }
@@ -100,6 +108,7 @@ void Player::updateEntity(float dt) {
 	headDisplayRect.x = displayRect.x; headDisplayRect.y = displayRect.y;
 	torsoDisplayRect.x = displayRect.x; torsoDisplayRect.y = displayRect.y + 16 * PLAYER_SCALE;
 	legsDisplayRect.x = displayRect.x; legsDisplayRect.y = displayRect.y + 32 * PLAYER_SCALE;
+	swingDisplayRect.x = displayRect.x + 14 * PLAYER_SCALE; swingDisplayRect.y = displayRect.y;
 	if (velX < 0){
 		animator.setAnimation(&WALK_L_ANIM,true,&legsSelect);
 		animator.setAnimation(&TORSO_L_ANIM,true,&torsoSelect);
