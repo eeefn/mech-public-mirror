@@ -42,8 +42,11 @@ protected:
 	SDL_Rect headAnim[4][3];
 	SDL_Rect torsoAnim[4][5];
 	SDL_Rect legsAnim[4][15];
-	SDL_Rect swingAnim[1][5];
+	SDL_Rect posOnSwingTexture;
 private:
 	void setHeadAnimR();
 	void setHeadAnimL();
+	void updateTextRectToolSwing();
+	bool checkAndSetValidTool();
+	int heldToolCode = -1;
 };
