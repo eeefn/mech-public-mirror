@@ -20,6 +20,7 @@ void TextureManager::initPermanentTextures(SDL_Renderer* renderer){
 	initializeTexture(&this->inventoryTexture,"../resources/Inventory.bmp",renderer);
 	initializeTexture(&this->itemsTexture,"../resources/ItemSheet.bmp",renderer);
 	initializeTexture(&this->numberTexture,"../resources/Numbers.bmp",renderer);
+	initializeTexture(&this->soulSwordSwing,"../resources/SoulSwordSwing.bmp",renderer);
 }
 
 /*Double pointer because passing uninitialized values seems to cause xPlosion*/
