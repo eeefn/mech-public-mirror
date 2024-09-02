@@ -1,5 +1,6 @@
 #pragma once
-#include "./items/Item.h"
+#include "items/Item.h"
+#include "RenderRects.h"
 #include <vector>
 #include <array>
 using std::vector;
@@ -31,8 +32,9 @@ class Inventory{
 		vector<Item*>* getInventoryRow(int rowToGet);
     private:
         int stackLimit;
-		SDL_Rect inventoryPos;
-		SDL_Rect invenTexSel = {0,0,198,75};
+		RenderRect renderRect;
+//		SDL_Rect inventoryPos;
+//		SDL_Rect invenTexSel = {0,0,198,75};
 		SDL_Rect itemPos = {0,0,16*inventoryScale,16*inventoryScale};
         vector<vector<Item*>> inventory;
 		Item* heldItem = nullptr;
