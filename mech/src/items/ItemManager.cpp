@@ -14,7 +14,7 @@ ItemManager::ItemManager(){
 
 void ItemManager::makeExternalItem(int itemCode, int itemCount, int xPos, int yPos){
     Item* newItem = itemFactory.makeItem(itemCode,itemCount);
-    newItem->renderRectRefs.posOnScreen = {0,0,16*itemFactory.itemScale,16*itemFactory.itemScale};
+    newItem->renderRectRefs.posOnScreen = {camera.getXPosWithinFrame(xPos),camera.getYPosWithinFrame(yPos),16*itemFactory.itemScale,16*itemFactory.itemScale};
     newItem->xPos = xPos;
     newItem->yPos = yPos;
     itemList.push_back(newItem);

@@ -3,6 +3,7 @@
 #include <string>
 #include "../RenderRects.h"
 #include "../items/Item.h"
+#include "../items/ItemManager.h"
 
 class GameObject
 {
@@ -26,5 +27,6 @@ class GameObject
 	protected:
 		SDL_Texture* objectTexture;
 		int objectHealth;
+		void dropObject(int itemCode,int itemCount, int xTile, int yTile);
 };
 

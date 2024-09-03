@@ -44,3 +44,9 @@ void GameObject::update(){
 	renderRects.posOnScreen.x = camera.getXPosWithinFrame(xTile * mapInfo.TILE_DIM);
 	renderRects.posOnScreen.y = camera.getYPosWithinFrame(yTile * mapInfo.TILE_DIM);
 }
+
+void GameObject::dropObject(int itemCode,int itemCount, int xTile, int yTile){
+	int xPos = xTile * mapInfo.TILE_DIM;
+	int yPos = yTile * mapInfo.TILE_DIM;
+	itemManager.makeExternalItem(itemCode,itemCount,xPos,yPos);	
+}
