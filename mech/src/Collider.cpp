@@ -16,7 +16,7 @@ Collider::Collider() {
 	}
 }
 
-bool Collider::checkItemCollision(Item* item){
+bool Collider::checkItemTileMapCollision(Item* item){
 	bool colOccur = false;
 	for (unsigned int i = 0; i < 4; i++) {
 		colResults[i] = false;
@@ -34,7 +34,7 @@ bool Collider::checkItemCollision(Item* item){
 	return colOccur;	
 }
 
-bool Collider::collisionCheck(Entity* entity) {
+bool Collider::checkEntityTileMapCollision(Entity* entity) {
 	bool colOccur = false;
 	//reset collision results
 	for (unsigned int i = 0; i < 4; i++) {
@@ -84,7 +84,7 @@ bool Collider::collisionCheck(Entity* entity) {
 	return colOccur;
 }
 
-bool Collider::checkObjectCollision(SDL_Rect* hitBox1,SDL_Rect* hitBox2) const{
+bool Collider::checkRectRectCollision(SDL_Rect* hitBox1,SDL_Rect* hitBox2) const{
 	if ((hitBox1->x < hitBox2->x + hitBox2->w) && (hitBox1->x + hitBox1->w > hitBox2->x)){
 		if ((hitBox1->y < hitBox2->y + hitBox2->h) && (hitBox1->y + hitBox1->h > hitBox2->y)){
 			return true;
@@ -93,7 +93,7 @@ bool Collider::checkObjectCollision(SDL_Rect* hitBox1,SDL_Rect* hitBox2) const{
 	return false;
 }
 
-bool Collider::pointWithinRect(int xPos,int yPos,SDL_Rect &renObj){
+bool Collider::checkPointWithinRect(int xPos,int yPos,SDL_Rect &renObj){
 	if(xPos >= renObj.x && xPos <= renObj.x + renObj.w){
 		if(yPos >= renObj.y && yPos <= renObj.y + renObj.x){
 			return true;		

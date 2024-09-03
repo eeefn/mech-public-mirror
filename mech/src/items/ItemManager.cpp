@@ -24,7 +24,7 @@ void ItemManager::makeExternalItem(int itemCode, int itemCount, int xPos, int yP
 void ItemManager::updateItems(float dt){
     for(auto item : itemList){
         item->update(dt);
-        if(collider.checkItemCollision(item)){
+        if(collider.checkItemTileMapCollision(item)){
             item->yPos = (item->yPos) / mapInfo.TILE_DIM * mapInfo.TILE_DIM;
         }
         item->renderRectRefs.posOnScreen.x = camera.getXPosWithinFrame(item->xPos);
@@ -45,7 +45,7 @@ void ItemManager::handleItemCollisions(){
     vector<Item*>::iterator item = itemList.begin();
     while(item != itemList.end()){
         //if item collided with player and item okay to add to inventory, remove item from list. 
-        if(collider.checkObjectCollision(&(*item)->renderRectRefs.posOnScreen, &camera.cameraTarget->displayRect) && playerState.addToInventory((*item))){
+        if(collider.checkRectRectCollision(&(*item)->renderRectRefs.posOnScreen, &camera.cameraTarget->displayRect) && playerState.addToInventory((*item))){
             item = itemList.erase(item);
         }
         else{
