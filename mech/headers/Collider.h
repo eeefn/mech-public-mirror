@@ -7,8 +7,6 @@
 class Collider
 {
 public:
-	int yLen, xLen;
-	int xTilePos, yTilePos;
 	bool colResults[4] = {false,false,false,false};
 	Collider();
 	bool checkEntityTileMapCollision(Entity* entity);

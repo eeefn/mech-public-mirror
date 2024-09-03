@@ -3,17 +3,11 @@
 #include "../headers/Camera.h"
 #include "../headers/Map.h"
 #include "../headers/constants.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
 
 Collider collider;
 
 Collider::Collider() {
-	yLen = 0; xLen = 0; xTilePos = 0; yTilePos = 0;
-	for (unsigned int i = 0; i < 4; i++) {
-		colResults[i] = false;
-	}
+
 }
 
 bool Collider::checkItemTileMapCollision(Item* item){
@@ -21,10 +15,10 @@ bool Collider::checkItemTileMapCollision(Item* item){
 	for (unsigned int i = 0; i < 4; i++) {
 		colResults[i] = false;
 	}
-	xTilePos = item->xPos / mapInfo.TILE_DIM;
-	yTilePos = item->yPos / mapInfo.TILE_DIM;
-	yLen = 16*2 / mapInfo.TILE_DIM;
-	xLen =  16*2 / mapInfo.TILE_DIM;
+	int xTilePos = item->xPos / mapInfo.TILE_DIM;
+	int yTilePos = item->yPos / mapInfo.TILE_DIM;
+	int yLen = 16*2 / mapInfo.TILE_DIM;
+	int xLen =  16*2 / mapInfo.TILE_DIM;
 	for (short i = xTilePos; i < (xTilePos + xLen); i++) {
 		if (map.tileMap[yTilePos + yLen][i] > 0) {
 			colResults[0] = true;
@@ -41,10 +35,10 @@ bool Collider::checkEntityTileMapCollision(Entity* entity) {
 		colResults[i] = false;
 	}
 	//assign the number of tiles tall the collison box is. same for width of collision box
-	xTilePos = entity->posX / mapInfo.TILE_DIM;
-	yTilePos = entity->posY / mapInfo.TILE_DIM;
-	yLen = (entity->entityHeight) / mapInfo.TILE_DIM;
-	xLen =  (entity->entityWidth) / mapInfo.TILE_DIM;
+	int xTilePos = entity->posX / mapInfo.TILE_DIM;
+	int yTilePos = entity->posY / mapInfo.TILE_DIM;
+	int yLen = (entity->entityHeight) / mapInfo.TILE_DIM;
+	int xLen =  (entity->entityWidth) / mapInfo.TILE_DIM;
 	//if going down
 	if (entity->velY > 0) {
 		//iterate through the bottom  x tiles to check for collision
