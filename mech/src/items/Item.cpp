@@ -2,6 +2,8 @@
 #include <cmath>
 
 Item::Item(int numItems,int itType){
+   xPos = 0;
+   yPos = 0;
    if(numItems < 0){
       numItems = 0;
    }
