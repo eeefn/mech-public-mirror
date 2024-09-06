@@ -13,6 +13,7 @@ Item::Item(int numItems,int itType){
    numberOfItems = numItems;
    itemType = itType;
    yAcc = 250;
+   yVel = 0;
    return;
 }
 
