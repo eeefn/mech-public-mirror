@@ -52,7 +52,9 @@ void setup() {
 	playerState.addToInventory(pick);
 	playerState.addToInventory(shovel);
 	playerState.addToInventory(rod);
-	srand(time(NULL));
+	//first frame time
+	lastFrameTime = SDL_GetTicks();
+	//srand(time(NULL));
 }
 
 void processInput() {
@@ -70,7 +72,7 @@ void update() {
 	if (timeToWait > 0 && timeToWait <= FRAME_TARGET_TIME) {
 		SDL_Delay(timeToWait);
 	}
-	
+		
 	float deltaTime = (SDL_GetTicks() - lastFrameTime) / 1000.0f;
 	lastFrameTime = SDL_GetTicks();
 
@@ -102,9 +104,7 @@ void render() {
 
 int main(int argc, char* argv[]) {
 	gameIsRunning = windowManager.initializeWindow();
-	
 	setup(); 
-	
 	while (gameIsRunning) {
 		processInput();
 		update();
