@@ -1,10 +1,10 @@
 
 #pragma once
-#include "GameObject.h"
+#include "ResourceObject.h"
 #include <SDL.h>
-class RockObject : public GameObject{
+class RockObject : public ResourceObject{
     public:
         RockObject(short id, int xT, int yT, short rockType);
-        void handleClick(Item* clickedBy);
+        //void handleClick(Item* clickedBy);
 
 };
