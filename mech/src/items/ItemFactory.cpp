@@ -7,6 +7,7 @@
 #include "../../headers/items/SoulAxeItem.h"
 #include "../../headers/items/SoulFishingRodItem.h"
 #include "../../headers/items/ItemCodes.h"
+#include "../../headers/items/GardenBoxItem.h"
 
 using namespace ItemCodes;
 ItemFactory itemFactory;
@@ -19,7 +20,8 @@ ItemFactory::ItemFactory(){
         {SOULPICK,[](int itemCount) -> Item* {SoulPickaxeItem* pick = new SoulPickaxeItem();return pick;}},
         {SOULSHOVEL,[](int itemCount) -> Item* {SoulShovelItem* shovel = new SoulShovelItem();return shovel;}},
         {SOULAXE,[](int itemCount) -> Item* {SoulAxeItem* axe = new SoulAxeItem();return axe;}},
-        {SOULFISHINGROD,[](int itemCount) -> Item* {SoulFishingRodItem* rod = new SoulFishingRodItem();return rod;}}
+        {SOULFISHINGROD,[](int itemCount) -> Item* {SoulFishingRodItem* rod = new SoulFishingRodItem();return rod;}},
+        {GARDENBOX,[](int itemCount) -> Item* {GardenBoxItem* box = new GardenBoxItem(itemCount);return box;}},
     };
    return; 
 }
