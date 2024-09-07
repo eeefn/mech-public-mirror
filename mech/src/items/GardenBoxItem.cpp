@@ -8,5 +8,6 @@ SDL_Rect* GardenBoxItem::getSpriteSheetPos(){
 }
 
 GardenBoxItem::GardenBoxItem(int numItems) : Item(numItems,ItemCodes::GARDENBOX){
+    objectPlaced = 9;
     return;
 }
