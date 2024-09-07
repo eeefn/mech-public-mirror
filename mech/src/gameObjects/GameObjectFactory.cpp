@@ -1,7 +1,7 @@
 #include "../../headers/gameObjects/GameObjectFactory.h"
 #include "../../headers/gameObjects/Portal.h"
 #include "../../headers/gameObjects/RockObject.h"
-#include "../../headers/gameObjects/Mushroom.h" 
+#include "../../headers/gameObjects/MushroomObject.h" 
 #include "../../headers/gameObjects/ShrubObject.h"
 #include "../../headers/gameObjects/GameObjectCodes.h"
 
@@ -11,7 +11,7 @@ GameObjectFactory gameObjectFactory;
 
 GameObjectFactory::GameObjectFactory(){
     objectFactory = {
-        {MUSHROOM, [](int id, short xT, short yT) -> GameObject* {Mushroom* mush = new Mushroom(0,id,xT,yT); return mush;}}, 
+        {MUSHROOM, [](int id, short xT, short yT) -> GameObject* {MushroomObject* mush = new MushroomObject(0,id,xT,yT); return mush;}}, 
         {PORTAL, [](int id, short xT, short yT) -> GameObject* {Portal* port = new Portal(id,xT,yT);return port;}},
         {ROCK_0, [](int id, short xT, short yT) -> GameObject* {RockObject* rock0 = new RockObject(id,xT,yT,0);return rock0;}},
         {ROCK_1, [](int id, short xT, short yT) -> GameObject* {RockObject* rock1 = new RockObject(id,xT,yT,1);return rock1;}},
