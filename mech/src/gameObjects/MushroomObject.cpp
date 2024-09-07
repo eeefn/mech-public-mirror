@@ -1,7 +1,7 @@
-#include "../../headers/gameObjects/Mushroom.h"
+#include "../../headers/gameObjects/MushroomObject.h"
 #include "../../headers/TextureManager.h"
 
-Mushroom::Mushroom(short mType, short id, int xT, int yT) : GameObject(2,16,16) {
+MushroomObject::MushroomObject(short mType, short id, int xT, int yT) : GameObject(2,16,16) {
 	mushType = mType;
 	objectTexture = textureManager.gameObjectsTexture;
 	xTile = xT;
@@ -11,7 +11,7 @@ Mushroom::Mushroom(short mType, short id, int xT, int yT) : GameObject(2,16,16) 
 	ID = id;
 }
 
-void Mushroom::render(SDL_Renderer* rend){
+void MushroomObject::render(SDL_Renderer* rend){
 	GameObject::render(rend);
 	if(highlighted){
 		renderRects.posOnTexture.x += 16;
@@ -19,7 +19,8 @@ void Mushroom::render(SDL_Renderer* rend){
 		renderRects.posOnTexture.x -= 16;
 	}
 }
-bool Mushroom::highlight(const std::string& srcEntityId){
+
+bool MushroomObject::highlight(const std::string& srcEntityId){
 	if(srcEntityId == "SOUL_SPRITE"){
 		highlighted = true;
 	}
