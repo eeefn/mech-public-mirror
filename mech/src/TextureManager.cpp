@@ -6,7 +6,6 @@ TextureManager textureManager;
 
 void TextureManager::initPermanentTextures(SDL_Renderer* renderer){
 	initializeTexture(&this->tileTexture,"../resources/tile4.bmp",renderer);
-	initializeTexture(&this->gameObjectTexture,"../resources/objSheetv1.bmp",renderer);
 	initializeTexture(&this->guiTexture,"../resources/gui.bmp",renderer);
 	initializeTexture(&this->mechTexture,"../resources/mech.bmp",renderer);
 	initializeTexture(&this->spriteTexture,"../resources/mushBoyJ.bmp",renderer);
