@@ -4,7 +4,6 @@
 class TextureManager{
     public:
         SDL_Texture* tileTexture;
-        SDL_Texture* gameObjectTexture;
         SDL_Texture* guiTexture;
         SDL_Texture* mechTexture;
         SDL_Texture* mechAtTexture;
