@@ -216,13 +216,18 @@ void Player::processCollision(bool collisions[4]) {
 void Player::updateTextRectToolSwing(){
 	int soulColor = playerState.getSoulColor();
 	posOnSwingTexture.x = (soulColor * (5*32)) + (torsoSelect.curFrame * 32);
-	posOnSwingTexture.y = (heldToolCode - 2) * 48;
+	if(heldToolCode < 6){
+		posOnSwingTexture.y = (heldToolCode - 2) * 48;
+	}
+	else{
+		posOnSwingTexture.y = (heldToolCode - 3) * 48;
+	}
 }
 
 bool Player::checkAndSetValidTool(){
 	Item* heldItem = playerState.hotbar.getItemAtSelectedSlot();
 	int itemCode = heldItem->itemType;
-	if(itemCode == 2 || itemCode == 3 || itemCode == 4){
+	if(itemCode == 2 || itemCode == 3 || itemCode == 4 || itemCode == 6){
 		heldToolCode = itemCode;
 		return true;
 	}
