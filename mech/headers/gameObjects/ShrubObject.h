@@ -1,7 +1,7 @@
 #pragma once
-#include "GameObject.h"
+#include "ResourceObject.h"
 
-class ShrubObject : public GameObject{
+class ShrubObject : public ResourceObject{
     public:
         ShrubObject(short id, int xT, int yT, short shrubType);
 
