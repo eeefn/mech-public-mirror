@@ -15,6 +15,7 @@ class PlayInput{
         void processMousedown(SDL_Event *keydownEvent);
         void processKeyup(SDL_Event *keyupEvent);
         void processHeldKeys(SDL_Event *keyEvent);
+        void processScrollWheel(SDL_Event *wheelEvent);
         void processHeldClick();
         bool mousedown = false;
 };
