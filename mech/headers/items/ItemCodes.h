@@ -6,4 +6,5 @@ namespace ItemCodes{
     const int SOULSHOVEL = 4;
     const int SOULFISHINGROD = 5;
     const int SOULAXE = 6;
+    const int GARDENBOX = 7;
 }

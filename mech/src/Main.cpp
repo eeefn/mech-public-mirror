@@ -21,6 +21,7 @@
 #include "../headers/items/SoulShovelItem.h"
 #include "../headers/items/SoulFishingRodItem.h"
 #include "../headers/items/SoulAxeItem.h"
+#include "../headers/items/GardenBoxItem.h"
 
 #include "../headers/controller/InputFactory.h"
 
@@ -47,6 +48,7 @@ void setup() {
 	Item* shovel = new SoulShovelItem();
 	Item* rod = new SoulFishingRodItem();
 	Item* axe = new SoulAxeItem();
+	Item* gardenBox = new GardenBoxItem(3);
 	itemManager.makeExternalItem(1,1,200, 200);
 	playerState.addToInventory(rock);
 	playerState.addToInventory(stick);
@@ -55,6 +57,7 @@ void setup() {
 	playerState.addToInventory(shovel);
 	playerState.addToInventory(rod);
 	playerState.addToInventory(axe);
+	playerState.addToInventory(gardenBox);
 	//first frame time
 	lastFrameTime = SDL_GetTicks();
 	//srand(time(NULL));
