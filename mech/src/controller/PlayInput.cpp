@@ -46,6 +46,9 @@ bool PlayInput::processInput(SDL_Event *keyEvent, int *gameMode){
 	else if(keyEvent->type == SDL_MOUSEBUTTONUP){
 		mousedown = false;
 	}
+	else if (keyEvent->type == SDL_MOUSEWHEEL){
+		playInput.processScrollWheel(keyEvent);	
+	}
 	if(keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat != 0){
 		playInput.processHeldKeys(keyEvent);
 	}
@@ -61,6 +64,15 @@ bool PlayInput::processInput(SDL_Event *keyEvent, int *gameMode){
 void PlayInput::update(){
 	if(mousedown){
 		processHeldClick();		
+	}
+}
+
+void PlayInput::processScrollWheel(SDL_Event *wheelEvent){
+	if(wheelEvent->wheel.y < 0){
+		playerState.hotbar.incrementSelectedSlot();
+	}
+	else{
+		playerState.hotbar.decrementSelectedSlot();
 	}
 }
 

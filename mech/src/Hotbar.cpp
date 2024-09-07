@@ -1,6 +1,7 @@
 #include "../headers/Hotbar.h"
 #include "../headers/TextureManager.h"
 #include "../headers/WindowManager.h"
+
 int Hotbar::hotbarScale = 3;
 
 Hotbar::Hotbar(vector<Item*> *bar){
@@ -56,4 +57,18 @@ void Hotbar::setSelectedSlot(int setTo){
 Item* Hotbar::getItemAtSelectedSlot(){
     selectedItem = barRef->at(selectedSlot);
     return selectedItem; 
+}
+
+void Hotbar::incrementSelectedSlot(){
+    selectedSlot = (selectedSlot + 1) % slots;
+    selectedItem = barRef->at(selectedSlot);
+    selectPos.x = getItemXPos(selectedSlot) - 1 * hotbarScale;
+}
+void Hotbar::decrementSelectedSlot(){
+    selectedSlot = (selectedSlot - 1) % slots;
+    if(selectedSlot < 0){
+        selectedSlot = slots - 1;
+    }
+    selectedItem = barRef->at(selectedSlot);
+    selectPos.x = getItemXPos(selectedSlot) - 1 * hotbarScale;
 }
