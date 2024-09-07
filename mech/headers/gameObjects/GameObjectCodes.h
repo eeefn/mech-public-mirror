@@ -7,4 +7,7 @@ namespace gameObjectCodes{
     const int SHRUB_0 = 6;
     const int SHRUB_1 = 7;
     const int SHRUB_2 = 8;
+    const int GARDENBOX_0 = 9;
+    const int GARDENBOX_1 = 10;
+    const int GARDENBOX_2 = 11;
 }
