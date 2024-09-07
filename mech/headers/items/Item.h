@@ -15,4 +15,5 @@ class Item{
         int yPos;
         int yVel;
         int yAcc;
+        int objectPlaced = -1;
 };
