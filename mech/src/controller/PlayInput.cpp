@@ -19,7 +19,6 @@ PlayInput::PlayInput(){
 void PlayInput::processHeldKeys(SDL_Event *keyEvent){
 	switch (keyEvent->key.keysym.sym){
 		case SDLK_LSHIFT:
-		
 			entityManager.spawnSoulSprite();
 			camera.setCameraTarget(entityManager.swapEntityList());
 			inputFactory.setControlMode(controlModes.SOUL_SPRITE);
@@ -36,27 +35,25 @@ void PlayInput::processHeldKeys(SDL_Event *keyEvent){
 
 bool PlayInput::processInput(SDL_Event *keyEvent, int *gameMode){
 	bool gameIsRunning = true;
-	if (keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat == 0) {
-		gameIsRunning = playInput.processKeydown(keyEvent, gameMode);
-	}
-	if (keyEvent->type == SDL_MOUSEBUTTONDOWN) {
-		playInput.processMousedown(keyEvent);
-		mousedown = true;
-	}
-	else if(keyEvent->type == SDL_MOUSEBUTTONUP){
-		mousedown = false;
-	}
-	else if (keyEvent->type == SDL_MOUSEWHEEL){
-		playInput.processScrollWheel(keyEvent);	
-	}
-	if(keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat != 0){
-		playInput.processHeldKeys(keyEvent);
-	}
-	if (keyEvent->type == SDL_KEYUP && keyEvent->key.repeat == 0) {
-		playInput.processKeyup(keyEvent);
-	}
-	else if (keyEvent->type == SDL_QUIT) {
-			gameIsRunning = false;
+	switch(keyEvent->type){
+		case SDL_KEYDOWN:
+			if(keyEvent->key.repeat == 0){
+				gameIsRunning = processKeydown(keyEvent,gameMode);				
+			}
+			else{
+				processHeldKeys(keyEvent);
+			}
+			break;
+		case SDL_KEYUP:
+			playInput.processKeyup(keyEvent); break;
+		case SDL_MOUSEBUTTONDOWN:
+			playInput.processMousedown(keyEvent); mousedown = true; break;
+		case SDL_MOUSEBUTTONUP:
+			mousedown = false; break;
+		case SDL_MOUSEWHEEL:
+			processScrollWheel(keyEvent); break;
+		case SDL_QUIT:
+			gameIsRunning = false; break;
 	}
 	return gameIsRunning;
 }
