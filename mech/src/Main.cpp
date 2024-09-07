@@ -20,6 +20,7 @@
 #include "../headers/items/SoulPickaxeItem.h"
 #include "../headers/items/SoulShovelItem.h"
 #include "../headers/items/SoulFishingRodItem.h"
+#include "../headers/items/SoulAxeItem.h"
 
 #include "../headers/controller/InputFactory.h"
 
@@ -41,10 +42,11 @@ void setup() {
 
 	Item* rock = new RockItem(128);
 	Item* stick = new StickItem(127);
-	Item* sword = new SoulSwordItem(1);
+	Item* sword = new SoulSwordItem();
 	Item* pick = new SoulPickaxeItem();
 	Item* shovel = new SoulShovelItem();
 	Item* rod = new SoulFishingRodItem();
+	Item* axe = new SoulAxeItem();
 	itemManager.makeExternalItem(1,1,200, 200);
 	playerState.addToInventory(rock);
 	playerState.addToInventory(stick);
@@ -52,6 +54,7 @@ void setup() {
 	playerState.addToInventory(pick);
 	playerState.addToInventory(shovel);
 	playerState.addToInventory(rod);
+	playerState.addToInventory(axe);
 	//first frame time
 	lastFrameTime = SDL_GetTicks();
 	//srand(time(NULL));

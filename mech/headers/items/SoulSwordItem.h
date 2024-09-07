@@ -4,7 +4,7 @@
 
 class SoulSwordItem : public ToolItem{
     public:
-        SoulSwordItem(int numItems);
+        SoulSwordItem();
         SDL_Rect* getSpriteSheetPos();
     private:
         static SDL_Rect* spriteSheetPos;

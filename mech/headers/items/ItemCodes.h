@@ -5,4 +5,5 @@ namespace ItemCodes{
     const int SOULPICK = 3;
     const int SOULSHOVEL = 4;
     const int SOULFISHINGROD = 5;
+    const int SOULAXE = 6;
 }

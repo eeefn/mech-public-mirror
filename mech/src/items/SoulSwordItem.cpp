@@ -3,7 +3,7 @@
 
 SDL_Rect* SoulSwordItem::spriteSheetPos = new SDL_Rect {0,16,16,16};
 
-SoulSwordItem::SoulSwordItem(int numItems) : ToolItem(ItemCodes::SOULSWORD){
+SoulSwordItem::SoulSwordItem() : ToolItem(ItemCodes::SOULSWORD){
     return;
 }
 
