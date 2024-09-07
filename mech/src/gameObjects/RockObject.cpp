@@ -1,7 +1,4 @@
-#include <memory>
-
 #include "../../headers/gameObjects/RockObject.h"
-#include "../../headers/gameObjects/gameObjectManager.h"
 #include "../../headers/TextureManager.h"
 #include "../../headers/items/ItemCodes.h"
 #include "../../headers/items/ToolItem.h"
