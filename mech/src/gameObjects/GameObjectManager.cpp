@@ -24,6 +24,10 @@ void GameObjectManager::removeObject(GameObject* objToRemove){
 	delete objToRemove;	
 }
 
+GameObject* GameObjectManager::makeUnmanagedObject(short objectType,short xT, short yT){
+	GameObject* unmanagedObj = gameObjectFactory.makeObject(objectType, xT,yT);
+	return unmanagedObj;
+}
 //pass string into lambda factory function
 //add returned object to list if it exists
 void GameObjectManager::makeObject(short objectType, short xT, short yT){
