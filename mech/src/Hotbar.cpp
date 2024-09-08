@@ -53,9 +53,15 @@ int Hotbar::getItemXPos(int xInvenPos){
 
 void Hotbar::setSelectedSlot(int setTo){
     if(setTo < slots && setTo >= 0){
-       selectedSlot = setTo;
-       selectedItem = barRef->at(setTo);
-       selectPos.x = getItemXPos(setTo) - 1 * hotbarScale;
+        selectedSlot = setTo;
+        selectedItem = barRef->at(setTo);
+        selectPos.x = getItemXPos(setTo) - 1 * hotbarScale;
+        if(selectedItem->objectPlaced > 0){
+            buildShadow.setShadowObject(selectedItem->objectPlaced);
+        }
+        else{
+            buildShadow.destroyShadowObject();
+        }
     }
 }
 
