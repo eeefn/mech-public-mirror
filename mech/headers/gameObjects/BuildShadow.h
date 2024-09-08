@@ -9,8 +9,8 @@ class BuildShadow{
         void update();
         void setShadowObject(short objectType);
         bool placeShadowObject();
-    private:
         void destroyShadowObject();
+    private:
         bool checkValidPlacement();
         void snapCenterPoint(SDL_Point* pointToSnapAndCenter);
         GameObject* shadowObject;

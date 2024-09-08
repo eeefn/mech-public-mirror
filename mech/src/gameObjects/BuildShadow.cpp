@@ -1,5 +1,8 @@
 #include "../../headers/gameObjects/BuildShadow.h"
 #include "../../headers/gameObjects/GameObjectManager.h"
+#include "../../headers/WindowManager.h"
+#include "../../headers/PlayerState.h"
+#include "../../headers/TextureManager.h"
 
 BuildShadow::BuildShadow(){
    return; 
@@ -14,11 +17,21 @@ BuildShadow::~BuildShadow(){
 
 
 void BuildShadow::render(){
-    if(false/*inventory != open && buildShadow != nullptr*/){
+    if(!playerState.inventoryOpen && (shadowObject != nullptr)){
         if(checkValidPlacement()){
             //render shadow tinted green
+            SDL_SetTextureColorMod(textureManager.gameObjectsTexture,0,0xFF,0);
+            SDL_SetTextureAlphaMod(textureManager.gameObjectsTexture,128);
+            shadowObject->render(windowManager.renderer);
+            SDL_SetTextureColorMod(textureManager.gameObjectsTexture,0xFF,0xFF,0xFF);
+            SDL_SetTextureAlphaMod(textureManager.gameObjectsTexture,0xFF);
         }
         else{
+            SDL_SetTextureColorMod(textureManager.gameObjectsTexture,0xFF,0,0);
+            SDL_SetTextureAlphaMod(textureManager.gameObjectsTexture,128);
+            shadowObject->render(windowManager.renderer);
+            SDL_SetTextureColorMod(textureManager.gameObjectsTexture,0xFF,0xFF,0xFF);
+            SDL_SetTextureAlphaMod(textureManager.gameObjectsTexture,0xFF);
             //render shadow tinted red
         }    
     }
@@ -28,6 +41,7 @@ void BuildShadow::render(){
 void BuildShadow::update(){
     if(shadowObject != nullptr){
         SDL_Point shadowPosOnScreen = {0,0}; //poll cursor pos ;
+        SDL_GetMouseState(&shadowPosOnScreen.x,&shadowPosOnScreen.y);
         snapCenterPoint(&shadowPosOnScreen);
         shadowObject->renderRects.posOnScreen.x = shadowPosOnScreen.x;
         shadowObject->renderRects.posOnScreen.y = shadowPosOnScreen.y;
@@ -38,20 +52,20 @@ void BuildShadow::update(){
 -Modifies the point to snap to the tileMap grid boundaries*/
 void BuildShadow::snapCenterPoint(SDL_Point* pointToSnapAndCenter){
     //center
-    pointToSnapAndCenter->x += shadowObject->scaledWidth / 2;
-    pointToSnapAndCenter->y += shadowObject->scaledHeight / 2;
+    pointToSnapAndCenter->x -= shadowObject->scaledWidth / 2;
+    pointToSnapAndCenter->y -= shadowObject->scaledHeight / 2;
     //snap
     //camera.snapPointToTileMap(pointToSnapAndCenter);
 }
 
 void BuildShadow::setShadowObject(short objectType){
     if(shadowObject == nullptr){
-        shadowObject = nullptr /*gameObjectManager.makeUnmanagedObject(objectType,-1,-1)*/;
+        shadowObject = gameObjectManager.makeUnmanagedObject(objectType,-1,-1);
     }
     else{
         if(shadowObject->ID != objectType) {
             delete shadowObject;
-            shadowObject = nullptr/*gameObjectManager.makeUnmanagedObject(objectType,-1,-1)*/;
+            shadowObject = gameObjectManager.makeUnmanagedObject(objectType,-1,-1);
         }
     }
 }
@@ -62,7 +76,7 @@ void BuildShadow::destroyShadowObject(){
 }
 
 bool BuildShadow::checkValidPlacement(){
-    return false;
+    return true;
 }
 
 bool BuildShadow::placeShadowObject(){
