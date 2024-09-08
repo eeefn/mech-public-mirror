@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "items/Item.h"
+#include "gameObjects/BuildShadow.h"
+
 using std::vector;
 
 class Hotbar{ 
@@ -8,6 +10,7 @@ class Hotbar{
         static int hotbarScale;
         Hotbar(vector<Item*> *bar);
         void render();
+        void update();
         void setSelectedSlot(int setTo);
         Item* getItemAtSelectedSlot();
         void incrementSelectedSlot();
@@ -24,6 +27,7 @@ class Hotbar{
         SDL_Rect selectRectTexSel = {198,0,18,18};
         vector<Item*> *barRef;
         Item *selectedItem;
+        BuildShadow buildShadow;
         void initializeHotbar();
         int getItemXPos(int xInvenPos);
         int slots;

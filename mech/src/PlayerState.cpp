@@ -6,6 +6,9 @@ PlayerState::PlayerState(){
 
 }
 
+void PlayerState::update(){
+	hotbar.update();
+}
 void PlayerState::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
 	playerInventory.handleInventoryClick(xPos,yPos,clickType);	
 }
