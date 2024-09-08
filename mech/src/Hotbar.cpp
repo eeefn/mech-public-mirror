@@ -4,7 +4,7 @@
 
 int Hotbar::hotbarScale = 3;
 
-Hotbar::Hotbar(vector<Item*> *bar){
+Hotbar::Hotbar(vector<Item*> *bar) : buildShadow(){
     barRef = bar;    
     slots = bar->size();
     initializeHotbar();
@@ -37,7 +37,12 @@ void Hotbar::render(){
         }
     }
     SDL_RenderCopy(windowManager.renderer,textureManager.inventoryTexture, &selectRectTexSel,&selectPos);
+    buildShadow.render();
     return;
+}
+
+void Hotbar::update(){
+    buildShadow.update();    
 }
 
 int Hotbar::getItemXPos(int xInvenPos){

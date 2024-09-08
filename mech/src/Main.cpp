@@ -88,6 +88,7 @@ void update() {
 		camera.update();
 		gameObjectManager.updateGameObjects();
 		itemManager.updateItems(deltaTime);
+		playerState.update();
 	}
 	inputFactory.update();
 }

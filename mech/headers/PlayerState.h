@@ -13,6 +13,7 @@ class PlayerState {
         void setSoulColor(int color);
         int getSoulColor();
         int getSoulVal();
+        void update();
         bool inventoryOpen = false;
     private:
 		Inventory playerInventory = Inventory(10,3,128);
