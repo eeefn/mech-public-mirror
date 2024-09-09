@@ -16,6 +16,8 @@ class GameObject
 		RenderRect renderRects;
 		int scaledWidth, scaledHeight;
 		bool highlighted = false;
+		bool hasLeftNeighbor = false;
+		bool hasRightNeighbor = false;
 		virtual bool place();
 		virtual bool destroy();
 		virtual bool activate();

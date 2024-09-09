@@ -19,6 +19,8 @@ class GameObjectManager{
         void updateGameObjects();
 		GameObject* getFirstHighlightedObject();
         bool checkObjectObjectListCollision(GameObject* obj);
+        const bool checkForLeftNeighbor(GameObject* obj);
+        const bool checkForRightNeighbor(GameObject* obj);
         std::vector<GameObject*> gameObjectList;
     private:
         std::vector<GameObject*> objectsToRemove;
