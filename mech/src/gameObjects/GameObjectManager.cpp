@@ -36,6 +36,10 @@ void GameObjectManager::makeObject(short objectType, short xT, short yT){
 	}
 }
 
+bool GameObjectManager::checkObjectObjectListCollision(GameObject* obj){
+	return true;	
+}
+
 void GameObjectManager::manageHighlightedObjects(SDL_Rect* hitBox,const std::string& entityId){
 	for (auto gameObject : gameObjectList){
 		if (collider.checkRectRectCollision(hitBox, &gameObject->renderRects.posOnScreen)){

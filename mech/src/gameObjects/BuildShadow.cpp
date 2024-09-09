@@ -76,6 +76,11 @@ void BuildShadow::destroyShadowObject(){
 }
 
 bool BuildShadow::checkValidPlacement(){
+    if(true/*!gameObjectManager.checkObjectObjectListCollision()*/){
+        if(true/*!collider.checkGameObjectTilemapCollision()*/){
+            return true;
+        }
+    }
     return true;
 }
 
