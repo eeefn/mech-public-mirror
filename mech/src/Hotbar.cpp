@@ -13,10 +13,11 @@ Hotbar::Hotbar(vector<Item*> *bar) : buildShadow(){
     return;
 }
 
-void Hotbar::handleClick(int mouseXPos,int mouseYPos,int buttonPressed){
-    if(buildShadow.validPlacement == true){ 
-
+bool Hotbar::handleClick(){
+    if(buildShadow.placeShadowObject()){
+        return true;
     }
+    return false; 
 }
 
 void Hotbar::initializeHotbar(){
@@ -70,10 +71,11 @@ void Hotbar::setSelectedSlot(int setTo){
                 buildShadow.destroyShadowObject();
             }           
         }
+        else{
+            selectPos.x = getItemXPos(setTo) - 1 * hotbarScale;
+            buildShadow.destroyShadowObject();
+        }
         
-    }
-    else{
-        buildShadow.destroyShadowObject();
     }
 }
 
@@ -83,15 +85,12 @@ Item* Hotbar::getItemAtSelectedSlot(){
 }
 
 void Hotbar::incrementSelectedSlot(){
-    selectedSlot = (selectedSlot + 1) % slots;
-    selectedItem = barRef->at(selectedSlot);
-    selectPos.x = getItemXPos(selectedSlot) - 1 * hotbarScale;
+    setSelectedSlot((selectedSlot + 1) % slots);
 }
 void Hotbar::decrementSelectedSlot(){
-    selectedSlot = (selectedSlot - 1) % slots;
-    if(selectedSlot < 0){
-        selectedSlot = slots - 1;
+    int sSlot = (selectedSlot - 1) % slots;
+    if(sSlot < 0){
+        sSlot = slots - 1;
     }
-    selectedItem = barRef->at(selectedSlot);
-    selectPos.x = getItemXPos(selectedSlot) - 1 * hotbarScale;
+    setSelectedSlot(sSlot);
 }

@@ -80,6 +80,13 @@ GameObject* GameObjectManager::getFirstHighlightedObject(){
 	return nullptr;
 }
 
+bool GameObjectManager::returnManagedObject(GameObject* objReturned){
+	if(objReturned != nullptr){
+		gameObjectList.push_back(objReturned);
+		return true;
+	}
+	return false;
+}
 GameObject* GameObjectManager::getGameObjectAtClick(int xPos, int yPos,Uint32 clickType){
 	for(auto gameObject : gameObjectList){
 		if(collider.checkPointWithinRect(xPos,yPos,gameObject->renderRects.posOnScreen)){

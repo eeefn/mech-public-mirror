@@ -29,6 +29,7 @@ class Inventory{
 		void handleInventoryClick(int xPos, int yPos,Uint32 clickType);
 		void renderInventory();
         bool addToInventory(Item* itemToAdd);
+		void deleteFromInventory(Item* itemToDelete);
 		vector<Item*>* getInventoryRow(int rowToGet);
     private:
         int stackLimit;

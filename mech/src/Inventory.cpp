@@ -264,3 +264,14 @@ vector<Item*>* Inventory::getInventoryRow(int rowToGet){
 	}
 	return returnRow;
 }
+
+void Inventory::deleteFromInventory(Item* itemToDelete){
+	for(int i = 0; i < inventorySize.slotsY; i++){
+		for(int j = 0; j < inventorySize.slotsX;j++){
+			if(inventory[i][j] == itemToDelete){
+				delete itemToDelete;
+				inventory[i][j] = nullptr;
+			}
+		}
+	}
+}

@@ -13,6 +13,7 @@ class PlayerState {
         void setSoulColor(int color);
         int getSoulColor();
         int getSoulVal();
+        void placeItemFromHotbar();
         void update();
         bool inventoryOpen = false;
     private:

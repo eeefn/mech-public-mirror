@@ -5,6 +5,8 @@
 #include "../../headers/TextureManager.h"
 #include "../../headers/Camera.h"
 
+#include <iostream>
+
 BuildShadow::BuildShadow(){
    return; 
 }
@@ -19,7 +21,7 @@ BuildShadow::~BuildShadow(){
 
 void BuildShadow::render(){
     if(!playerState.inventoryOpen && (shadowObject != nullptr)){
-        if(checkValidPlacement()){
+        if(validPlacement){
             //render shadow tinted green
             SDL_SetTextureColorMod(textureManager.gameObjectsTexture,0,0xFF,0);
             SDL_SetTextureAlphaMod(textureManager.gameObjectsTexture,128);
@@ -46,8 +48,7 @@ void BuildShadow::update(){
         snapCenterPoint(&shadowPosOnScreen);
         shadowObject->renderRects.posOnScreen.x = shadowPosOnScreen.x;
         shadowObject->renderRects.posOnScreen.y = shadowPosOnScreen.y;
-        shadowObject->xTile = camera.getGlobalXPosFromFrame(shadowPosOnScreen.x) / mapInfo.TILE_DIM;
-        shadowObject->yTile = camera.getGlobalXPosFromFrame(shadowPosOnScreen.y) / mapInfo.TILE_DIM;
+        validPlacement = checkValidPlacement();
     }
 }
 
@@ -74,8 +75,10 @@ void BuildShadow::setShadowObject(short objectType){
 }
 
 void BuildShadow::destroyShadowObject(){
-    delete shadowObject;
-    shadowObject = nullptr;
+    if(shadowObject != nullptr){
+        delete shadowObject;
+        shadowObject = nullptr;
+    }
 }
 
 bool BuildShadow::checkValidPlacement(){
@@ -88,5 +91,15 @@ bool BuildShadow::checkValidPlacement(){
 }
 
 bool BuildShadow::placeShadowObject(){
+    if(validPlacement && shadowObject != nullptr){
+        int xPS = shadowObject->renderRects.posOnScreen.x;
+        shadowObject->xTile = camera.getGlobalXPosFromFrame(xPS) / mapInfo.TILE_DIM;
+        int yPS = shadowObject->renderRects.posOnScreen.y;
+        shadowObject->yTile = camera.getGlobalYPosFromFrame(yPS) / mapInfo.TILE_DIM;
+        if(gameObjectManager.returnManagedObject(shadowObject)){
+            shadowObject = nullptr;
+            return true;
+        }
+    }
     return false; 
 }
