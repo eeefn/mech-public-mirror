@@ -14,6 +14,9 @@ class Camera{
 
         int getXPosWithinFrame(int xPos);
         int getYPosWithinFrame(int yPos);
+        int getGlobalXPosFromFrame(int xPos);
+        int getGlobalYPosFromFrame(int yPos);
+        void snapPointToTileMap(SDL_Point* pointToSnap);
         void initializeCamera(int height,int width,Entity* initialCameraTarget, SDL_DisplayMode dm);
         void update();
         void setCameraTarget(Entity *newCameraTarget);

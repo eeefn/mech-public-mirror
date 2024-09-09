@@ -3,6 +3,7 @@
 #include "../../headers/WindowManager.h"
 #include "../../headers/PlayerState.h"
 #include "../../headers/TextureManager.h"
+#include "../../headers/Camera.h"
 
 BuildShadow::BuildShadow(){
    return; 
@@ -55,7 +56,7 @@ void BuildShadow::snapCenterPoint(SDL_Point* pointToSnapAndCenter){
     pointToSnapAndCenter->x -= shadowObject->scaledWidth / 2;
     pointToSnapAndCenter->y -= shadowObject->scaledHeight / 2;
     //snap
-    //camera.snapPointToTileMap(pointToSnapAndCenter);
+    camera.snapPointToTileMap(pointToSnapAndCenter);
 }
 
 void BuildShadow::setShadowObject(short objectType){
