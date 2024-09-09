@@ -114,6 +114,9 @@ void PlayInput::processHeldClick(){
 				objectAtClick->handleClick(clickedBy);
 			}
 		}
+		if(playerState.hotbar.handleClick()){
+			playerState.placeItemFromHotbar();				
+		}
 	}
 }
 

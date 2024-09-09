@@ -226,10 +226,12 @@ void Player::updateTextRectToolSwing(){
 
 bool Player::checkAndSetValidTool(){
 	Item* heldItem = playerState.hotbar.getItemAtSelectedSlot();
-	int itemCode = heldItem->itemType;
-	if(itemCode == 2 || itemCode == 3 || itemCode == 4 || itemCode == 6){
-		heldToolCode = itemCode;
-		return true;
+	if(heldItem != nullptr){
+		int itemCode = heldItem->itemType;
+		if(itemCode == 2 || itemCode == 3 || itemCode == 4 || itemCode == 6){
+			heldToolCode = itemCode;
+			return true;
+		}
 	}
 	return false;
 }
