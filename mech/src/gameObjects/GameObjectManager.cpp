@@ -1,8 +1,10 @@
 #include "../../headers/gameObjects/GameObjectManager.h" 
 #include "../../headers/gameObjects/GameObjectFactory.h"
+#include "../../headers/gameObjects/GardenBoxObject.h"
 #include "../../headers/Camera.h"
 #include "../../headers/Collider.h"
 #include <algorithm>
+#include <iostream>
 
 GameObjectManager gameObjectManager;
 
@@ -98,4 +100,34 @@ GameObject* GameObjectManager::getGameObjectAtClick(int xPos, int yPos,Uint32 cl
 //allows objects to request their own deletion on the next update cycle
 void GameObjectManager::queueObjectForRemoval(GameObject* objToRemove){
 	objectsToRemove.push_back(objToRemove);
+}
+
+const bool GameObjectManager::checkForLeftNeighbor(GameObject* obj){
+	SDL_Rect leftShiftedRect = obj->renderRects.posOnScreen;
+	leftShiftedRect.x = leftShiftedRect.x - leftShiftedRect.w;
+	for(auto objInList : gameObjectList){
+		if(objInList->ID == obj->ID){
+			if(objInList->renderRects.posOnScreen.x == leftShiftedRect.x){
+				GardenBoxObject* cast = dynamic_cast<GardenBoxObject*>(objInList);
+				cast->updateRenderTextureL();
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+const bool GameObjectManager::checkForRightNeighbor(GameObject* obj){
+	SDL_Rect rightShiftedRect = obj->renderRects.posOnScreen;
+	rightShiftedRect.x = rightShiftedRect.x + rightShiftedRect.w;
+	for(auto objInList : gameObjectList){
+		if(objInList->ID == obj->ID){
+			if(objInList->renderRects.posOnScreen.x == rightShiftedRect.x){
+				GardenBoxObject* cast = dynamic_cast<GardenBoxObject*>(objInList);
+				cast->updateRenderTextureR();
+				return true;
+			}			
+		}
+	}
+	return false;
 }

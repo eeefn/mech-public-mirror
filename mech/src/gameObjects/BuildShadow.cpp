@@ -97,6 +97,7 @@ bool BuildShadow::placeShadowObject(){
         int yPS = shadowObject->renderRects.posOnScreen.y;
         shadowObject->yTile = camera.getGlobalYPosFromFrame(yPS) / mapInfo.TILE_DIM;
         if(gameObjectManager.returnManagedObject(shadowObject)){
+            shadowObject->place();
             shadowObject = nullptr;
             return true;
         }

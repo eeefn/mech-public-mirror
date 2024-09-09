@@ -5,4 +5,8 @@
 class GardenBoxObject : public ResourceObject{
     public:
         GardenBoxObject(short id, int xT, int yT);
+        bool place();
+        void updateRenderTextureR();
+        void updateRenderTextureL();
+        void handleTextureBasedOnNeighbors();
 };
