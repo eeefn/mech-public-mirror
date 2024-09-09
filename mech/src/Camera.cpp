@@ -26,6 +26,13 @@ int Camera::getXPosWithinFrame(int xPos){
 int Camera::getYPosWithinFrame(int yPos){
 	return yPos - frame.y;
 }
+int Camera::getGlobalXPosFromFrame(int xPos){
+	return xPos + frame.x;	
+}
+
+int Camera::getGlobalYPosFromFrame(int yPos){
+	return yPos + frame.y;
+}
 
 void Camera::initializeTileSelect(){
     for (unsigned int i = 0; i < mapInfo.TILE_WIDTH_IN_TILE_MAP; i++) {
@@ -96,4 +103,10 @@ void Camera::updateCameraOffsets(){
 
 void Camera::renderBackround(){
 	SDL_RenderCopy(windowManager.renderer,textureManager.caveBackroundTexture,NULL,NULL);
+}
+void Camera::snapPointToTileMap(SDL_Point* pointToSnap){
+	int globalX = getGlobalXPosFromFrame(pointToSnap->x);	
+	pointToSnap->x = getXPosWithinFrame((globalX / mapInfo.TILE_DIM) * mapInfo.TILE_DIM);
+	int globalY = getGlobalYPosFromFrame(pointToSnap->y);
+	pointToSnap->y = getYPosWithinFrame((globalY / mapInfo.TILE_DIM) * mapInfo.TILE_DIM);
 }
