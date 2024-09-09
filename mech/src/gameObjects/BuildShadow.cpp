@@ -46,6 +46,8 @@ void BuildShadow::update(){
         snapCenterPoint(&shadowPosOnScreen);
         shadowObject->renderRects.posOnScreen.x = shadowPosOnScreen.x;
         shadowObject->renderRects.posOnScreen.y = shadowPosOnScreen.y;
+        shadowObject->xTile = camera.getGlobalXPosFromFrame(shadowPosOnScreen.x) / mapInfo.TILE_DIM;
+        shadowObject->yTile = camera.getGlobalXPosFromFrame(shadowPosOnScreen.y) / mapInfo.TILE_DIM;
     }
 }
 
@@ -77,12 +79,12 @@ void BuildShadow::destroyShadowObject(){
 }
 
 bool BuildShadow::checkValidPlacement(){
-    if(true/*!gameObjectManager.checkObjectObjectListCollision()*/){
+    if(!gameObjectManager.checkObjectObjectListCollision(shadowObject)){
         if(true/*!collider.checkGameObjectTilemapCollision()*/){
             return true;
         }
     }
-    return true;
+    return false;
 }
 
 bool BuildShadow::placeShadowObject(){
