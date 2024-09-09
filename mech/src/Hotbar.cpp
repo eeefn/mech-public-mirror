@@ -13,6 +13,12 @@ Hotbar::Hotbar(vector<Item*> *bar) : buildShadow(){
     return;
 }
 
+void Hotbar::handleClick(int mouseXPos,int mouseYPos,int buttonPressed){
+    if(buildShadow.validPlacement == true){ 
+
+    }
+}
+
 void Hotbar::initializeHotbar(){
     int hotbarWidth = 198 * hotbarScale;
     int hotbarHeightTB = 4 * hotbarScale;

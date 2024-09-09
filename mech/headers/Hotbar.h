@@ -15,6 +15,7 @@ class Hotbar{
         Item* getItemAtSelectedSlot();
         void incrementSelectedSlot();
         void decrementSelectedSlot();
+        void handleClick(int mouseXPos,int mouseYPos,int buttonPressed);
     private:
         SDL_Rect hotbarTexSelTop = {0,0,198,4};
         SDL_Rect hotbarTexSelMid = {0,9,198,19};

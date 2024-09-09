@@ -10,6 +10,7 @@ class BuildShadow{
         void setShadowObject(short objectType);
         bool placeShadowObject();
         void destroyShadowObject();
+        bool validPlacement;
     private:
         bool checkValidPlacement();
         void snapCenterPoint(SDL_Point* pointToSnapAndCenter);
