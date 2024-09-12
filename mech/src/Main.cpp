@@ -22,6 +22,8 @@
 #include "../headers/items/SoulFishingRodItem.h"
 #include "../headers/items/SoulAxeItem.h"
 #include "../headers/items/GardenBoxItem.h"
+#include "../headers/items/CarrotSeedItem.h"
+#include "../headers/items/YuccaSeedItem.h"
 
 #include "../headers/controller/InputFactory.h"
 
@@ -49,6 +51,8 @@ void setup() {
 	Item* rod = new SoulFishingRodItem();
 	Item* axe = new SoulAxeItem();
 	Item* gardenBox = new GardenBoxItem(3);
+	Item* carrotSeeds = new CarrotSeedItem(3);
+	Item* yuccaSeeds = new YuccaSeedItem(3);
 	itemManager.makeExternalItem(1,1,200, 200);
 	playerState.addToInventory(rock);
 	playerState.addToInventory(stick);
@@ -58,6 +62,8 @@ void setup() {
 	playerState.addToInventory(rod);
 	playerState.addToInventory(axe);
 	playerState.addToInventory(gardenBox);
+	playerState.addToInventory(carrotSeeds);
+	playerState.addToInventory(yuccaSeeds);
 	//first frame time
 	lastFrameTime = SDL_GetTicks();
 	//srand(time(NULL));

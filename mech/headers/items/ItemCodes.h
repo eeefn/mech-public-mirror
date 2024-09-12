@@ -7,4 +7,6 @@ namespace ItemCodes{
     const int SOULFISHINGROD = 5;
     const int SOULAXE = 6;
     const int GARDENBOX = 7;
+    const int CARROTSEED = 8;
+    const int YUCCASEED = 9;
 }
