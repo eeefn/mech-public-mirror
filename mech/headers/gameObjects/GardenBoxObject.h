@@ -9,4 +9,5 @@ class GardenBoxObject : public ResourceObject{
         void updateRenderTextureR();
         void updateRenderTextureL();
         void handleTextureBasedOnNeighbors();
+        void handleClick();
 };

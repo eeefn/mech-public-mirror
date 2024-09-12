@@ -8,6 +8,8 @@
 #include "../../headers/items/SoulFishingRodItem.h"
 #include "../../headers/items/ItemCodes.h"
 #include "../../headers/items/GardenBoxItem.h"
+#include "../../headers/items/YuccaSeedItem.h"
+#include "../../headers/items/CarrotSeedItem.h"
 
 using namespace ItemCodes;
 ItemFactory itemFactory;
@@ -22,6 +24,8 @@ ItemFactory::ItemFactory(){
         {SOULAXE,[](int itemCount) -> Item* {SoulAxeItem* axe = new SoulAxeItem();return axe;}},
         {SOULFISHINGROD,[](int itemCount) -> Item* {SoulFishingRodItem* rod = new SoulFishingRodItem();return rod;}},
         {GARDENBOX,[](int itemCount) -> Item* {GardenBoxItem* box = new GardenBoxItem(itemCount);return box;}},
+        {YUCCASEED,[](int itemCount) -> Item* {YuccaSeedItem* yucca = new YuccaSeedItem(itemCount);return yucca;}},
+        {CARROTSEED,[](int itemCount) -> Item* {CarrotSeedItem* carrot = new CarrotSeedItem(itemCount);return carrot;}}
     };
    return; 
 }
