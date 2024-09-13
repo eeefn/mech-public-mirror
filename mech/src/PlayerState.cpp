@@ -8,9 +8,8 @@ PlayerState::PlayerState(){
 
 void PlayerState::placeItemFromHotbar(){
 	Item* itemToPlace = hotbar.getItemAtSelectedSlot();
-	itemToPlace->numberOfItems--;
-	if(itemToPlace->numberOfItems <= 0){
-		playerInventory.deleteFromInventory(hotbar.getItemAtSelectedSlot());		
+	--(*itemToPlace);
+	if(itemToPlace->requestDeletion){
 		hotbar.decrementSelectedSlot();
 	}
 	else{
@@ -19,6 +18,7 @@ void PlayerState::placeItemFromHotbar(){
 }
 
 void PlayerState::update(){
+	playerInventory.update();
 	hotbar.update();
 }
 void PlayerState::handleInventoryClick(int xPos, int yPos,Uint32 clickType){

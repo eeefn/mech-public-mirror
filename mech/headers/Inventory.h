@@ -23,11 +23,11 @@ class Inventory{
 			}
 			return ar;
 		}();
-
         InventoryPosition inventorySize;
 		InventoryPosition slotClicked;
 		void handleInventoryClick(int xPos, int yPos,Uint32 clickType);
 		void renderInventory();
+		void update();
         bool addToInventory(Item* itemToAdd);
 		void deleteFromInventory(Item* itemToDelete);
 		vector<Item*>* getInventoryRow(int rowToGet);
@@ -48,4 +48,5 @@ class Inventory{
 		int getItemYPos(int yInvenPos);
 		int getInvPosFromXPos(int xPos);
 		int getInvPosFromYPos(int yPos);
+		void manageDeletedItems();
 };

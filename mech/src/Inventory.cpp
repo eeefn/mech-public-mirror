@@ -275,3 +275,21 @@ void Inventory::deleteFromInventory(Item* itemToDelete){
 		}
 	}
 }
+
+void Inventory::update(){
+	manageDeletedItems();
+}
+
+void Inventory::manageDeletedItems(){
+	for(int i = 0; i < inventorySize.slotsY; i++){
+		for(int j = 0; j < inventorySize.slotsX; j++){
+			Item* item = inventory[i][j];
+			if(item != nullptr){
+				if(item->requestDeletion){
+					delete item;
+					inventory[i][j] = nullptr;
+				}
+			}
+		}
+	}
+}

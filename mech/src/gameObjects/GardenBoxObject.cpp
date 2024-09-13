@@ -18,15 +18,18 @@ void GardenBoxObject::handleClick(Item* clickedBy){
     if(clickedBy->itemType == ItemCodes::CARROTSEED){
         if(!slotOne.occupied){
             slotOne = {true, 1, ItemCodes::CARROTSEED};
+            --(*clickedBy);
         }
         else if(!slotTwo.occupied) {
             slotTwo = {true,0,ItemCodes::CARROTSEED};
+            --(*clickedBy);
         }
     }
     else if(clickedBy->itemType == ItemCodes::YUCCASEED){
         if(!slotOne.occupied && !slotTwo.occupied){
            slotOne = {true,0,ItemCodes::YUCCASEED}; 
            slotTwo = {true,0,ItemCodes::YUCCASEED};
+           --(*clickedBy);
         }
     }
 }

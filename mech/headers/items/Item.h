@@ -9,7 +9,11 @@ class Item{
         RenderRectRef renderRectRefs;
         virtual SDL_Rect* getSpriteSheetPos();
         void update(float dt);
+        virtual Item operator++();
+        virtual Item operator--();
         int numberOfItems;
+        bool requestDeletion = false;
+        int stackLimit = 128;
         int itemType;
         int xPos;
         int yPos;
