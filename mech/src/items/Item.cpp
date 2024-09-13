@@ -36,3 +36,18 @@ void Item::update(float dt){
    yPos += round(yVel * dt);
    return;
 }
+
+Item Item::operator++(){
+   if(numberOfItems + 1 <= stackLimit){
+      numberOfItems++;
+   }
+   return *this;
+}
+
+Item Item::operator--(){
+   numberOfItems--;
+   if(numberOfItems <= 0){
+      requestDeletion = true;
+   }
+   return *this;
+}
