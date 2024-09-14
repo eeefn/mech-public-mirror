@@ -95,3 +95,19 @@ bool Collider::checkPointWithinRect(int xPos,int yPos,SDL_Rect &renObj){
 	}
 	return false;
 }
+
+bool Collider::checkGameObjectTileMapCollision(GameObject* gameObject){
+	int xStop = gameObject->xTile + gameObject->scaledWidth/mapInfo.TILE_DIM;	
+	int yStop = gameObject->yTile + gameObject->scaledWidth/mapInfo.TILE_DIM;
+	if(xStop > mapInfo.MAX_LVL_WIDTH || yStop > mapInfo.MAX_LVL_HEIGHT){
+		return true;	
+	}
+	for(int i = gameObject->yTile; i < yStop; i++){
+		for(int j = gameObject->xTile; j < xStop; j++){
+			if(map.tileMap[i][j] > 0){
+				return true;
+			}
+		}
+	}
+	return false;	
+}
