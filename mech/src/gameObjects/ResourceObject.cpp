@@ -17,6 +17,7 @@ void ResourceObject::handleClick(Item* clickedBy){
             if(objectHealth <= 0){
                 gameObjectManager.queueObjectForRemoval(this);
                 GameObject::dropObject(droppedResourceItemCode,numResourceDropped,xTile,yTile);
+                markedForDeletion = true;
             }
         }
     }
