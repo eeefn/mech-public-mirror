@@ -1,7 +1,7 @@
-#include "../../headers/gameObjects/GardenBoxObject.h"
 #include "../../headers/TextureManager.h"
-#include "../../headers/gameObjects/ResourceObject.h"
 #include "../../headers/items/ItemCodes.h"
+#include "../../headers/gameObjects/ResourceObject.h"
+#include "../../headers/gameObjects/GardenBoxObject.h"
 #include "../../headers/gameObjects/GameObjectManager.h"
 
 GardenBoxObject::GardenBoxObject(short id, int xT, int yT) : ResourceObject(2,32,32,ItemCodes::GARDENBOX,1,ItemCodes::SOULAXE) {
@@ -13,27 +13,65 @@ GardenBoxObject::GardenBoxObject(short id, int xT, int yT) : ResourceObject(2,32
     objectHealth = 50;
 }
 
-void GardenBoxObject::handleClick(Item* clickedBy){
-    ResourceObject::handleClick(clickedBy);
-    if(clickedBy->itemType == ItemCodes::CARROTSEED){
-        if(!slotOne.occupied){
-            slotOne = {true, 1, ItemCodes::CARROTSEED};
-            --(*clickedBy);
-        }
-        else if(!slotTwo.occupied) {
-            slotTwo = {true,0,ItemCodes::CARROTSEED};
-            --(*clickedBy);
-        }
+void GardenBoxObject::update(){
+    GameObject::update();
+    updateSeedSlot(slotOne);
+    if(!allSlotsOccupiedBySingleSeed){
+        updateSeedSlot(slotTwo);
     }
-    else if(clickedBy->itemType == ItemCodes::YUCCASEED){
-        if(!slotOne.occupied && !slotTwo.occupied){
-           slotOne = {true,0,ItemCodes::YUCCASEED}; 
-           slotTwo = {true,0,ItemCodes::YUCCASEED};
-           --(*clickedBy);
+}
+
+void GardenBoxObject::updateSeedSlot(SeedSlot& slot){
+    if(slot.occupied){
+        if(slot.phase != 3){
+            auto curTime = std::chrono::steady_clock::now();
+            auto secsElapsed = std::chrono::duration_cast<std::chrono::seconds>(curTime - slot.phaseGrowthStart).count();
+            if(secsElapsed > 2){
+                slot.phase++;
+                slot.phaseGrowthStart = curTime;
+            }
         }
     }
 }
 
+void GardenBoxObject::handleClick(Item* clickedBy){
+    ResourceObject::handleClick(clickedBy);
+    if(clickedBy->itemType == ItemCodes::CARROTSEED || clickedBy->itemType == ItemCodes::YUCCASEED){
+        if(!plantSeedInSlot(slotOne, clickedBy)){
+            plantSeedInSlot(slotTwo,clickedBy);
+        }
+    }
+    if(markedForDeletion){
+        dropSlotsHeldItem(slotOne);
+        if(slotTwo.occupied && slotTwo.seedType != ItemCodes::YUCCASEED){
+            dropSlotsHeldItem(slotTwo);
+        }
+    }
+}
+
+bool GardenBoxObject::plantSeedInSlot(SeedSlot& slot,Item* seedClickedBy){
+    if(!slot.occupied && !allSlotsOccupiedBySingleSeed){
+        slot = {true, 0, seedClickedBy->itemType};
+        --(*seedClickedBy);
+        slotOne.phaseGrowthStart = std::chrono::steady_clock::now();
+        if(seedClickedBy->itemType == ItemCodes::YUCCASEED){
+            allSlotsOccupiedBySingleSeed = true;
+            //GardenBoxFull
+        }
+        return true;
+    }
+    return false;
+}
+void GardenBoxObject::dropSlotsHeldItem(SeedSlot& cropSlot){
+    if(cropSlot.occupied){
+        if(cropSlot.phase == 3){
+            //drop crop 
+        }
+        else{
+            GameObject::dropObject(cropSlot.seedType,1,xTile,yTile);
+        }
+    }
+}
 void GardenBoxObject::render(SDL_Renderer* rend){
     GameObject::render(rend);
     if(slotOne.occupied){
