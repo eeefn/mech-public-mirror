@@ -36,6 +36,15 @@ void GardenBoxObject::updateSeedSlot(SeedSlot& slot){
 
 void GardenBoxObject::handleClick(Item* clickedBy){
     ResourceObject::handleClick(clickedBy);
+    if(clickedBy->itemType == ItemCodes::SOULSHOVEL){
+        dropSlotsHeldItem(slotOne);
+        if(slotTwo.occupied && slotTwo.seedType != ItemCodes::YUCCASEED){
+            dropSlotsHeldItem(slotTwo);
+        }
+        else{
+            slotTwo = {false,0,-1};
+        }
+    }
     if(clickedBy->itemType == ItemCodes::CARROTSEED || clickedBy->itemType == ItemCodes::YUCCASEED){
         if(!plantSeedInSlot(slotOne, clickedBy)){
             plantSeedInSlot(slotTwo,clickedBy);
@@ -56,7 +65,6 @@ bool GardenBoxObject::plantSeedInSlot(SeedSlot& slot,Item* seedClickedBy){
         slotOne.phaseGrowthStart = std::chrono::steady_clock::now();
         if(seedClickedBy->itemType == ItemCodes::YUCCASEED){
             allSlotsOccupiedBySingleSeed = true;
-            //GardenBoxFull
         }
         return true;
     }
@@ -64,16 +72,22 @@ bool GardenBoxObject::plantSeedInSlot(SeedSlot& slot,Item* seedClickedBy){
 }
 void GardenBoxObject::dropSlotsHeldItem(SeedSlot& cropSlot){
     if(cropSlot.occupied){
+        if(cropSlot.seedType == ItemCodes::YUCCASEED){
+            allSlotsOccupiedBySingleSeed = false;
+        }
         if(cropSlot.phase == 3){
             //drop crop 
             std::vector<int> droppedCrops = CropDropFactory::getCropsDroppedBySeed(cropSlot.seedType);
             for(auto drop : droppedCrops){
                 GameObject::dropObject(drop,1,xTile,yTile);
             }
+            cropSlot = {false,0,-1};
         }
         else{
             GameObject::dropObject(cropSlot.seedType,1,xTile,yTile);
+            cropSlot = {false,0,-1};
         }
+
     }
 }
 void GardenBoxObject::render(SDL_Renderer* rend){
