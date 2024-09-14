@@ -3,7 +3,7 @@
 #include "../../headers/items/Item.h"
 #include "../../headers/gameObjects/GameObjectManager.h"
 
-ResourceObject::ResourceObject(short scale, int w, int h, int itemCode, int numDropped, int brokenBy) : GameObject(scale, w, h){
+ResourceObject::ResourceObject(int itemCode, int numDropped, int brokenBy){
     droppedResourceItemCode = itemCode;
     numResourceDropped = numDropped;
     toolBrokenBy = brokenBy;
