@@ -10,6 +10,9 @@
 #include "../../headers/items/GardenBoxItem.h"
 #include "../../headers/items/YuccaSeedItem.h"
 #include "../../headers/items/CarrotSeedItem.h"
+#include "../../headers/items/CarrotItem.h"
+#include "../../headers/items/YuccaLeafItem.h"
+#include "../../headers/items/YuccaRootItem.h"
 
 using namespace ItemCodes;
 ItemFactory itemFactory;
@@ -25,7 +28,10 @@ ItemFactory::ItemFactory(){
         {SOULFISHINGROD,[](int itemCount) -> Item* {SoulFishingRodItem* rod = new SoulFishingRodItem();return rod;}},
         {GARDENBOX,[](int itemCount) -> Item* {GardenBoxItem* box = new GardenBoxItem(itemCount);return box;}},
         {YUCCASEED,[](int itemCount) -> Item* {YuccaSeedItem* yucca = new YuccaSeedItem(itemCount);return yucca;}},
-        {CARROTSEED,[](int itemCount) -> Item* {CarrotSeedItem* carrot = new CarrotSeedItem(itemCount);return carrot;}}
+        {CARROTSEED,[](int itemCount) -> Item* {CarrotSeedItem* carrot = new CarrotSeedItem(itemCount);return carrot;}},
+        {CARROT,[](int itemCount) -> Item* {CarrotItem* carrot = new CarrotItem(itemCount);return carrot;}},
+        {YUCCALEAF,[](int itemCount) -> Item* {YuccaLeafItem* leaf = new YuccaLeafItem(itemCount);return leaf;}},
+        {YUCCAROOT,[](int itemCount) -> Item* {YuccaRootItem* root = new YuccaRootItem(itemCount);return root;}}
     };
    return; 
 }
