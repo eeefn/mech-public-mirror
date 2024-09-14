@@ -9,4 +9,7 @@ namespace ItemCodes{
     const int GARDENBOX = 7;
     const int CARROTSEED = 8;
     const int YUCCASEED = 9;
+    const int CARROT = 10;
+    const int YUCCAROOT = 11;
+    const int YUCCALEAF = 12;
 }
