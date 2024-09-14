@@ -1,7 +1,8 @@
 #include "../../headers/TextureManager.h"
-#include "../../headers/items/ItemCodes.h"
 #include "../../headers/gameObjects/GardenBoxObject.h"
 #include "../../headers/gameObjects/GameObjectManager.h"
+#include "../../headers/items/CropDropFactory.h"
+#include <vector>
 
 GardenBoxObject::GardenBoxObject(short id, int xT, int yT, short scale, int width, int height) : GameObject(scale, width, height), ResourceObject(ItemCodes::GARDENBOX,1,ItemCodes::SOULAXE), ConnectedTextureObject(0,64){
     ID = id;
@@ -65,6 +66,10 @@ void GardenBoxObject::dropSlotsHeldItem(SeedSlot& cropSlot){
     if(cropSlot.occupied){
         if(cropSlot.phase == 3){
             //drop crop 
+            std::vector<int> droppedCrops = CropDropFactory::getCropsDroppedBySeed(cropSlot.seedType);
+            for(auto drop : droppedCrops){
+                GameObject::dropObject(drop,1,xTile,yTile);
+            }
         }
         else{
             GameObject::dropObject(cropSlot.seedType,1,xTile,yTile);
