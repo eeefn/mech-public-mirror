@@ -1,4 +1,5 @@
 #include "../../headers/gameObjects/BuildShadow.h"
+#include "../../headers/Collider.h"
 #include "../../headers/gameObjects/GameObjectManager.h"
 #include "../../headers/WindowManager.h"
 #include "../../headers/PlayerState.h"
@@ -83,7 +84,11 @@ void BuildShadow::destroyShadowObject(){
 
 bool BuildShadow::checkValidPlacement(){
     if(!gameObjectManager.checkObjectObjectListCollision(shadowObject)){
-        if(true/*!collider.checkGameObjectTilemapCollision()*/){
+        int xPS = shadowObject->renderRects.posOnScreen.x;
+        shadowObject->xTile = camera.getGlobalXPosFromFrame(xPS) / mapInfo.TILE_DIM;
+        int yPS = shadowObject->renderRects.posOnScreen.y;
+        shadowObject->yTile = camera.getGlobalYPosFromFrame(yPS) / mapInfo.TILE_DIM;
+        if(!collider.checkGameObjectTileMapCollision(shadowObject)){
             return true;
         }
     }
@@ -92,10 +97,6 @@ bool BuildShadow::checkValidPlacement(){
 
 bool BuildShadow::placeShadowObject(){
     if(validPlacement && shadowObject != nullptr){
-        int xPS = shadowObject->renderRects.posOnScreen.x;
-        shadowObject->xTile = camera.getGlobalXPosFromFrame(xPS) / mapInfo.TILE_DIM;
-        int yPS = shadowObject->renderRects.posOnScreen.y;
-        shadowObject->yTile = camera.getGlobalYPosFromFrame(yPS) / mapInfo.TILE_DIM;
         if(gameObjectManager.returnManagedObject(shadowObject)){
             shadowObject->place();
             shadowObject = nullptr;
