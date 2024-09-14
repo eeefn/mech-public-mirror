@@ -9,6 +9,7 @@ class GameObject
 {
 	public:
 		GameObject(short scale, int width, int height);
+		GameObject();
 		virtual ~GameObject();
 		int xTile, yTile;
 		short ID;

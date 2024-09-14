@@ -1,10 +1,9 @@
-
 #pragma once
 #include "GameObject.h"
 
-class ResourceObject : public GameObject{
+class ResourceObject : public virtual GameObject{
     public: 
-        ResourceObject(short scale, int w, int h, int itemCode, int numDropped, int brokenBy);
+        ResourceObject(int itemCode, int numDropped, int brokenBy);
         void handleClick(Item* clickedBy);
     protected:
         int droppedResourceItemCode;

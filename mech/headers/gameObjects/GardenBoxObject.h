@@ -1,15 +1,12 @@
 #pragma once
 #include "ResourceObject.h"
+#include "ConnectedTextureObject.h"
 #include <chrono>
 #include <SDL.h>
 
-class GardenBoxObject : public ResourceObject{
+class GardenBoxObject : public ResourceObject, public ConnectedTextureObject{
     public:
-        GardenBoxObject(short id, int xT, int yT);
-        bool place();
-        void updateRenderTextureR();
-        void updateRenderTextureL();
-        void handleTextureBasedOnNeighbors();
+        GardenBoxObject(short id, int xT, int yT,short scale, int width, int height);
         void handleClick(Item* clickedBy);
         void render(SDL_Renderer* rend);
         void update();

@@ -7,6 +7,9 @@ GameObject::GameObject(short scale, int w, int h){
 	scaledHeight = scale * h;
 	renderRects.posOnScreen = {0,0,scaledWidth,scaledHeight};
 }
+GameObject::GameObject(){
+	
+}
 
 GameObject::~GameObject(){
 
