@@ -66,10 +66,20 @@ void PlayInput::update(){
 
 void PlayInput::processScrollWheel(SDL_Event *wheelEvent){
 	if(wheelEvent->wheel.y < 0){
-		playerState.hotbar.incrementSelectedSlot();
+		if(playerState.inventoryOpen){
+			playerState.craftingWindow.scrollDown();
+		}
+		else{
+			playerState.hotbar.incrementSelectedSlot();
+		}
 	}
 	else{
-		playerState.hotbar.decrementSelectedSlot();
+		if(playerState.inventoryOpen){
+			playerState.craftingWindow.scrollUp();
+		}
+		else{
+			playerState.hotbar.decrementSelectedSlot();
+		}
 	}
 }
 

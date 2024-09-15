@@ -42,6 +42,7 @@ void Gui::render(int gameMode){
 		renderSoul();
 		if(playerState.inventoryOpen){
 			playerState.playerInventory.renderInventory();//render inventory	
+			playerState.craftingWindow.render();
 		}
 		playerState.hotbar.render();
 	}

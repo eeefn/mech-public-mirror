@@ -20,6 +20,7 @@ void PlayerState::placeItemFromHotbar(){
 void PlayerState::update(){
 	playerInventory.update();
 	hotbar.update();
+	craftingWindow.update();
 }
 void PlayerState::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
 	playerInventory.handleInventoryClick(xPos,yPos,clickType);	
