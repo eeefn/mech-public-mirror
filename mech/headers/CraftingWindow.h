@@ -25,9 +25,15 @@ class CraftingWindow{
     private:
         void renderVisibleRecipes();
         void renderRecipeOnPanel(Recipe& recipe);
+        void renderIngredientOnPanel(Ingredient& ingredient, int xOffset);
+        void renderElementWithinPane(SDL_Texture& tex,RenderRect rect);
+        int calcChopVal(SDL_Rect& posOnScreen);
         int scale = 3;
-        int minScrollOffset = 0;
-        int maxScrollOffset = scale * 53;
+        int minScrollBarOffset = 0;
+        int maxScrollBarOffset = scale * 53;
+        int minRecipePaneOffset = 0;
+        int maxRecipePaneOffset = 0;
+        int paneOffset = 0;
         int minYWithinRecipePane = 0;
         int maxYWithinRecipePane = scale * 60;  
         std::vector<Recipe> currentlyCraftableRecipes;
