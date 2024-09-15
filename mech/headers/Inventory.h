@@ -31,9 +31,9 @@ class Inventory{
         bool addToInventory(Item* itemToAdd);
 		void deleteFromInventory(Item* itemToDelete);
 		vector<Item*>* getInventoryRow(int rowToGet);
+		RenderRect renderRect;
     private:
         int stackLimit;
-		RenderRect renderRect;
 		SDL_Rect itemPos = {0,0,16*inventoryScale,16*inventoryScale};
         vector<vector<Item*>> inventory;
 		Item* heldItem = nullptr;
