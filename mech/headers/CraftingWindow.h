@@ -12,6 +12,7 @@ struct Ingredient{
 struct Recipe{
     Ingredient firstIngredient;
     Ingredient secondIngredient;
+    Ingredient result;
 };
 
 class CraftingWindow{
@@ -22,12 +23,17 @@ class CraftingWindow{
         void scrollUp();
         void scrollDown();
     private:
+        void renderVisibleRecipes();
+        void renderRecipeOnPanel(Recipe& recipe);
         int scale = 3;
         int minScrollOffset = 0;
-        int maxScrollOffset = 3 * 53;
+        int maxScrollOffset = scale * 53;
+        int minYWithinRecipePane = 0;
+        int maxYWithinRecipePane = scale * 60;  
         std::vector<Recipe> currentlyCraftableRecipes;
         RenderRect basePanel;
         RenderRect recipePanel;
         RenderRect scrollBar;
         RenderRect selectRecipe;
+        SDL_Rect itemPosOnScreen = {0,0,scale*16,scale*16};
 };
