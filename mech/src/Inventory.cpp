@@ -1,12 +1,11 @@
-#include "../headers/Inventory.h"
-#include "../headers/items/ItemFactory.h"
-#include "../headers/items/ItemManager.h"
-#include "../headers/TextureManager.h"
-#include "../headers/WindowManager.h"
 #include <stdexcept>
 #include <algorithm>
 
-#include <iostream>
+#include "../headers/Inventory.h"
+#include "../headers/TextureManager.h"
+#include "../headers/WindowManager.h"
+#include "../headers/items/ItemManager.h"
+#include "../headers/items/ItemFactory.h"
 
 int Inventory::inventoryScale = 3;
 
@@ -21,7 +20,6 @@ Inventory::Inventory(int slotsX, int slotsY, int stackLimit){
         }
     }
 	initializeInventory();
-    return;
 }
 
 void Inventory::initializeInventory(){
@@ -50,7 +48,6 @@ void Inventory::pickHalf(){
 			heldItem->renderRectRefs.posOnScreen = {0,0,16*inventoryScale,16*inventoryScale};
 		}
 	}
-	return;
 }
 
 void Inventory::renderNumber(int num, int xPos, int yPos,SDL_Renderer* rend){
@@ -164,10 +161,10 @@ bool Inventory::setSlotClicked(int xPosClicked,int yPosClicked){
 
 bool Inventory::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
 	if(setSlotClicked(xPos, yPos)){
-		itemAtClick =inventory[slotClicked.slotsY][slotClicked.slotsX];
+		itemAtClick = inventory[slotClicked.slotsY][slotClicked.slotsX];
 		if(heldItem){
 			if(clickType == SDL_BUTTON_LEFT){
-				placeHeldItem();
+				placeHeldItem(heldItem->numberOfItems);
 			}
 			else if(clickType == SDL_BUTTON_RIGHT){
 				placeHeldItem(1);
@@ -184,10 +181,6 @@ bool Inventory::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
 		return true;
 	}
 	return false;
-}
-
-void Inventory::placeHeldItem(){
-	placeHeldItem(heldItem->numberOfItems);
 }
 
 void Inventory::placeHeldItem(int numItems){
