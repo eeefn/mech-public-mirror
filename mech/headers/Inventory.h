@@ -43,9 +43,9 @@ class Inventory{
 		bool setSlotClicked(int xPosClicked,int yPosClicked);
 		bool checkIfItemQuantityExists(Ingredient ingredient);
 		bool removeFromInventory(Ingredient Ingredient);
-		void placeItem();
+		void placeHeldItem(int numItems);
+		void placeHeldItem();
 		void pickItem();
-		void placeOne();
 		void pickHalf();
 		void renderNumber(int num, int xPos, int yPos,SDL_Renderer* rend);
 		int getItemXPos(int xInvenPos);
