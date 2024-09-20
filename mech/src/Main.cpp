@@ -24,6 +24,7 @@
 #include "../headers/items/GardenBoxItem.h"
 #include "../headers/items/CarrotSeedItem.h"
 #include "../headers/items/YuccaSeedItem.h"
+#include "../headers/items/YuccaLeafItem.h"
 
 #include "../headers/controller/InputFactory.h"
 
@@ -43,7 +44,7 @@ void setup() {
 	map.initialize();
 	camera.initializeCamera(dm.h,dm.w,entityManager.getFrontEntity(),dm);
 
-	Item* rock = new RockItem(128);
+	Item* rock = new RockItem(1);
 	Item* stick = new StickItem(127);
 	Item* sword = new SoulSwordItem();
 	Item* pick = new SoulPickaxeItem();
@@ -53,6 +54,7 @@ void setup() {
 	Item* gardenBox = new GardenBoxItem(3);
 	Item* carrotSeeds = new CarrotSeedItem(3);
 	Item* yuccaSeeds = new YuccaSeedItem(3);
+	Item* yuccaLeaf = new YuccaLeafItem(3);
 	itemManager.makeExternalItem(1,1,200, 200);
 	playerState.addToInventory(rock);
 	playerState.addToInventory(stick);
@@ -64,6 +66,7 @@ void setup() {
 	playerState.addToInventory(gardenBox);
 	playerState.addToInventory(carrotSeeds);
 	playerState.addToInventory(yuccaSeeds);
+	playerState.addToInventory(yuccaLeaf);
 	//first frame time
 	lastFrameTime = SDL_GetTicks();
 	//srand(time(NULL));

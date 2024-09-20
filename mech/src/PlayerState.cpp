@@ -23,9 +23,15 @@ void PlayerState::update(){
 	craftingWindow.update();
 }
 void PlayerState::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
-	playerInventory.handleInventoryClick(xPos,yPos,clickType);	
+	if(!playerInventory.handleInventoryClick(xPos,yPos,clickType)){
+		craftingWindow.handleInventoryClick(xPos,yPos,clickType);
+	}	
+
 }
 
+bool PlayerState::requestCraft(Recipe* recipeToCraft){
+	return playerInventory.craftRecipe(recipeToCraft);	
+}
 bool PlayerState::addToInventory(Item* itemToAdd){
 	return playerInventory.addToInventory(itemToAdd);
 }

@@ -11,6 +11,7 @@ class Item{
         void update(float dt);
         virtual Item operator++();
         virtual Item operator--();
+        virtual bool operator<(const Item& other) const;
         int numberOfItems;
         bool requestDeletion = false;
         int stackLimit = 128;

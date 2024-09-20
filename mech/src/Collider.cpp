@@ -3,7 +3,6 @@
 #include "../headers/Camera.h"
 #include "../headers/Map.h"
 #include "../headers/constants.h"
-
 Collider collider;
 
 Collider::Collider() {
@@ -89,7 +88,7 @@ bool Collider::checkRectRectCollision(SDL_Rect* hitBox1,SDL_Rect* hitBox2) const
 
 bool Collider::checkPointWithinRect(int xPos,int yPos,SDL_Rect &renObj){
 	if(xPos >= renObj.x && xPos <= renObj.x + renObj.w){
-		if(yPos >= renObj.y && yPos <= renObj.y + renObj.x){
+		if(yPos >= renObj.y && yPos <= renObj.y + renObj.h){
 			return true;		
 		}
 	}

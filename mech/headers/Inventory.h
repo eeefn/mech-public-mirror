@@ -1,6 +1,7 @@
 #pragma once
 #include "items/Item.h"
 #include "RenderRects.h"
+#include "CraftingWindow.h"
 #include <vector>
 #include <array>
 using std::vector;
@@ -25,10 +26,11 @@ class Inventory{
 		}();
         InventoryPosition inventorySize;
 		InventoryPosition slotClicked;
-		void handleInventoryClick(int xPos, int yPos,Uint32 clickType);
+		bool handleInventoryClick(int xPos, int yPos,Uint32 clickType);
 		void renderInventory();
 		void update();
         bool addToInventory(Item* itemToAdd);
+        bool craftRecipe(Recipe* recipeToCraft);
 		void deleteFromInventory(Item* itemToDelete);
 		vector<Item*>* getInventoryRow(int rowToGet);
 		RenderRect renderRect;
@@ -39,6 +41,8 @@ class Inventory{
 		Item* heldItem = nullptr;
 		Item* itemAtClick = nullptr;
 		bool setSlotClicked(int xPosClicked,int yPosClicked);
+		bool checkIfItemQuantityExists(Ingredient ingredient);
+		bool removeFromInventory(Ingredient Ingredient);
 		void placeItem();
 		void pickItem();
 		void placeOne();

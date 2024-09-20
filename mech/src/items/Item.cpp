@@ -37,6 +37,9 @@ void Item::update(float dt){
    return;
 }
 
+bool Item::operator<(const Item& other) const{
+   return numberOfItems < other.numberOfItems;   
+}
 Item Item::operator++(){
    if(numberOfItems + 1 <= stackLimit){
       numberOfItems++;
