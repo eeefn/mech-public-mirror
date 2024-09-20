@@ -1,10 +1,11 @@
-#include "../headers/Inventory.h"
-#include "../headers/items/ItemFactory.h"
-#include "../headers/items/ItemManager.h"
-#include "../headers/TextureManager.h"
-#include "../headers/WindowManager.h"
 #include <stdexcept>
 #include <algorithm>
+
+#include "../headers/Inventory.h"
+#include "../headers/TextureManager.h"
+#include "../headers/WindowManager.h"
+#include "../headers/items/ItemManager.h"
+#include "../headers/items/ItemFactory.h"
 
 int Inventory::inventoryScale = 3;
 
@@ -19,7 +20,6 @@ Inventory::Inventory(int slotsX, int slotsY, int stackLimit){
         }
     }
 	initializeInventory();
-    return;
 }
 
 void Inventory::initializeInventory(){
@@ -48,35 +48,6 @@ void Inventory::pickHalf(){
 			heldItem->renderRectRefs.posOnScreen = {0,0,16*inventoryScale,16*inventoryScale};
 		}
 	}
-	return;
-}
-
-void Inventory::placeOne(){
-	if(itemAtClick){
-		if(itemAtClick->itemType == heldItem->itemType){
-			if(itemAtClick->numberOfItems < stackLimit){
-				itemAtClick->numberOfItems++;
-				if(heldItem->numberOfItems > 1){
-					heldItem->numberOfItems--;
-				}
-				else{
-					delete heldItem;
-					heldItem = nullptr;	
-				}
-			}
-		}
-	}
-	else{
-		if(heldItem->numberOfItems > 1){
-			heldItem->numberOfItems--;
-			inventory[slotClicked.slotsY][slotClicked.slotsX] = itemFactory.makeItem(heldItem->itemType,1);
-		}
-		else{
-			inventory[slotClicked.slotsY][slotClicked.slotsX] = heldItem;
-			heldItem = nullptr;	
-		}
-	}
-	return;	
 }
 
 void Inventory::renderNumber(int num, int xPos, int yPos,SDL_Renderer* rend){
@@ -190,13 +161,13 @@ bool Inventory::setSlotClicked(int xPosClicked,int yPosClicked){
 
 bool Inventory::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
 	if(setSlotClicked(xPos, yPos)){
-		itemAtClick =inventory[slotClicked.slotsY][slotClicked.slotsX];
+		itemAtClick = inventory[slotClicked.slotsY][slotClicked.slotsX];
 		if(heldItem){
 			if(clickType == SDL_BUTTON_LEFT){
-				placeItem();
+				placeHeldItem(heldItem->numberOfItems);
 			}
 			else if(clickType == SDL_BUTTON_RIGHT){
-				placeOne();
+				placeHeldItem(1);
 			}
 		}
 		else{
@@ -212,22 +183,35 @@ bool Inventory::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
 	return false;
 }
 
-void Inventory::placeItem(){
-	if(itemAtClick == nullptr){
-		inventory[slotClicked.slotsY][slotClicked.slotsX] = heldItem;
-		heldItem = nullptr;
-	}
-	else if(itemAtClick->itemType == heldItem->itemType){
-		int totalItems = itemAtClick->numberOfItems + heldItem->numberOfItems;
-		if(totalItems > stackLimit){
-			int remainingItems = totalItems - stackLimit;
-			itemAtClick->numberOfItems = stackLimit;
-			heldItem->numberOfItems = remainingItems;
+void Inventory::placeHeldItem(int numItems){
+	int remainingItems = heldItem->numberOfItems - numItems;
+	if(itemAtClick == nullptr){ //held item placed in empty slot
+		if(remainingItems <= 0){
+			inventory[slotClicked.slotsY][slotClicked.slotsX] = heldItem;			
+			heldItem = nullptr;
 		}
 		else{
-			itemAtClick->numberOfItems = totalItems;
-			delete heldItem;
-			heldItem = nullptr;
+			heldItem->numberOfItems = remainingItems;	
+			inventory[slotClicked.slotsY][slotClicked.slotsX] = itemFactory.makeItem(heldItem->itemType,numItems);
+		}
+	}//held item added to existing stack
+	else if(itemAtClick->itemType == heldItem->itemType){
+		if(itemAtClick->numberOfItems < stackLimit){
+			int totalItems = itemAtClick->numberOfItems + numItems;		
+			if(totalItems > stackLimit){
+				itemAtClick->numberOfItems = stackLimit;	
+				heldItem->numberOfItems = totalItems - stackLimit;
+			}
+			else{
+				itemAtClick->numberOfItems = totalItems;
+				if(remainingItems == 0){
+					delete heldItem;
+					heldItem = nullptr;
+				}
+				else{
+					heldItem->numberOfItems -= numItems;	
+				}
+			}
 		}
 	}
 }

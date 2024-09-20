@@ -1,9 +1,12 @@
 #pragma once
-#include "items/Item.h"
-#include "RenderRects.h"
-#include "CraftingWindow.h"
-#include <vector>
+
 #include <array>
+#include <vector>
+
+#include "CraftingWindow.h"
+#include "RenderRects.h"
+#include "items/Item.h"
+
 using std::vector;
 
 struct InventoryPosition{
@@ -43,9 +46,8 @@ class Inventory{
 		bool setSlotClicked(int xPosClicked,int yPosClicked);
 		bool checkIfItemQuantityExists(Ingredient ingredient);
 		bool removeFromInventory(Ingredient Ingredient);
-		void placeItem();
+		void placeHeldItem(int numItems);
 		void pickItem();
-		void placeOne();
 		void pickHalf();
 		void renderNumber(int num, int xPos, int yPos,SDL_Renderer* rend);
 		int getItemXPos(int xInvenPos);
