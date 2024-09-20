@@ -2,7 +2,10 @@
 #include "../headers/TextureManager.h"
 #include "../headers/WindowManager.h"
 #include "../headers/items/ItemFactory.h"
+#include "../headers/Collider.h"
+#include "../headers/PlayerState.h"
 #include <stdlib.h>
+#include <stdexcept>
 
 CraftingWindow::CraftingWindow(int invPosOnScreenX, int invPosOnScreenY){
     basePanel.posOnTexture = {0,75,108,75};
@@ -15,9 +18,9 @@ CraftingWindow::CraftingWindow(int invPosOnScreenX, int invPosOnScreenY){
     recipePanel.posOnScreen = {basePanel.posOnScreen.x + 9*scale, basePanel.posOnScreen.y + 9*scale, scale*recipePanel.posOnTexture.w,scale*recipePanel.posOnTexture.h};
     minYWithinRecipePane += basePanel.posOnScreen.y + scale * 8;
     maxYWithinRecipePane += basePanel.posOnScreen.y + scale * 8;
-    Recipe testRecipe = {{ItemCodes::STICK,1},{ItemCodes::ROCK,1},{ItemCodes::GARDENBOX,1}};
-    Recipe testRecipe1 = {{ItemCodes::YUCCALEAF,1},{ItemCodes::YUCCALEAF,1},{ItemCodes::GARDENBOX,1}};
-    Recipe testRecipe2 = {{ItemCodes::STICK,1},{ItemCodes::ROCK,1},{ItemCodes::GARDENBOX,1}};
+    Recipe* testRecipe = new Recipe({{ItemCodes::STICK,1},{ItemCodes::ROCK,1},{ItemCodes::GARDENBOX,1}});
+    Recipe* testRecipe1 = new Recipe({{ItemCodes::YUCCALEAF,1},{ItemCodes::YUCCALEAF,1},{ItemCodes::GARDENBOX,1}});
+    Recipe* testRecipe2 = new Recipe({{ItemCodes::STICK,1},{ItemCodes::ROCK,1},{ItemCodes::GARDENBOX,1}});
     currentlyCraftableRecipes.push_back(testRecipe);
     currentlyCraftableRecipes.push_back(testRecipe1);
     currentlyCraftableRecipes.push_back(testRecipe2);
@@ -50,7 +53,7 @@ void CraftingWindow::update(){
 
 void CraftingWindow::renderVisibleRecipes(){
     for(unsigned int i = 0; i < currentlyCraftableRecipes.size(); i++){
-        Recipe currentRecipe = currentlyCraftableRecipes.at(i);
+        Recipe* currentRecipe = currentlyCraftableRecipes.at(i);
         recipePanel.posOnScreen.y += paneOffset + (recipePanel.posOnScreen.h * i);
         renderElementWithinPane(*textureManager.inventoryTexture,recipePanel);
         renderRecipeOnPanel(currentRecipe);
@@ -58,10 +61,10 @@ void CraftingWindow::renderVisibleRecipes(){
     }
 }
 
-void CraftingWindow::renderRecipeOnPanel(Recipe& recipe){
-    renderIngredientOnPanel(recipe.firstIngredient, 2 * scale);
-    renderIngredientOnPanel(recipe.secondIngredient,35 * scale);
-    renderIngredientOnPanel(recipe.result, 69 * scale);
+void CraftingWindow::renderRecipeOnPanel(Recipe* recipe){
+    renderIngredientOnPanel(recipe->firstIngredient, 2 * scale);
+    renderIngredientOnPanel(recipe->secondIngredient,35 * scale);
+    renderIngredientOnPanel(recipe->result, 69 * scale);
 }
 
 int CraftingWindow::calcChopVal(SDL_Rect& posOnScreen){
@@ -105,4 +108,26 @@ void CraftingWindow::renderElementWithinPane(SDL_Texture& tex,RenderRect rect){
             SDL_RenderCopy(windowManager.renderer,&tex,&rect.posOnTexture,&rect.posOnScreen);
         }
     }
+}
+void CraftingWindow::handleInventoryClick(int xPos,int yPos, Uint32 clickType){
+    SDL_Rect recipePane = {basePanel.posOnScreen.x + 9*scale, basePanel.posOnScreen.y + 9*scale,90*scale,60*scale};
+    if(collider.checkPointWithinRect(xPos,yPos,recipePane)){
+        Recipe* recipe = getRecipeAtClick(xPos, yPos);
+        if(recipe != nullptr){
+           playerState.requestCraft(recipe);
+        }
+    }
+}
+
+Recipe* CraftingWindow::getRecipeAtClick(int xPos, int yPos){
+    int yPosRelativeToCraftingBox = yPos - (basePanel.posOnScreen.y + 9*scale) - paneOffset;
+    int indexOfRecipe = yPosRelativeToCraftingBox / recipePanel.posOnScreen.h;
+    try{
+        Recipe* returnRecipe = currentlyCraftableRecipes.at(indexOfRecipe);        
+        return returnRecipe;
+    }
+    catch(std::exception e){
+        return nullptr;
+    }
+
 }

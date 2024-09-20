@@ -9,6 +9,7 @@ class PlayerState {
         PlayerState();
         void handleInventoryClick(int xPos, int yPos,Uint32 clickType);
         bool addToInventory(Item* itemToAdd);
+        bool requestCraft(Recipe* recipeToCraft);
 		void toggleInventory();
         void setSoulColor(int color);
         int getSoulColor();

@@ -1,8 +1,10 @@
 #include "../headers/Inventory.h"
 #include "../headers/items/ItemFactory.h"
+#include "../headers/items/ItemManager.h"
 #include "../headers/TextureManager.h"
 #include "../headers/WindowManager.h"
 #include <stdexcept>
+#include <algorithm>
 
 int Inventory::inventoryScale = 3;
 
@@ -186,7 +188,7 @@ bool Inventory::setSlotClicked(int xPosClicked,int yPosClicked){
 	return true;
 }
 
-void Inventory::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
+bool Inventory::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
 	if(setSlotClicked(xPos, yPos)){
 		itemAtClick =inventory[slotClicked.slotsY][slotClicked.slotsX];
 		if(heldItem){
@@ -205,7 +207,9 @@ void Inventory::handleInventoryClick(int xPos, int yPos,Uint32 clickType){
 				pickHalf();	
 			}
 		}
+		return true;
 	}
+	return false;
 }
 
 void Inventory::placeItem(){
@@ -289,7 +293,84 @@ void Inventory::manageDeletedItems(){
 					delete item;
 					inventory[i][j] = nullptr;
 				}
+				}
 			}
 		}
 	}
+	bool Inventory::craftRecipe(Recipe* recipeToCraft){
+	if(recipeToCraft->firstIngredient.itemCode == recipeToCraft->secondIngredient.itemCode){
+		Recipe recipe;
+		recipe.firstIngredient.itemCode = recipeToCraft->firstIngredient.itemCode;
+		recipe.firstIngredient.quantity = recipeToCraft->firstIngredient.quantity + recipeToCraft->secondIngredient.quantity;
+		if(checkIfItemQuantityExists(recipe.firstIngredient)){
+			removeFromInventory(recipe.firstIngredient);
+			Item* craftedItem = itemFactory.makeItem(recipeToCraft->result.itemCode,recipeToCraft->result.quantity);
+			if(!addToInventory(craftedItem)){
+				itemManager.makeExternalItem(recipeToCraft->result.itemCode,recipeToCraft->result.quantity, 550,550);
+			}
+			return true;
+		}
+	}
+	else if(checkIfItemQuantityExists(recipeToCraft->firstIngredient) && checkIfItemQuantityExists(recipeToCraft->secondIngredient)){
+		removeFromInventory(recipeToCraft->firstIngredient);
+		removeFromInventory(recipeToCraft->secondIngredient);
+		Item* craftedItem = itemFactory.makeItem(recipeToCraft->result.itemCode,recipeToCraft->result.quantity);
+		if(!addToInventory(craftedItem)){
+			itemManager.makeExternalItem(recipeToCraft->result.itemCode,recipeToCraft->result.quantity, 550,550);
+		}
+		return true;
+	}
+	return false;
+}
+
+bool Inventory::checkIfItemQuantityExists(Ingredient ingredient){
+	int itemCount = 0;
+	for(int i = 0; i < inventorySize.slotsY; i++){
+		for(int j = 0; j < inventorySize.slotsX;j++){
+			Item* itemAt = inventory[i][j];
+			if(itemAt != nullptr){
+				if(itemAt->itemType == ingredient.itemCode){
+					itemCount += itemAt->numberOfItems;	
+					if(itemCount >= ingredient.quantity){
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
+}
+
+//remove items
+bool Inventory::removeFromInventory(Ingredient ingredient){
+	int remainingItems = ingredient.quantity;
+	int totalItems = 0;
+	vector<Item*> itemsOfType;
+	for(int i = 0; i < inventorySize.slotsY; i++){
+		for(int j = 0; j < inventorySize.slotsX;j++){
+			Item* itemAt = inventory[i][j];
+			if(itemAt != nullptr){
+				if(itemAt->itemType == ingredient.itemCode){
+					itemsOfType.push_back(itemAt);
+					totalItems += itemAt->numberOfItems;
+				}
+			}
+		}
+	}
+	std::sort(itemsOfType.begin(),itemsOfType.end());
+	if(totalItems >= remainingItems){
+		for(int i = itemsOfType.size() - 1; i >= 0; i--){
+			Item* itemAt = itemsOfType.at(i);
+			int numItems = itemAt->numberOfItems;
+			if(remainingItems - numItems >= 0){
+				remainingItems -= numItems;
+				deleteFromInventory(itemAt);
+			}
+			else{
+				itemAt->numberOfItems -= remainingItems;	
+			}
+		}
+		return true;
+	}
+	return false;
 }
