@@ -43,8 +43,8 @@ int EditInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
         case SDLK_3: map.tileType = 3; break;
         case SDLK_4: map.tileType = -5; break;
         case SDLK_7: map.tileType = -6; break;
-        case SDLK_8: map.tileType = -7; break;
-        case SDLK_9: map.tileType = -9; break;
+        case SDLK_8: map.tileType = -12; break;
+        case SDLK_9: map.tileType = -13; break;
         case SDLK_f: map.fill(editor.getSelWindowRen()); break;
         case SDLK_z: map.save("../resources/lvl1Test.bin"); break;
         case SDLK_ESCAPE: gameIsRunning = false; break;

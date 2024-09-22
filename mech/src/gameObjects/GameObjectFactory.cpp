@@ -4,6 +4,7 @@
 #include "../../headers/gameObjects/MushroomObject.h" 
 #include "../../headers/gameObjects/ShrubObject.h"
 #include "../../headers/gameObjects/GardenBoxObject.h"
+#include "../../headers/gameObjects/ShortGrassObject.h"
 #include "../../headers/gameObjects/GameObjectCodes.h"
 
 using namespace gameObjectCodes;
@@ -20,7 +21,9 @@ GameObjectFactory::GameObjectFactory(){
         {SHRUB_0, [](int id, short xT, short yT) -> GameObject* {GameObject* shrub0 = new ShrubObject(id,xT,yT,0);return shrub0;}},
         {SHRUB_1, [](int id, short xT, short yT) -> GameObject* {GameObject* shrub1 = new ShrubObject(id,xT,yT,1);return shrub1;}},
         {SHRUB_2, [](int id, short xT, short yT) -> GameObject* {ShrubObject* shrub2 = new ShrubObject(id,xT,yT,2);return shrub2;}},
-        {GARDENBOX_0, [](int id, short xT, short yT) -> GameObject* {GardenBoxObject* gardenBox0 = new GardenBoxObject(id,xT,yT,2,32,32);return gardenBox0;}}
+        {GARDENBOX_0, [](int id, short xT, short yT) -> GameObject* {GardenBoxObject* gardenBox0 = new GardenBoxObject(id,xT,yT,2,32,32);return gardenBox0;}},
+        {SHORTGRASS_0, [](int id, short xT, short yT) -> GameObject* {ShortGrassObject* grass0 = new ShortGrassObject(id,xT,yT,0);return grass0;}},
+        {SHORTGRASS_1, [](int id, short xT, short yT) -> GameObject* {ShortGrassObject* grass1 = new ShortGrassObject(id,xT,yT,1);return grass1;}},
     };
 }
 

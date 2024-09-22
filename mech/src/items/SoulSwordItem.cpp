@@ -4,6 +4,7 @@
 SDL_Rect* SoulSwordItem::spriteSheetPos = new SDL_Rect {0,16,16,16};
 
 SoulSwordItem::SoulSwordItem() : ToolItem(ItemCodes::SOULSWORD){
+    damagePerFrame = 1;
     return;
 }
 

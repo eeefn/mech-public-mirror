@@ -10,4 +10,8 @@ namespace gameObjectCodes{
     const int GARDENBOX_0 = 9;
     const int GARDENBOX_1 = 10;
     const int GARDENBOX_2 = 11;
+    const int SHORTGRASS_0 = 12;
+    const int SHORTGRASS_1 = 13;
+    const int TALLGRASS_2 = 14;
+    const int TALLGRASS_3 = 15;
 }
