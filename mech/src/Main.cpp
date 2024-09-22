@@ -46,6 +46,7 @@ void setup() {
 
 	Item* rock = new RockItem(1);
 	Item* stick = new StickItem(127);
+	Item* stick2 = new StickItem(127);
 	Item* sword = new SoulSwordItem();
 	Item* pick = new SoulPickaxeItem();
 	Item* shovel = new SoulShovelItem();
@@ -58,6 +59,7 @@ void setup() {
 	itemManager.makeExternalItem(1,1,200, 200);
 	playerState.addToInventory(rock);
 	playerState.addToInventory(stick);
+	playerState.addToInventory(stick2);
 	playerState.addToInventory(sword);
 	playerState.addToInventory(pick);
 	playerState.addToInventory(shovel);
