@@ -14,4 +14,5 @@ namespace gameObjectCodes{
     const int SHORTGRASS_1 = 13;
     const int TALLGRASS_0 = 14;
     const int TALLGRASS_1 = 15;
+    const int CROPMULCHER = 16;
 }
