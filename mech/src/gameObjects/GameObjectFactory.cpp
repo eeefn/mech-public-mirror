@@ -5,6 +5,7 @@
 #include "../../headers/gameObjects/ShrubObject.h"
 #include "../../headers/gameObjects/GardenBoxObject.h"
 #include "../../headers/gameObjects/ShortGrassObject.h"
+#include "../../headers/gameObjects/TallGrassObject.h"
 #include "../../headers/gameObjects/GameObjectCodes.h"
 
 using namespace gameObjectCodes;
@@ -24,6 +25,8 @@ GameObjectFactory::GameObjectFactory(){
         {GARDENBOX_0, [](int id, short xT, short yT) -> GameObject* {GardenBoxObject* gardenBox0 = new GardenBoxObject(id,xT,yT,2,32,32);return gardenBox0;}},
         {SHORTGRASS_0, [](int id, short xT, short yT) -> GameObject* {ShortGrassObject* grass0 = new ShortGrassObject(id,xT,yT,0);return grass0;}},
         {SHORTGRASS_1, [](int id, short xT, short yT) -> GameObject* {ShortGrassObject* grass1 = new ShortGrassObject(id,xT,yT,1);return grass1;}},
+        {TALLGRASS_0, [](int id, short xT, short yT) -> GameObject* {TallGrassObject* grass0 = new TallGrassObject(id,xT,yT,0);return grass0;}},
+        {TALLGRASS_1, [](int id, short xT, short yT) -> GameObject* {TallGrassObject* grass1 = new TallGrassObject(id,xT,yT,1);return grass1;}},
     };
 }
 

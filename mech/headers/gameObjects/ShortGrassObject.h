@@ -1,5 +1,5 @@
 #pragma once
-#include "ResourceObject.h"
+#include "GameObject.h"
 #include <SDL.h>
 class ShortGrassObject : public GameObject{
     public:
