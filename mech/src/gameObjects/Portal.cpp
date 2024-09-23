@@ -1,5 +1,6 @@
 #include "../../headers/gameObjects/Portal.h"
 #include "../../headers/TextureManager.h"
+#include "../../headers/items/ItemCodes.h"
 
 using namespace PortalAnimationCodes;
 
@@ -22,11 +23,12 @@ void Portal::render(SDL_Renderer* rend){
 }
 
 bool Portal::activate(){
-    if(!active){
+    if(!active && shardsHeld >= 5){
         anim.setAnimation(&MOVE_DISCS,false,&discs,4,true);
+        shardsHeld -= 5;
         active = true;
     }
-    else{
+    else if (active){
         anim.setAnimation(&OPEN_PORTAL_G,false,&beam,2,false);
         active = false;
     }
@@ -54,4 +56,11 @@ bool Portal::highlight(const std::string& srcEntityId){
         highlighted = false;
     }
     return highlighted;
+}
+
+void Portal::handleClick(Item *clickedBy){
+    if(clickedBy->itemType == ItemCodes::SOULSHARD){
+        shardsHeld += clickedBy->numberOfItems;
+        clickedBy->requestDeletion = true;
+    }
 }
