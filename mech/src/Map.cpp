@@ -18,7 +18,7 @@ Map::~Map(){
 
 void Map::initialize(){
 	tileMap[24][20] = -1;
-	read("../resources/lvl1Test.bin");
+	read("../resources/StartingArea.bin");
 	readGameObjectsFromMap();
 }
 
