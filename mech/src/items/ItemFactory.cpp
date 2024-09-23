@@ -13,6 +13,7 @@
 #include "../../headers/items/CarrotItem.h"
 #include "../../headers/items/YuccaLeafItem.h"
 #include "../../headers/items/YuccaRootItem.h"
+#include "../../headers/items/SoulShardItem.h"
 
 using namespace ItemCodes;
 ItemFactory itemFactory;
@@ -31,7 +32,8 @@ ItemFactory::ItemFactory(){
         {CARROTSEED,[](int itemCount) -> Item* {CarrotSeedItem* carrot = new CarrotSeedItem(itemCount);return carrot;}},
         {CARROT,[](int itemCount) -> Item* {CarrotItem* carrot = new CarrotItem(itemCount);return carrot;}},
         {YUCCALEAF,[](int itemCount) -> Item* {YuccaLeafItem* leaf = new YuccaLeafItem(itemCount);return leaf;}},
-        {YUCCAROOT,[](int itemCount) -> Item* {YuccaRootItem* root = new YuccaRootItem(itemCount);return root;}}
+        {YUCCAROOT,[](int itemCount) -> Item* {YuccaRootItem* root = new YuccaRootItem(itemCount);return root;}},
+        {SOULSHARD,[](int itemCount) -> Item* {SoulShardItem* shard = new SoulShardItem(itemCount);return shard;}}
     };
    return; 
 }
