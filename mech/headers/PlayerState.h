@@ -3,6 +3,7 @@
 #include "../headers/Inventory.h"
 #include "../headers/Hotbar.h"
 #include "../headers/CraftingWindow.h"
+
 class PlayerState {
     friend class Gui; 
     public:

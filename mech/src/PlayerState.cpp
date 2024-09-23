@@ -3,7 +3,11 @@
 PlayerState playerState;
 
 PlayerState::PlayerState(){
-
+	playerInventory.addToInventory(itemFactory.makeItem(ItemCodes::SOULSWORD,1));
+	playerInventory.addToInventory(itemFactory.makeItem(ItemCodes::SOULPICK,1));
+	playerInventory.addToInventory(itemFactory.makeItem(ItemCodes::SOULSHOVEL,1));
+	playerInventory.addToInventory(itemFactory.makeItem(ItemCodes::SOULAXE,1));
+	playerInventory.addToInventory(itemFactory.makeItem(ItemCodes::SOULFISHINGROD,1));
 }
 
 void PlayerState::placeItemFromHotbar(){
