@@ -4,12 +4,16 @@
 #include <time.h>
 
 #include "../headers/entities/EntityManager.h"
+#include "../headers/gameObjects/GameObjectManager.h"
+#include "../headers/items/ItemManager.h"
 #include "../headers/TextureManager.h"
 #include "../headers/WindowManager.h"
 #include "../headers/constants.h"
 #include "../headers/Map.h"
 #include "../headers/Gui.h"
 #include "../headers/Camera.h"
+
+#include "../headers/PlayerState.h"
 
 #include "../headers/controller/InputFactory.h"
 
@@ -26,9 +30,12 @@ void setup() {
 	SDL_GetCurrentDisplayMode(0,&dm);
 
 	textureManager.initPermanentTextures(windowManager.renderer);
-	camera.initializeCamera(dm.h,dm.w,entityManager.getFrontEntity());
+	map.initialize();
+	camera.initializeCamera(dm.h,dm.w,entityManager.getFrontEntity(),dm);
 
-	srand(time(NULL));
+	//first frame time
+	lastFrameTime = SDL_GetTicks();
+	//srand(time(NULL));
 }
 
 void processInput() {
@@ -46,7 +53,7 @@ void update() {
 	if (timeToWait > 0 && timeToWait <= FRAME_TARGET_TIME) {
 		SDL_Delay(timeToWait);
 	}
-	
+		
 	float deltaTime = (SDL_GetTicks() - lastFrameTime) / 1000.0f;
 	lastFrameTime = SDL_GetTicks();
 
@@ -54,6 +61,9 @@ void update() {
 	if (gameMode == gamemodes.PLAY) {
 		entityManager.update(deltaTime);
 		camera.update();
+		gameObjectManager.updateGameObjects();
+		itemManager.updateItems(deltaTime);
+		playerState.update();
 	}
 	inputFactory.update();
 }
@@ -62,10 +72,13 @@ void render() {
 	//reset renderer
 	SDL_SetRenderDrawColor(windowManager.renderer, 0, 0, 0, 255);
 	SDL_RenderClear(windowManager.renderer);
-	
+
+	camera.renderBackround();	
+	gameObjectManager.renderGameObjects(windowManager.renderer);
 	camera.renderMap();
-	gui.render(gameMode);		
+	itemManager.renderItems();
 	entityManager.render(gameMode);
+	gui.render(gameMode);
 
 	SDL_RenderPresent(windowManager.renderer);
 }
@@ -73,9 +86,7 @@ void render() {
 
 int main(int argc, char* argv[]) {
 	gameIsRunning = windowManager.initializeWindow();
-	
 	setup(); 
-	
 	while (gameIsRunning) {
 		processInput();
 		update();

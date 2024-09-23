@@ -40,9 +40,7 @@ Entity* EntityManager::getFirstHighlightedEntity(){
 void EntityManager::update(float dt){
 	for(auto & entity : entityList){
 		entity->updateEntity(dt);
-	}
-	for(auto & entity : entityList){
-		if (collider.collisionCheck(entity, map.tileMap)) {
+		if (collider.checkEntityTileMapCollision(entity)) {
 			entity->processCollision(collider.colResults);
 		}
 	}
