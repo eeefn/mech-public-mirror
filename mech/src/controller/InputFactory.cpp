@@ -79,6 +79,7 @@ void InputFactory::update(){
             SDL_PushEvent(&ev);
         }
     }
+    playInput.update();
 }
 void InputFactory::setControlMode(int mode){
     controlMode = mode;

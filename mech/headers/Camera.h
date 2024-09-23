@@ -6,27 +6,28 @@
 class Camera{
     public:
         int yOffset, xOffset;
-        int tilesPerWindowHeight, tilesPerWindowWidth;
-        
         SDL_Rect tileSelect[mapInfo.TILE_WIDTH_IN_TILE_MAP][mapInfo.TILE_WIDTH_IN_TILE_MAP];
-        SDL_Rect renTile;
-        SDL_Rect objTex;
         
         Entity *cameraTarget;
         void renderMap();
+        void renderBackround();
+
         int getXPosWithinFrame(int xPos);
         int getYPosWithinFrame(int yPos);
-        void initializeCamera(int height,int width,Entity* initialCameraTarget);
+        int getGlobalXPosFromFrame(int xPos);
+        int getGlobalYPosFromFrame(int yPos);
+        void snapPointToTileMap(SDL_Point* pointToSnap);
+        void initializeCamera(int height,int width,Entity* initialCameraTarget, SDL_DisplayMode dm);
         void update();
         void setCameraTarget(Entity *newCameraTarget);
         Camera();
     private:
-        int xFrameOffset;
-        int yFrameOffset;
-        SDL_Rect* textureSelect(short select);
-        void initializeTileSelect();
-        void updateTargetDisplayPos();
+        SDL_Rect* getTextureOfTile(short texType);
+        void updateFrame();
         void updateCameraOffsets();
+        void initializeTileSelect();
+        SDL_Rect frame;
+        SDL_Rect renderTile{0,0,mapInfo.TILE_DIM,mapInfo.TILE_DIM};
 };
 
 extern Camera camera;

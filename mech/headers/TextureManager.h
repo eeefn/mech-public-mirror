@@ -4,7 +4,6 @@
 class TextureManager{
     public:
         SDL_Texture* tileTexture;
-        SDL_Texture* gameObjectTexture;
         SDL_Texture* guiTexture;
         SDL_Texture* mechTexture;
         SDL_Texture* mechAtTexture;
@@ -13,7 +12,15 @@ class TextureManager{
         SDL_Texture* torsoTexture;
         SDL_Texture* legsTexture;
         SDL_Texture* mushFullTexture;
+        SDL_Texture* caveBackroundTexture;
+        SDL_Texture* portalTexture;
+        SDL_Texture* gameObjectsTexture;
+        SDL_Texture* inventoryTexture;
+        SDL_Texture* itemsTexture;
+        SDL_Texture* numberTexture;
+        SDL_Texture* toolSwingTexture;
         void initPermanentTextures(SDL_Renderer* renderer);
+        void initializeTexture(SDL_Texture** textureToInit, const char* filePath, SDL_Renderer* renderer);
 };
 
 extern TextureManager textureManager;

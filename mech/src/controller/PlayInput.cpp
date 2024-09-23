@@ -1,14 +1,17 @@
-#include "../../headers/controller/PlayInput.h"
 #include "../../headers/entities/EntityManager.h"
+#include "../../headers/gameObjects/GameObjectManager.h"
+#include "../../headers/controller/InputFactory.h"
+#include "../../headers/controller/PlayInput.h"
 #include "../../headers/Gui.h"
 #include "../../headers/Camera.h"
 #include "../../headers/Editor.h"
-#include "../../headers/controller/InputFactory.h"
 #include "../../headers/entities/AnimationCodes.h"
-#include <iostream>
+#include "../../headers/SoulColorCodes.h"
+#include "../../headers/PlayerState.h"
+
+using namespace SoulColors;
 
 PlayInput playInput;
-
 PlayInput::PlayInput(){
 
 }
@@ -16,7 +19,6 @@ PlayInput::PlayInput(){
 void PlayInput::processHeldKeys(SDL_Event *keyEvent){
 	switch (keyEvent->key.keysym.sym){
 		case SDLK_LSHIFT:
-		
 			entityManager.spawnSoulSprite();
 			camera.setCameraTarget(entityManager.swapEntityList());
 			inputFactory.setControlMode(controlModes.SOUL_SPRITE);
@@ -33,23 +35,54 @@ void PlayInput::processHeldKeys(SDL_Event *keyEvent){
 
 bool PlayInput::processInput(SDL_Event *keyEvent, int *gameMode){
 	bool gameIsRunning = true;
-	if (keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat == 0) {
-		gameIsRunning = playInput.processKeydown(keyEvent, gameMode);
-	}
-	if (keyEvent->type == SDL_MOUSEBUTTONDOWN) {
-		playInput.processMousedown(keyEvent);
-	}
-	if(keyEvent->type == SDL_KEYDOWN && keyEvent->key.repeat != 0){
-		playInput.processHeldKeys(keyEvent);
-	}
-	if (keyEvent->type == SDL_KEYUP && keyEvent->key.repeat == 0) {
-		playInput.processKeyup(keyEvent);
-	}
-	else if (keyEvent->type == SDL_QUIT) {
-			gameIsRunning = false;
+	switch(keyEvent->type){
+		case SDL_KEYDOWN:
+			if(keyEvent->key.repeat == 0){
+				gameIsRunning = processKeydown(keyEvent,gameMode);				
+			}
+			else{
+				processHeldKeys(keyEvent);
+			}
+			break;
+		case SDL_KEYUP:
+			playInput.processKeyup(keyEvent); break;
+		case SDL_MOUSEBUTTONDOWN:
+			playInput.processMousedown(keyEvent); mousedown = true; break;
+		case SDL_MOUSEBUTTONUP:
+			mousedown = false; break;
+		case SDL_MOUSEWHEEL:
+			processScrollWheel(keyEvent); break;
+		case SDL_QUIT:
+			gameIsRunning = false; break;
 	}
 	return gameIsRunning;
 }
+
+void PlayInput::update(){
+	if(mousedown){
+		processHeldClick();		
+	}
+}
+
+void PlayInput::processScrollWheel(SDL_Event *wheelEvent){
+	if(wheelEvent->wheel.y < 0){
+		if(playerState.inventoryOpen){
+			playerState.craftingWindow.scrollDown();
+		}
+		else{
+			playerState.hotbar.incrementSelectedSlot();
+		}
+	}
+	else{
+		if(playerState.inventoryOpen){
+			playerState.craftingWindow.scrollUp();
+		}
+		else{
+			playerState.hotbar.decrementSelectedSlot();
+		}
+	}
+}
+
 void PlayInput::processKeyup(SDL_Event *keyupEvent){
 	Entity *playerEntity = camera.cameraTarget;
 	switch (keyupEvent->key.keysym.sym) {
@@ -65,6 +98,36 @@ void PlayInput::processKeyup(SDL_Event *keyupEvent){
 }
 
 void PlayInput::processMousedown(SDL_Event *keydownEvent){
+	if(playerState.inventoryOpen){
+		playerState.handleInventoryClick(keydownEvent->button.x,keydownEvent->button.y,keydownEvent->button.button);
+	}
+	else{
+		mousedown = true;
+	}
+}
+
+void PlayInput::processHeldClick(){
+	if(!playerState.inventoryOpen){
+		if(camera.cameraTarget->facingL){
+			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::TORSO_SWING_L,true);
+		}
+		else{
+			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::TORSO_SWING_R,true);
+		}
+		int mouseXPos;
+		int mouseYPos;
+		auto buttonPressed = SDL_GetMouseState(&mouseXPos,&mouseYPos);
+		GameObject *objectAtClick = gameObjectManager.getGameObjectAtClick(mouseXPos,mouseYPos,buttonPressed);
+		if(objectAtClick != nullptr){
+			Item *clickedBy = playerState.hotbar.getItemAtSelectedSlot();
+			if(clickedBy != nullptr){
+				objectAtClick->handleClick(clickedBy);
+			}
+		}
+		if(playerState.hotbar.handleClick()){
+			playerState.placeItemFromHotbar();				
+		}
+	}
 }
 
 int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
@@ -72,7 +135,7 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
     Entity *playerEntity = camera.cameraTarget;
     switch (keydownEvent->key.keysym.sym) {
 		case SDLK_UP:
-			gui.setSoulColor(gui.soulColors.RED);
+			playerState.setSoulColor(RED);
 			break;
 		case SDLK_w:
 			if (!playerEntity->inAir) {
@@ -116,12 +179,30 @@ int PlayInput::processKeydown(SDL_Event *keydownEvent, int *gameMode){
 				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP,true);
 				camera.cameraTarget->requestAnimation(&MechAnimationCodes::POWER_UP_COLOR,true);
 				inputFactory.setControlMode(controlModes.MECH);
+			}else{
+				GameObject* obj = gameObjectManager.getFirstHighlightedObject();
+				if(obj != nullptr){
+					obj->activate();
+				}
 			}
 			}
+			break;
+		case SDLK_TAB:
+			playerState.toggleInventory();
 			break;
 		case SDLK_LSHIFT:
 			camera.cameraTarget->requestAnimation(&PlayerAnimationCodes::MUSH_KNEEL,true);
 			break;
+		case SDLK_1: playerState.hotbar.setSelectedSlot(0); break;
+		case SDLK_2: playerState.hotbar.setSelectedSlot(1); break;
+		case SDLK_3: playerState.hotbar.setSelectedSlot(2); break;
+		case SDLK_4: playerState.hotbar.setSelectedSlot(3); break;
+		case SDLK_5: playerState.hotbar.setSelectedSlot(4); break;
+		case SDLK_6: playerState.hotbar.setSelectedSlot(5); break;
+		case SDLK_7: playerState.hotbar.setSelectedSlot(6); break;
+		case SDLK_8: playerState.hotbar.setSelectedSlot(7); break;
+		case SDLK_9: playerState.hotbar.setSelectedSlot(8); break;
+		case SDLK_0: playerState.hotbar.setSelectedSlot(9); break;
 		case SDLK_ESCAPE: gameIsRunning = false; break;
 	}
     return gameIsRunning;

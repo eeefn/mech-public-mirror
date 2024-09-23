@@ -11,7 +11,9 @@ using std::string;
 class Entity
 {
 	public:
+		string identifier;
 		Entity* hostEntity;
+		bool facingL = false;
 		int entityWidth, entityHeight;
 		int posX, posY, velX, velY;
 		float accY, accX;

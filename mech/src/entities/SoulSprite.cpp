@@ -3,10 +3,13 @@
 #include "../../headers/entities/SoulSprite.h"
 #include "../../headers/TextureManager.h"
 #include "../../headers/Map.h"
-#include "../../headers/GameObject.h"
+#include "../../headers/gameObjects/GameObject.h"
+#include "../../headers/gameObjects/GameObjectManager.h"
+#include "../../headers/Camera.h"
 #include <math.h>
 
 SoulSprite::SoulSprite(Entity *entity){
+    identifier = "SOUL_SPRITE";
     hostEntity = entity;
     posX = entity->posX;
     posY = entity->posY;
@@ -26,7 +29,8 @@ SoulSprite::~SoulSprite(){
 void SoulSprite::updateEntity(float dt){
 	posX += round(velX * dt);
 	posY += round(velY * dt);
-    map.manageHighlightedObjects(&displayRect);
+    displayRect.x = camera.getXPosWithinFrame(posX);
+    displayRect.y = camera.getYPosWithinFrame(posY);
     return;
 }
 
