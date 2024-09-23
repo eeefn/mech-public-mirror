@@ -21,8 +21,8 @@ Player::Player()  {
 	entityWidth = PLAYER_WIDTH; entityHeight = PLAYER_HEIGHT;
 	inAir = true;
 	isPlayer = true; inMech = false; fullBodyAnimation = false;
-	posX = 1280/2 - PLAYER_WIDTH/2;
-	posY = 720/2 - PLAYER_HEIGHT/2;
+	posX = 1280/2 - PLAYER_WIDTH/2 + 400;
+	posY = 720/2 - PLAYER_HEIGHT/2 + 800;
 	velX = 0; velY = 0;
 	accX = 0; accY = GRAVITY;
 	entitySpeedX = 100;

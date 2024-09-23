@@ -14,17 +14,6 @@
 #include "../headers/Camera.h"
 
 #include "../headers/PlayerState.h"
-#include "../headers/items/RockItem.h"
-#include "../headers/items/StickItem.h"
-#include "../headers/items/SoulSwordItem.h"
-#include "../headers/items/SoulPickaxeItem.h"
-#include "../headers/items/SoulShovelItem.h"
-#include "../headers/items/SoulFishingRodItem.h"
-#include "../headers/items/SoulAxeItem.h"
-#include "../headers/items/GardenBoxItem.h"
-#include "../headers/items/CarrotSeedItem.h"
-#include "../headers/items/YuccaSeedItem.h"
-#include "../headers/items/YuccaLeafItem.h"
 
 #include "../headers/controller/InputFactory.h"
 
@@ -44,31 +33,6 @@ void setup() {
 	map.initialize();
 	camera.initializeCamera(dm.h,dm.w,entityManager.getFrontEntity(),dm);
 
-	Item* rock = new RockItem(1);
-	Item* stick = new StickItem(127);
-	Item* stick2 = new StickItem(127);
-	Item* sword = new SoulSwordItem();
-	Item* pick = new SoulPickaxeItem();
-	Item* shovel = new SoulShovelItem();
-	Item* rod = new SoulFishingRodItem();
-	Item* axe = new SoulAxeItem();
-	Item* gardenBox = new GardenBoxItem(3);
-	Item* carrotSeeds = new CarrotSeedItem(3);
-	Item* yuccaSeeds = new YuccaSeedItem(3);
-	Item* yuccaLeaf = new YuccaLeafItem(3);
-	itemManager.makeExternalItem(1,1,200, 200);
-	playerState.addToInventory(rock);
-	playerState.addToInventory(stick);
-	playerState.addToInventory(stick2);
-	playerState.addToInventory(sword);
-	playerState.addToInventory(pick);
-	playerState.addToInventory(shovel);
-	playerState.addToInventory(rod);
-	playerState.addToInventory(axe);
-	playerState.addToInventory(gardenBox);
-	playerState.addToInventory(carrotSeeds);
-	playerState.addToInventory(yuccaSeeds);
-	playerState.addToInventory(yuccaLeaf);
 	//first frame time
 	lastFrameTime = SDL_GetTicks();
 	//srand(time(NULL));
