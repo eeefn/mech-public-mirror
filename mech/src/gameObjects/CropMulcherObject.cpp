@@ -54,7 +54,7 @@ void CropMulcherObject::update(){
         if(secsElapsed > 5){
             numItemsProcessing--;
             itemProcessingStart = curTime;
-            GameObject::dropObject(ItemCodes::STICK,1,xTile + 6,yTile);
+            GameObject::dropObject(ItemCodes::SOULSHARD,1,xTile + 6,yTile);
             if(numItemsProcessing == 0){
                 deactivate();
             }

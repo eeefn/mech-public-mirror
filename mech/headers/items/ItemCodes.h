@@ -1,3 +1,5 @@
+#pragma once
+
 namespace ItemCodes{
     const int ROCK = 0;
     const int STICK = 1;
@@ -12,4 +14,5 @@ namespace ItemCodes{
     const int CARROT = 10;
     const int YUCCAROOT = 11;
     const int YUCCALEAF = 12;
+    const int SOULSHARD = 13;
 }
