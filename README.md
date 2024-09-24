@@ -27,6 +27,13 @@ Builds are managed with a Makefile in the src directory. The project is designed
 
     cd src
     make -j
+    ./build/main.exe
+The makefile will likely need to be updated with the path to SDL2. Currently, the project looks for SDL2 in $(USERPROFILE)
+
+    INCLUDEPATH=$(USERPROFILE)/SDL2/x86_64-w64-mingw32/include/SDL2/
+    LIBRARYPATH=$(USERPROFILE)/SDL2/x86_64-w64-mingw32/lib
+Both of these lines would need to be changed to reflect the location of SDL2 to build.
+ 
   Version:
   GNU Make 4.4.1, Built for x86_64-pc-msys
     
