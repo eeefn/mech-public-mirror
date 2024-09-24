@@ -19,12 +19,29 @@ This is a small game project built in c++ using SDL2. I have been interested in 
 
 # Dependencies
 version: https://github.com/libsdl-org/SDL/releases/tag/release-2.30.0
+
 SDL2-devel-2.30.0-mingw.zip
 
 # Building
-Builds are managed with a Makefile in the src directory. The project is designed to build on windows systems. 
-    GNU Make 4.4.1
-    Built for x86_64-pc-msys
-Compiled with g++
-    g++.exe (Rev6, Built by MSYS2 project) 13.2.0
+Builds are managed with a Makefile in the src directory. The project is designed to build on windows systems. Eg,
+
+    cd src
+    make -j
+  Version:
+  GNU Make 4.4.1, Built for x86_64-pc-msys
+    
+Compiled with g++ version, g++.exe (Rev6, Built by MSYS2 project) 13.2.0
 # Playing
+The current gamplay loop is fairly simple. Harvest boulders and trees to get the resources to craft garden boxes. Harvest grasses to get seeds, plant the seeds in the garden boxes. Collect the crops, feed them to the crop mulcher, and give the resulting crystals to the portal. When the portal recieves 5 crystals, it can be activated. This is the end of the currently implemented gameplay. 
+
+Esc to quit.
+
+TAB to open inventory. With the required ingredients, items can be crafted by clicking on a recipe in crafting pane. 
+
+WASD to move.
+
+Click and hold on a resource with the appropriate tool to mine it. (Pickaxe for boulders, axe for shrubs and garden box, sword for grasses)
+
+Using a shovel on a garden box will either harvest the crop or release the seed depending on the crops growth stage. 
+
+
